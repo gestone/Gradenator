@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:padding="@dimen/card_padding"
+                android:background="@drawable/card_states"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_image"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="#4fc41c"
+        />
+
+    <TextView
+        android:text="A"
+        android:id="@+id/term_image_text"
+        android:gravity="center"
+        android:textSize="50sp"
+        android:textColor="#FFFFFF"
+        android:layout_alignLeft="@+id/card_image"
+        android:layout_alignTop="@+id/card_image"
+        android:layout_alignRight="@+id/card_image"
+        android:layout_alignBottom="@+id/card_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:textSize="40sp"
+        android:textColor="@color/card_text"
+        android:text="0 Classes"
+        android:id="@+id/class_header"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/unit_count"
+        android:layout_alignEnd="@+id/unit_count"/>
+
+    <TextView
+        android:textColor="@color/card_text"
+        android:id="@+id/unit_count"
+        android:text="16 units"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/card_image"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <ImageView
+        android:layout_marginTop="7dp"
+        android:layout_below="@+id/unit_count"
+        android:src="@color/card_bot_header"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"/>
+
+</RelativeLayout>

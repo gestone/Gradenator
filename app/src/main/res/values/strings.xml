@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Gradenator</string>
+
+    <!--Intro Fragment Strings-->
+    <string name="intro_header">Welcome to Gradenator!</string>
+    <string name="intro_msg">Tap the button below to add a new term to start tracking your
+        grades!</string>
+    <string name="intro_new_term">Start!</string>
+
+    <!--View Term Fragment Strings-->
+    <string name="term_header">All Terms</string>
+
+    <!-- View Term Dialog Strings-->
+    <string name="edit_term_title">Edit Term</string>
+    <string name="create_term_title">Create New Term</string>
+    <string name="term_title_hint">Autumn 2013</string>
+    <string name="create_term">Create Term</string>
+    <string name="save_edit">Save Edit</string>
+    <string name="term_success_msg">term created!</string>
+    <string name="remove_term_title">Remove Term</string>
+    <string name="confirm_msg_1">Are you sure you want to remove the term</string>
+    <string name="confirm_msg_2">from your term list?</string>
+    <string name="successfully_deleted">has been successfully deleted!</string>
+
+    <!--Term Card Strings-->
+    <string name="classes_single">class</string>
+    <string name="classes_multiple">classes</string>
+    <string name="units_header">units</string>
+    <string name="edit">Edit</string>
+    <string name="remove">Remove</string>
+
+</resources>
