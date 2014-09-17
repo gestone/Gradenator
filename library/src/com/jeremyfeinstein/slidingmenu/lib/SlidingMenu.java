@@ -29,7 +29,7 @@ import android.widget.RelativeLayout;
 
 import com.jeremyfeinstein.slidingmenu.lib.CustomViewAbove.OnPageChangeListener;
 
-public class SlidingMenu extends RelativeLayout {
+public class    SlidingMenu extends RelativeLayout {
 
 	private static final String TAG = SlidingMenu.class.getSimpleName();
 

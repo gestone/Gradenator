@@ -34,7 +34,7 @@ public class MainActivity extends SlidingFragmentActivity {
     private void setupSlidingMenu() {
         slidingMenu = getSlidingMenu();
         slidingMenu.setMode(SlidingMenu.LEFT);
-        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
         slidingMenu.setShadowWidthRes(R.dimen.slidingmenu_shadow_width);
         slidingMenu.setShadowDrawable(R.drawable.slidingmenu_shadow);
         slidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
@@ -43,7 +43,7 @@ public class MainActivity extends SlidingFragmentActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.list_layout,
                 new MenuFragment()).commit();
         setSlidingActionBarEnabled(true);
-        getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
     }
 
     private void chooseFragment(){

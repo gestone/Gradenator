@@ -2,11 +2,12 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
+                android:clickable="true"
                 android:layout_height="match_parent">
     <TextView
         android:gravity="center"
         android:textSize="30sp"
-        android:text="@string/term_header"
+        android:text="@string/class_header"
         android:textColor="#FFFFFF"
         android:id="@+id/term_header"
         android:background="@color/blue_dark"
@@ -48,7 +49,7 @@
 
 
 
-        </RelativeLayout>
+    </RelativeLayout>
 
 
 

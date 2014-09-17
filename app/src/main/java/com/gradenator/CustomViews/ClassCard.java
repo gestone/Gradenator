@@ -4,51 +4,42 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.gradenator.Internal.Term;
 import com.gradenator.R;
-
-import java.util.Random;
-
+import com.gradenator.Internal.Class;
 import de.hdodenhof.circleimageview.CircleImageView;
 import it.gmariotti.cardslib.library.internal.Card;
 
 /**
- * Custom card view that allows for the viewing of terms.
+ * Created by Justin on 9/17/2014.
  */
-public class TermCard extends Card {
+public class ClassCard extends Card {
 
-    private Term mCurrentTerm;
+    private Class mClass;
     private Activity mActivity;
 
     private TextView mUnitCount;
-    private TextView mClassCount;
+    private TextView mPercentage;
     private CircleImageView mTermImage;
     private TextView mTermImageText;
 
-
-    public TermCard(Term t, Activity activity, int innerLayout) {
+    public ClassCard(Class c, Activity activity, int innerLayout) {
         super(activity, innerLayout);
         mActivity = activity;
-        mCurrentTerm = t;
+        mClass = c;
     }
 
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-
         // setup views
         mUnitCount = (TextView) parent.findViewById(R.id.unit_count);
-        mClassCount = (TextView) parent.findViewById(R.id.class_header);
+        mPercentage = (TextView) parent.findViewById(R.id.percentage);
         mTermImage = (CircleImageView) parent.findViewById(R.id.card_image);
         Rect rect = new Rect(0, 0, 75, 75);
 
@@ -56,7 +47,7 @@ public class TermCard extends Card {
         Bitmap image = Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(image);
         Paint paint = new Paint();
-        paint.setColor(mCurrentTerm.getBackgroundColor());
+        paint.setColor(mClass.getBackgroundColor());
         canvas.drawRect(rect, paint);
         BitmapDrawable b = new BitmapDrawable(image);
         mTermImage.setImageDrawable(b);
@@ -64,25 +55,14 @@ public class TermCard extends Card {
 
         //setup text
         mUnitCount.setText(constructTotalUnitsHeader());
-        mClassCount.setText(constructClassHeader());
-        String termName = mCurrentTerm.getTermName();
-        mTermImageText.setText(termName.substring(0, 1)); // first letter for text
-    }
-
-    private String constructClassHeader() {
-        Resources r = mActivity.getResources();
-        String msg = mCurrentTerm.getAllClasses().size() + " ";
-        if (mCurrentTerm.getAllClasses().size() != 1) {
-            msg += r.getString(R.string.classes_multiple);
-        } else {
-            msg += r.getString(R.string.classes_single);
-        }
-        return msg;
+        mPercentage.setText(mClass.getCardDisplayText());
+        String className = mClass.getClassName();
+        mTermImageText.setText(constructImageText(className)); // first letter for text
     }
 
     private String constructTotalUnitsHeader() {
         Resources r = mActivity.getResources();
-        int totalUnits = mCurrentTerm.getTotalUnits();
+        int totalUnits = mClass.getUnitCount();
         String msg = totalUnits + " ";
         if (totalUnits == 1) {
             msg += r.getString(R.string.units_single);
@@ -91,5 +71,24 @@ public class TermCard extends Card {
         }
         return msg;
     }
+
+    private String constructImageText(String className) {
+        String total = "";
+        for (int i = 0; i < className.length(); i++) {
+            if (Character.isDigit(className.charAt(i))) {
+                total += className.charAt(i);
+            }
+        }
+        if (total.isEmpty()) {
+            total = className.substring(0, 3);
+        }
+        return total;
+    }
+
+    public Class getCorrespondingClass() {
+        return mClass;
+    }
+
+
 
 }

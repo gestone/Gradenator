@@ -4,7 +4,7 @@
     <color name="blue_middle">#3dc9ff</color>
     <color name="blue_dark">#3dc9ff</color>
     <color name="card_text">#62d3ff</color>
-    <color name="card_bot_header">#98e2ff</color>
+    <color name="card_header">#98e2ff</color>
     <color name="white">#FFFFFF</color>
     <color name="card_click">#00b7ff</color>
 

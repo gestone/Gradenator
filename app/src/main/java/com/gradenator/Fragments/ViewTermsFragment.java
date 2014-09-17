@@ -1,6 +1,5 @@
 package com.gradenator.Fragments;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
@@ -19,7 +18,8 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.gradenator.Callbacks.OnTermChangedListener;
+import com.gradenator.Action;
+import com.gradenator.Callbacks.OnEntryChangedListener;
 import com.gradenator.CustomViews.TermCard;
 import com.gradenator.Internal.Session;
 import com.gradenator.Internal.Term;
@@ -38,7 +38,7 @@ import it.gmariotti.cardslib.library.view.CardListView;
 /**
  * Displays all stored terms to the user.
  */
-public class ViewTermsFragment extends Fragment implements OnTermChangedListener {
+public class ViewTermsFragment extends Fragment implements OnEntryChangedListener {
 
     public static final String TAG = ViewTermsFragment.class.getSimpleName();
 
@@ -49,11 +49,6 @@ public class ViewTermsFragment extends Fragment implements OnTermChangedListener
     private String mSelectedTerm;
     private Resources mRes;
 
-    public enum TermAction {
-
-        ADD, EDIT, REMOVE
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,17 +62,17 @@ public class ViewTermsFragment extends Fragment implements OnTermChangedListener
         mRes = getActivity().getResources();
         mAddButtonLayout = (RelativeLayout) v.findViewById(R.id.add_button_header);
         mAddButton = (Button) v.findViewById(R.id.add_button);
-        final OnTermChangedListener listener = this;
+        final OnEntryChangedListener listener = this;
         mAddButtonLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createNewTermDialog(listener, TermAction.ADD);
+                createNewTermDialog(listener, Action.ADD);
             }
         });
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createNewTermDialog(listener, TermAction.ADD);
+                createNewTermDialog(listener, Action.ADD);
             }
         });
         initListCardView(v);
@@ -87,7 +82,7 @@ public class ViewTermsFragment extends Fragment implements OnTermChangedListener
      * Creates a new term dialog
      * @param listener
      */
-    private void createNewTermDialog(final OnTermChangedListener listener, final TermAction action) {
+    private void createNewTermDialog(final OnEntryChangedListener listener, final Action action) {
         final EditText termName = new EditText(getActivity());
         termName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_CLASS_TEXT);
         termName.setHint(mRes.getString(R.string.term_title_hint));
@@ -107,12 +102,12 @@ public class ViewTermsFragment extends Fragment implements OnTermChangedListener
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String term = termName.getText().toString();
+                                String term = termName.getText().toString().trim();
                                 List<Term> currentTerms = Session.getInstance(getActivity()).getAllTerms();
                                 currentTerms.add(0, new Term(term, System.currentTimeMillis(),
                                         Util.createRandomColor()));
                                 Toast.makeText(getActivity(), term + " " + mRes.getString(R.string.term_success_msg), Toast.LENGTH_SHORT).show();
-                                listener.onTermChanged(action);
+                                listener.onEntryChanged(action);
                             }
                         }
                 );
@@ -150,7 +145,7 @@ public class ViewTermsFragment extends Fragment implements OnTermChangedListener
             }
             case REMOVE: {
                 String totalMsg = mRes.getString(R.string.confirm_msg_1) + " \"" +
-                        mSelectedTerm + "\" " + mRes.getString(R.string.confirm_msg_2);
+                        mSelectedTerm.trim() + "\" " + mRes.getString(R.string.confirm_msg_2);
                 builder.setTitle(mRes.getString(R.string.remove_term_title));
                 builder.setMessage(totalMsg);
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -192,7 +187,7 @@ public class ViewTermsFragment extends Fragment implements OnTermChangedListener
      * @param v The View containing all other views.
      */
     private void initListCardView(View v) {
-        mAllTerms = (CardListView) v.findViewById(R.id.all_terms);
+        mAllTerms = (CardListView) v.findViewById(R.id.all_entries);
         List<Term> terms = Session.getInstance(getActivity()).getAllTerms();
         mAllCards = new ArrayList<Card>();
         for (Term t : terms) {
@@ -207,7 +202,7 @@ public class ViewTermsFragment extends Fragment implements OnTermChangedListener
         super.onResume();
     }
 
-    private void updateNewTermView(TermAction action) {
+    private void updateNewTermView(Action action) {
         CardArrayAdapter c = (CardArrayAdapter) mAllTerms.getAdapter();
         List<Term> allTerms = Session.getInstance(getActivity()).getAllTerms();
         if (!allTerms.isEmpty()) {
@@ -217,7 +212,6 @@ public class ViewTermsFragment extends Fragment implements OnTermChangedListener
                     break;
                 }
                 case EDIT: {
-
                     break;
                 }
                 case REMOVE: {
@@ -241,35 +235,42 @@ public class ViewTermsFragment extends Fragment implements OnTermChangedListener
 
 
     private Card createNewCard(Term t) {
-        Card termView = new TermCard(t, getActivity(), R.layout.custom_card);
+        Card termView = new TermCard(t, getActivity(), R.layout.custom_term_card);
         CardHeader termHeader = createCardHeader(t);
         termView.addCardHeader(termHeader);
+        setCardOnClickListeners(termView);
+        return termView;
+    }
+
+    private void setCardOnClickListeners(Card termView) {
         termView.addPartialOnClickListener(Card.CLICK_LISTENER_HEADER_VIEW, null);
         termView.addPartialOnClickListener(Card.CLICK_LISTENER_THUMBNAIL_VIEW, null);
         termView.addPartialOnClickListener(Card.CLICK_LISTENER_CONTENT_VIEW, new Card.OnCardClickListener() {
             @Override
             public void onClick(Card card, View view) {
-                Toast.makeText(getActivity(), "it nope", Toast.LENGTH_SHORT).show();
+                Session s = Session.getInstance(getActivity());
+                s.setCurrentTerm(s.findTerm(card.getCardHeader().getTitle()));
+                Util.displayFragment(new ViewClassesFragment(), ViewClassesFragment.TAG, getActivity());
             }
         });
-        return termView;
     }
+
 
     private CardHeader createCardHeader(Term t) {
         CardHeader termHeader = new CardHeader(getActivity());
         termHeader.setTitle(t.getTermName());
         termHeader.setButtonOverflowVisible(true);
         termHeader.setOtherButtonClickListener(null);
-        final OnTermChangedListener listener = this;
+        final OnEntryChangedListener listener = this;
         termHeader.setPopupMenuListener(new CardHeader.OnClickCardHeaderPopupMenuListener() {
             @Override
             public void onMenuItemClick(BaseCard card, MenuItem item) {
                 Card c = (Card) card;
                 mSelectedTerm = c.getCardHeader().getTitle();
                 if (item.getTitle().toString().equals(getString(R.string.edit))) {
-                    createNewTermDialog(listener ,TermAction.EDIT);
+                    createNewTermDialog(listener ,Action.EDIT);
                 } else if (item.getTitle().toString().equals(getString(R.string.remove))) {
-                    createNewTermDialog(listener, TermAction.REMOVE);
+                    createNewTermDialog(listener, Action.REMOVE);
                 }
             }
         });
@@ -287,7 +288,7 @@ public class ViewTermsFragment extends Fragment implements OnTermChangedListener
     }
 
     @Override
-    public void onTermChanged(TermAction action) {
+    public void onEntryChanged(Action action) {
         updateNewTermView(action);
     }
 }

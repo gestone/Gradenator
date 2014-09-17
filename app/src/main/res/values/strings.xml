@@ -27,8 +27,49 @@
     <!--Term Card Strings-->
     <string name="classes_single">class</string>
     <string name="classes_multiple">classes</string>
-    <string name="units_header">units</string>
+    <string name="units_single">unit</string>
+    <string name="units_multiple">units</string>
     <string name="edit">Edit</string>
     <string name="remove">Remove</string>
+
+    <!--View Class Fragment Strings-->
+    <string name="class_header">All Classes</string>
+
+    <!--Add, Edit, and Remove Class Fragment Strings-->
+    <string name="create_class_header">Create a new class</string>
+    <string name="create_class_btn">Create Class</string>
+    <string name="create_class_name_header">Class Name: </string>
+    <string name="create_class_name_hint">Math 308</string>
+    <string name="create_class_unit_header">Units: </string>
+    <string name="create_class_unit_hint">3</string>
+    <string name="category_title">Categories</string>
+    <string name="category_msg">All category weights must total to 100.</string>
+    <string name="category_add">Add Category</string>
+    <string name="category_error">You need at least one category.</string>
+    <string name="category_remove">Remove Category</string>
+    <string name="category_name_hint">Homework</string>
+    <string name="category_weight_hint">20</string>
+    <string name="class_created_msg_1">The class </string>
+    <string name="class_created_msg_2">has been successfully created!</string>
+    <string name="empty_field_title">Empty Field</string>
+    <string name="no_class_name">Please specify a class name.</string>
+    <string name="no_unit_count">Please specify how many units this class is.</string>
+    <string name="no_category_field">One or more of your categories is incomplete.
+        Please complete all of your categories.</string>
+    <string name="no_total_one_hundred_title">Weights do not equal 100</string>
+    <string name="no_total_one_hundred">The sum of your weights from each of your
+        categories does not total 100. Please change your weights and try again.</string>
+    <string name="duplicate_category_title">Duplicate Categories</string>
+    <string name="duplicate_category_msg">You have two categories that have the same name.
+        Please change one of your categories.</string>
+    <string name="duplicate_class_title">Duplicate Class</string>
+    <string name="duplicate_class_msg">You have two classes that have the same name.
+        Please change the title of your class.</string>
+    <string name="edit_class_title">Edit Class</string>
+    <string name="class_success_updated">Your class has been successfully updated!</string>
+    <string name="update_class_btn">Update Class</string>
+    <string name="remove_class_title">Remove Class</string>
+    <string name="remove_class_msg_1">Are you sure you want to remove</string>
+    <string name="remove_class_msg_2">from your class list?</string>
 
 </resources>

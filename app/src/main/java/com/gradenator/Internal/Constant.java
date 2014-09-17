@@ -9,4 +9,6 @@ public class Constant {
 
     }
 
+    public static final double NO_ASSIGNMENTS = -1.0;
+
 }

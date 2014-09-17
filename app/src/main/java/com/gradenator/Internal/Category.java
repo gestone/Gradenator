@@ -9,10 +9,15 @@ import java.util.List;
 public class Category {
 
     private String title;
-    private double weight;
+    private int weight;
     private List<Assignment> allAssignments;
 
-    public Category(String title, double weight) {
+    public Category() {
+        title = "";
+        weight = -1;
+    }
+
+    public Category(String title, int weight) {
         this.title = title;
         this.weight = weight;
         allAssignments = new ArrayList<Assignment>();
@@ -35,7 +40,7 @@ public class Category {
         return allAssignments;
     }
 
-    public double getWeight() {
+    public int getWeight() {
         return weight;
     }
 
@@ -47,8 +52,27 @@ public class Category {
         this.title = title;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(int weight) {
         this.weight = weight;
+    }
+
+    public double getWeightedPercentage() {
+        if (hasNoAssignments()) {
+            return Constant.NO_ASSIGNMENTS;
+        } else {
+            double earnedPoints = 0;
+            double totalPoints = 0;
+            for (Assignment a : allAssignments) {
+                earnedPoints += a.getEarnedScore();
+                totalPoints += a.getMaxScore();
+            }
+            double weight = (this.weight * 1.0) / 100;
+            return ((earnedPoints / totalPoints) * 100) * weight;
+        }
+    }
+
+    public boolean hasNoAssignments() {
+        return allAssignments == null || allAssignments.isEmpty();
     }
 
 }

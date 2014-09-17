@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:paddingLeft="5dp"
+              android:paddingRight="5dp"
+              android:layout_height="wrap_content">
+
+    <EditText
+        android:hint="@string/category_name_hint"
+        android:id="@+id/category_name"
+        android:layout_weight="2"
+        android:inputType="textCapSentences"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:hint="@string/category_weight_hint"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/category_weight"
+        android:inputType="number"
+        android:layout_width="0dp"
+        android:gravity="right"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

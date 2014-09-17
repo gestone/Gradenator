@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
+import android.widget.Toast;
 
 import com.gradenator.R;
 
@@ -43,6 +44,15 @@ public class Util {
     public static int createRandomColor() {
         Random r = new Random();
         return Color.argb(255, r.nextInt(256), r.nextInt(256), r.nextInt(256));
+    }
+
+    public static void makeToast(Activity a, String text) {
+        Toast.makeText(a, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public static double roundToNDigits(double value, int n) {
+        int roundTo = (int) Math.pow(10, n);
+        return (double) Math.round(value * roundTo) / roundTo;
     }
 
 }
