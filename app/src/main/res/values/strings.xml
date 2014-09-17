@@ -72,4 +72,10 @@
     <string name="remove_class_msg_1">Are you sure you want to remove</string>
     <string name="remove_class_msg_2">from your class list?</string>
 
+    <!--ViewSingleClass Fragment Strings-->
+    <string name="total_percentage">Total Percentage</string>
+    <string name="weight_percentage">% weight</string>  <!--Used for constructing display header-->
+    <string name="all_assignments">Assignments</string>
+    <string name="filter">Filter: </string>
+
 </resources>

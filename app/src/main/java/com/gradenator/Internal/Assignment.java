@@ -1,18 +1,22 @@
 package com.gradenator.Internal;
 
+import com.gradenator.Utilities.Util;
+
 /**
  * Created by Justin on 8/25/2014.
  */
-public class Assignment {
+public class Assignment implements Comparable<Assignment> {
 
     private double earnedScore;
     private double maxScore;
     private String title;
+    private long timeCreated;
 
-    public Assignment(String title, double earnedScore, double maxScore) {
+    public Assignment(String title, double earnedScore, double maxScore, long timeCreated) {
         this.title = title;
         this.earnedScore = earnedScore;
         this.maxScore = maxScore;
+        this.timeCreated = timeCreated;
     }
 
     public String getTitle() {
@@ -39,4 +43,16 @@ public class Assignment {
         this.title = title;
     }
 
+    public String getDateCreated() {
+        return Util.createDate(timeCreated);
+    }
+
+    @Override
+    public int compareTo(Assignment other) {
+        if (this.timeCreated - other.timeCreated > 0) {
+            return 1;
+        } else { // not possible to have the assignments created at the same time
+            return -1;
+        }
+    }
 }

@@ -1,7 +1,8 @@
 <component name="libraryTable">
   <library name="library-2.4.1">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.viewpagerindicator/library/2.4.1/b9ab2acb69cbfa1b33ba701aa59a1e277c0f63b7/library-2.4.1.apklib" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/Gradenator/library-2.4.1/unspecified/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/Gradenator/library-2.4.1/unspecified/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

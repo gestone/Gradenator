@@ -20,15 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Justin on 9/16/2014.
+ * Used in prompting the user to create a category.
  */
-public class CategoryAdapter extends BaseAdapter {
+public class CreateCategoryAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;
     private List<Category> mAllCategories;
     private Activity mActivity;
 
-    public CategoryAdapter(Activity a, List<Category> allCategories) {
+    public CreateCategoryAdapter(Activity a, List<Category> allCategories) {
         mAllCategories = allCategories;
         if (mAllCategories.isEmpty()) {
             mAllCategories.add(new Category()); // prompt for user to fill out first category

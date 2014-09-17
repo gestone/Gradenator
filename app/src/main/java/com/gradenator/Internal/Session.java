@@ -65,6 +65,10 @@ public class Session {
         mCurrentClass = selectedClass;
     }
 
+    public Class getCurrentClass() {
+        return mCurrentClass;
+    }
+
     public Term findTerm(String termName) {
         for (Term t : mAllTerms) {
             if (t.getTermName().equals(termName)) {

@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.gradenator.Action;
 import com.gradenator.Callbacks.OnEntryChangedListener;
-import com.gradenator.CustomViews.CategoryAdapter;
+import com.gradenator.CustomViews.CreateCategoryAdapter;
 import com.gradenator.CustomViews.ClassCard;
 import com.gradenator.Dialogs.GenericDialog;
 import com.gradenator.Internal.*;
@@ -142,8 +142,8 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
         final Class selectedClass = getSelectedClass();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.remove_class_title));
-        String msg = getString(R.string.remove_class_msg_1) + " \'" + selectedClass.getClassName()
-                + "\' " + getString(R.string.remove_class_msg_2);
+        String msg = getString(R.string.remove_class_msg_1) + " \"" + selectedClass.getClassName()
+                + "\" " + getString(R.string.remove_class_msg_2);
         builder.setMessage(msg);
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
@@ -176,7 +176,7 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
         if (action == Action.EDIT) {
             listOfCategories = getSelectedClass().getAllCategories();
         }
-        final CategoryAdapter adapter = new CategoryAdapter(getActivity(),
+        final CreateCategoryAdapter adapter = new CreateCategoryAdapter(getActivity(),
                 listOfCategories);
         if (action == Action.EDIT) { // user wants to edit, populate the fields
             builder.setTitle(getString(R.string.edit_class_title));
@@ -214,7 +214,7 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
     }
 
     private void setCreateClassListener(final AlertDialog d, final EditText className,
-                                        final EditText unitCount, final CategoryAdapter adapter,
+                                        final EditText unitCount, final CreateCategoryAdapter adapter,
                                         final ListView allCategories, final Action action) {
         d.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
@@ -284,11 +284,13 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
             public void onClick(Card card, View view) {
                 mSelectedClass = card.getCardHeader().getTitle();
                 Session.getInstance(getActivity()).setCurrentClass(getSelectedClass());
+                Util.displayFragment(new ViewSingleClassFragment(), ViewSingleClassFragment.TAG,
+                        getActivity());
             }
         });
     }
 
-    private void setCategoryButtonListeners(View v, final CategoryAdapter adapter,
+    private void setCategoryButtonListeners(View v, final CreateCategoryAdapter adapter,
                                             final ListView allCategories) {
         final Button addCategory = (Button) v.findViewById(R.id.add_category);
         final Button removeCategory = (Button) v.findViewById(R.id.remove_category);
@@ -316,7 +318,7 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
         });
     }
 
-    private void updateCategories(final ListView allCategories, final CategoryAdapter adapter) {
+    private void updateCategories(final ListView allCategories, final CreateCategoryAdapter adapter) {
         for (int i = 0; i < adapter.getCount(); i++) {
             View row = adapter.getViewByPosition(i, allCategories);
             EditText title = (EditText) row.findViewById(R.id.category_name);
@@ -331,7 +333,7 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
     }
 
 
-    private boolean checkFieldsCompleted(CategoryAdapter adapter) {
+    private boolean checkFieldsCompleted(CreateCategoryAdapter adapter) {
         List<Category> allCategories = adapter.getCategoryList();
         for (Category c : allCategories) { // check if all fields are filled out
             if (c.getTitle().isEmpty() || c.getWeight() == 0) {
@@ -346,7 +348,7 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
      *
      * @return A boolean stating whether the weights equal 100 or not.
      */
-    private boolean checkWeights(CategoryAdapter adapter) {
+    private boolean checkWeights(CreateCategoryAdapter adapter) {
         List<Category> allCategories = adapter.getCategoryList();
         int total = 0;
         for (Category c : allCategories) {
@@ -355,7 +357,7 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
         return total == 100;
     }
 
-    private boolean checkDupCategories(CategoryAdapter adapter) {
+    private boolean checkDupCategories(CreateCategoryAdapter adapter) {
         List<Category> allCategories = adapter.getCategoryList();
         for (int i = 0; i < allCategories.size(); i++) {
             Category cur = allCategories.get(i);

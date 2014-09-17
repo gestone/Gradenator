@@ -21,12 +21,15 @@ android {
     }
     productFlavors {
     }
+    packagingOptions {
+        exclude 'AndroidManifest.xml'
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.github.gabrielemariotti.cards:library:1.9.0'
-    compile 'com.viewpagerindicator:library:2.4.1'
+    compile 'com.android.support:support-v13:18.0.+'
     compile 'de.hdodenhof:circleimageview:1.2.0'
     //    compile files('libs/android-support-v4.jar')
     compile project(':library')

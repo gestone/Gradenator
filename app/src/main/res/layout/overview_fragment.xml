@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:background="@color/blue_dark"
+        android:textColor="@color/white"
+        android:text="MATH 308"
+        android:textSize="55sp"
+        android:gravity="center"
+        android:id="@+id/overview_image"
+        android:layout_weight="4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+    <ListView
+        android:id="@+id/overview_categories"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        />
+
+
+</LinearLayout>

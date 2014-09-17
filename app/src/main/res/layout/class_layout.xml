@@ -4,10 +4,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <com.viewpagerindicator.TitlePageIndicator
-        android:layout_width="wrap_content"
-        android:id="@+id/titles"
-        android:layout_height="wrap_content"
-        />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/class_pager"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/class_pager_indicator"
+        android:layout_height="match_parent"/>
+
+    <com.viewpagerindicator.CirclePageIndicator
+        android:layout_alignParentBottom="true"
+        android:id="@+id/class_pager_indicator"
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:layout_height="18dp"/>
+
 
 </RelativeLayout>

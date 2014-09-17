@@ -1,5 +1,7 @@
 package com.gradenator.Internal;
 
+import com.gradenator.Utilities.Util;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,21 +12,22 @@ public class Category {
 
     private String title;
     private int weight;
+    private int color;
     private List<Assignment> allAssignments;
 
     public Category() {
-        title = "";
-        weight = -1;
+        this("", -1, Util.createRandomColor());
     }
 
-    public Category(String title, int weight) {
+    public Category(String title, int weight, int color) {
         this.title = title;
         this.weight = weight;
+        this.color = color;
         allAssignments = new ArrayList<Assignment>();
     }
 
     public void addAssignment(String title, double earned, double total) {
-        allAssignments.add(new Assignment(title, earned, total));
+        allAssignments.add(new Assignment(title, earned, total, System.currentTimeMillis()));
     }
 
     public Assignment removeAssignment(String title) {
@@ -71,8 +74,33 @@ public class Category {
         }
     }
 
+    private double getRawPercentage() {
+        if (hasNoAssignments()) {
+            return Constant.NO_ASSIGNMENTS;
+        } else {
+            double earnedPoints = 0;
+            double totalPoints = 0;
+            for (Assignment a : allAssignments) {
+                earnedPoints += a.getEarnedScore();
+                totalPoints += a.getMaxScore();
+            }
+            return (earnedPoints / totalPoints * 100);
+        }
+    }
+
+    public String getPercentageDisplayHeader() {
+        if (hasNoAssignments()) {
+            return "% N/A";
+        } else {
+            return getRawPercentage() + "%";
+        }
+    }
+
     public boolean hasNoAssignments() {
         return allAssignments == null || allAssignments.isEmpty();
     }
 
+    public int getBackgroundColor() {
+        return color;
+    }
 }

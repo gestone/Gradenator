@@ -3,6 +3,7 @@ package com.gradenator.Internal;
 import com.gradenator.Utilities.Util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -100,6 +101,19 @@ public class Class {
 
     public void setUnitCount(int unitCount) {
         this.unitCount = unitCount;
+    }
+
+    public List<Assignment> getAllAssignments() {
+        List<Assignment> allAssignments = new ArrayList<Assignment>();
+        for (Category c : allCategories) {
+            List<Assignment> assignments = c.getAllAssignments();
+            if (assignments != null) {
+                allAssignments.addAll(assignments);
+            }
+        }
+        Collections.sort(allAssignments); // sorts all assignments by date created,
+                                          // most recent first
+        return allAssignments;
     }
 
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:padding="@dimen/card_padding"
+                android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/category_header"
+        android:textSize="30sp"
+        android:textColor="@color/card_text"
+        android:text="Homework"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/percentage_background"/>
+
+    <TextView
+        android:textColor="@color/card_text"
+        android:text="20% weight"
+        android:id="@+id/category_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:layout_below="@+id/category_header"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_alignParentRight="true"
+        android:src="@color/card_text"
+        android:layout_width="75dp"
+        android:id="@+id/percentage_background"
+        android:layout_height="75dp"/>
+
+    <TextView
+        android:textSize="18sp"
+        android:text="98.74%"
+        android:gravity="center"
+        android:id="@+id/percentage"
+        android:layout_alignLeft="@+id/percentage_background"
+        android:layout_alignRight="@+id/percentage_background"
+        android:layout_alignBottom="@+id/percentage_background"
+        android:layout_alignTop="@+id/percentage_background"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/white"
+        android:layout_width="75dp"
+        android:layout_height="75dp"/>
+
+
+</RelativeLayout>
