@@ -10,7 +10,7 @@
         android:layout_above="@+id/class_pager_indicator"
         android:layout_height="match_parent"/>
 
-    <com.viewpagerindicator.CirclePageIndicator
+    <com.gradenator.CustomViews.CustomCirclePageIndicator
         android:layout_alignParentBottom="true"
         android:id="@+id/class_pager_indicator"
         android:layout_width="match_parent"

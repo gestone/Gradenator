@@ -10,7 +10,9 @@ import com.gradenator.Fragments.AllAssignmentsFragment;
 import com.gradenator.Fragments.ClassOverviewFragment;
 import com.gradenator.Fragments.IntroFragment;
 import com.gradenator.Internal.Class;
+import com.gradenator.Internal.Constant;
 import com.gradenator.Internal.Session;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,4 +44,14 @@ public class ClassFragmentAdapter extends FragmentStatePagerAdapter {
         mAllFragments.add(new ClassOverviewFragment());
         mAllFragments.add(new AllAssignmentsFragment());
     }
+
+    public void setCirclePagerIndicator(CustomCirclePageIndicator c) {
+        getClassOverViewFrag().getDisplayCategoryAdapter().setCirclePageIndicator(c);
+    }
+
+    public ClassOverviewFragment getClassOverViewFrag() {
+        return (ClassOverviewFragment) mAllFragments.get(Constant.OVERVIEW_FRAGMENT);
+    }
+
+
 }

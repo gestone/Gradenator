@@ -25,23 +25,32 @@ public class ClassOverviewFragment extends Fragment {
     private Class mClass;
 
 
+    public ClassOverviewFragment() {
+        mClass = Session.getInstance(getActivity()).getCurrentClass();
+        Activity a = Session.getCurrentActivity();
+        mDisplayCategories = new DisplayCategoryAdapter(a, mClass.getAllCategories());
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.overview_fragment, container, false);
-        mClass = Session.getInstance(getActivity()).getCurrentClass();
         findViews(v);
         return v;
     }
 
     private void findViews(View v) {
         mOverviewHeader = (TextView) v.findViewById(R.id.overview_image);
+        mAllCategories = (ListView) v.findViewById(R.id.overview_categories);
+        updateViews();
+    }
+
+    public void updateViews() {
         mOverviewHeader.setBackgroundColor(mClass.getBackgroundColor());
         mOverviewHeader.setText(mClass.getClassName().toUpperCase());
-        mAllCategories = (ListView) v.findViewById(R.id.overview_categories);
-        mDisplayCategories = new DisplayCategoryAdapter(getActivity(), mClass.getAllCategories());
         mAllCategories.setAdapter(mDisplayCategories);
     }
 
-
-
+    public DisplayCategoryAdapter getDisplayCategoryAdapter() {
+        return mDisplayCategories;
+    }
 }

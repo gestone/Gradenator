@@ -84,7 +84,7 @@ public class Category {
                 earnedPoints += a.getEarnedScore();
                 totalPoints += a.getMaxScore();
             }
-            return (earnedPoints / totalPoints * 100);
+            return Util.roundToNDigits((earnedPoints / totalPoints * 100), 2);
         }
     }
 

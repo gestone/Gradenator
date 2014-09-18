@@ -3,11 +3,14 @@ package com.gradenator.Fragments;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.test.ApplicationTestCase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.gradenator.CustomViews.ClassFragmentAdapter;
+import com.gradenator.CustomViews.CustomCirclePageIndicator;
+import com.gradenator.Internal.Constant;
 import com.gradenator.R;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -20,7 +23,7 @@ public class ViewSingleClassFragment extends Fragment {
 
     private ClassFragmentAdapter mAdapter;
     private ViewPager mViewPager;
-    private CirclePageIndicator mIndicator;
+    private CustomCirclePageIndicator mIndicator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,11 +36,32 @@ public class ViewSingleClassFragment extends Fragment {
         mAdapter = new ClassFragmentAdapter(getFragmentManager(), getActivity());
         mViewPager = (ViewPager) v.findViewById(R.id.class_pager);
         mViewPager.setAdapter(mAdapter);
-        mIndicator = (CirclePageIndicator) v.findViewById(R.id.class_pager_indicator);
+        mIndicator = (CustomCirclePageIndicator) v.findViewById(R.id.class_pager_indicator);
         mIndicator.setViewPager(mViewPager);
         mIndicator.setFillColor(getResources().getColor(R.color.blue_light));
         mIndicator.setRadius(20);
         mIndicator.setStrokeColor(getResources().getColor(R.color.blue_dark));
+        mIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
+
+            }
+
+            @Override
+            public void onPageSelected(int newPosition) {
+                if (newPosition == Constant.OVERVIEW_FRAGMENT) {
+                    mAdapter.getClassOverViewFrag().updateViews();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+        mIndicator.setAllAssignmentsFrag((AllAssignmentsFragment) mAdapter.getItem(Constant
+                .ALL_ASSIGNMENTS_FRAGMENT));
+        mAdapter.setCirclePagerIndicator(mIndicator);
     }
 
 }

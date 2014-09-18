@@ -15,10 +15,12 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.gradenator.Internal.Category;
+import com.gradenator.Internal.Constant;
 import com.gradenator.Internal.Session;
 import com.gradenator.Internal.Class;
 import com.gradenator.R;
 import com.gradenator.Utilities.Util;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +35,20 @@ public class DisplayCategoryAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private List<Category> mAllCategories;
     private Activity mActivity;
+    private CustomCirclePageIndicator mMainViewPager;
 
     public DisplayCategoryAdapter(Activity activity, List<Category> categories) {
         this.mAllCategories = new ArrayList<Category>();
-        mAllCategories.addAll(categories);
-        int blackColor = Color.argb(255, 0, 0, 0);
+        mAllCategories.addAll(categories); // total percentage not an actual category,
+                                           // copy references
+        int lightBlueColor = activity.getResources().getColor(R.color.card_text);
         mAllCategories.add(0, new Category(activity.getString(R.string.total_percentage), 100,
-                blackColor)); // total score
+                lightBlueColor)); // total score
         this.mActivity = activity;
+    }
+
+    public void setCirclePageIndicator(CustomCirclePageIndicator c) {
+        mMainViewPager = c;
     }
 
 
@@ -68,11 +76,13 @@ public class DisplayCategoryAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.display_category_entry, null);
         }
+        setViewOnClickListener(convertView);
         Category currentCategory = mAllCategories.get(position);
         TextView categoryHeader = (TextView) convertView.findViewById(R.id.category_header);
         TextView categoryWeight = (TextView) convertView.findViewById(R.id.category_weight);
         CircleImageView percentageBackground = (CircleImageView) convertView.findViewById(R.id
                 .percentage_background);
+        convertView.setTag(currentCategory.getTitle());
         categoryHeader.setText(currentCategory.getTitle());
         TextView percentage = (TextView) convertView.findViewById(R.id.percentage);
         setCircleBackground(percentageBackground, currentCategory);
@@ -86,6 +96,16 @@ public class DisplayCategoryAdapter extends BaseAdapter {
             percentage.setText(c.getCardDisplayText());
         }
         return convertView;
+    }
+
+    private void setViewOnClickListener(View v) {
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMainViewPager.setCurrentItem(Constant.ALL_ASSIGNMENTS_FRAGMENT);
+                mMainViewPager.getAllAssignmentsFrag().setSpinner((String) v.getTag());
+            }
+        });
     }
 
     @Override

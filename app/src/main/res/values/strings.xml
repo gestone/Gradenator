@@ -23,6 +23,7 @@
     <string name="confirm_msg_1">Are you sure you want to remove the term</string>
     <string name="confirm_msg_2">from your term list?</string>
     <string name="successfully_deleted">has been successfully deleted!</string>
+    <string name="empty_term_error_msg">Please specify a term name.</string>
 
     <!--Term Card Strings-->
     <string name="classes_single">class</string>
@@ -78,4 +79,24 @@
     <string name="all_assignments">Assignments</string>
     <string name="filter">Filter: </string>
 
+    <!--Create Assignment Strings-->
+    <string name="create_assignment_header">Create New Assignment</string>
+    <string name="edit_assignment_header">Edit Existing Assignment</string>
+    <string name="assignment_title_header">Title:</string>
+    <string name="assignment_title_hint">Hamlet Quiz</string>
+    <string name="earned_points_header">Earned Points:</string>
+    <string name="earned_points_hint">9.5</string>
+    <string name="max_points_header">Max Points:</string>
+    <string name="max_points_hint">10</string>
+    <string name="category_header">Category:</string>
+    <string name="select_prompt">Select...</string>
+    <string name="empty_field_error_msg">One or more of the required fields is incomplete.
+        Please fill them out and try again.</string>
+    <string name="points_invalid_format_title">Invalid Number Formatting</string>
+    <string name="points_invalid_format_msg">Your numbers that you have entered are in an
+        invalid format. Please modify your numbers and try again.</string>
+    <string name="assignment_success_msg">Assignment successfully created!</string>
+    <string name="duplicate_title_header">Duplicate Assignment Titles</string>
+    <string name="duplicate_title_msg">It appears that the title you have chosen already
+        exists. Please edit your title and try again.</string>
 </resources>

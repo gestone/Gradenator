@@ -68,7 +68,7 @@ public class Class {
             }
         }
         double actualPercentage = rawPercentage / ((totalWeight * 1.0) / 100);
-        return Util.roundToNDigits(rawPercentage, 2);
+        return Util.roundToNDigits(actualPercentage, 2);
     }
 
     public String getCardDisplayText() {
@@ -87,8 +87,17 @@ public class Class {
         if (rawPercentage < 0) {
             return "% N/A";
         } else {
-            return Util.roundToNDigits(rawPercentage, 2) + "%";
+            return Util.roundToNDigits(actualPercentage, 2) + "%";
         }
+    }
+
+    public Category findCategory(String category) {
+        for (Category c : allCategories) {
+            if (c.getTitle().equals(category)) {
+                return c;
+            }
+        }
+        return null;
     }
 
     public List<Category> getAllCategories() {

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/assignment_title_header"
+        android:text="@string/assignment_title_header"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignBottom="@+id/assignment_title"
+        android:layout_alignTop="@+id/assignment_title"/>
+
+    <EditText
+        android:textSize="20sp"
+        android:hint="@string/assignment_title_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:inputType="text|textCapSentences"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/assignment_title"
+        android:layout_toRightOf="@+id/earned_points_header"/>
+
+    <TextView
+        android:text="@string/earned_points_header"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:id="@+id/earned_points_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/earned_points"
+        android:layout_below="@+id/assignment_title_header"/>
+
+    <EditText
+        android:id="@+id/earned_points"
+        android:textSize="20sp"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:gravity="right"
+        android:hint="@string/earned_points_hint"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:layout_below="@+id/assignment_title"
+        android:layout_alignLeft="@+id/assignment_title"
+        android:layout_alignStart="@+id/assignment_title"
+        android:layout_alignRight="@+id/assignment_title"
+        android:layout_alignEnd="@+id/assignment_title"/>
+
+    <TextView
+        android:text="@string/max_points_header"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:layout_alignBottom="@+id/max_points"
+        android:layout_below="@+id/earned_points_header"/>
+
+    <EditText
+        android:id="@+id/max_points"
+        android:layout_marginTop="5dp"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:gravity="right"
+        android:hint="@string/max_points_hint"
+        android:inputType="numberDecimal"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/earned_points"
+        android:layout_alignRight="@+id/earned_points"
+        android:layout_alignEnd="@+id/earned_points"
+        android:layout_alignLeft="@+id/earned_points"
+        android:layout_alignStart="@+id/earned_points"/>
+
+    <TextView
+        android:text="@string/category_header"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:id="@+id/category_header"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/assignment_category"/>
+
+    <Spinner
+        android:id="@+id/assignment_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_alignLeft="@+id/max_points"
+        android:gravity="right"
+        android:layout_alignStart="@+id/max_points"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+</RelativeLayout>

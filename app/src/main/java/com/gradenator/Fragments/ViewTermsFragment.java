@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.gradenator.Action;
 import com.gradenator.Callbacks.OnEntryChangedListener;
 import com.gradenator.CustomViews.TermCard;
+import com.gradenator.Dialogs.GenericDialog;
 import com.gradenator.Internal.Session;
 import com.gradenator.Internal.Term;
 import com.gradenator.R;
@@ -102,15 +103,12 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String term = termName.getText().toString().trim();
-                                List<Term> currentTerms = Session.getInstance(getActivity()).getAllTerms();
-                                currentTerms.add(0, new Term(term, System.currentTimeMillis(),
-                                        Util.createRandomColor()));
-                                Toast.makeText(getActivity(), term + " " + mRes.getString(R.string.term_success_msg), Toast.LENGTH_SHORT).show();
-                                listener.onEntryChanged(action);
                             }
                         }
                 );
+                final AlertDialog d = builder.create();
+                setDialogListeners(d, termName, action);
+                d.show();
                 break;
             }
             case EDIT: {
@@ -122,25 +120,12 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
                         .save_edit), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String newTermName = termName.getText().toString();
-                        if (!newTermName.equals(mSelectedTerm)) {
-                            List<Term> allTerms = Session.getInstance(getActivity()).getAllTerms();
-                            for (int i = 0; i < allTerms.size(); i++) {
-                                CardHeader h = mAllCards.get(i).getCardHeader();
-                                if (h.getTitle().equals(mSelectedTerm)) {
-                                    allTerms.get(i).setTermName(newTermName);
-                                    h.setTitle(newTermName);
-                                    Card temp = mAllCards.remove(i);
-                                    CardArrayAdapter c = (CardArrayAdapter) mAllTerms.getAdapter();
-                                    c.notifyDataSetChanged();
-                                    mAllCards.add(i, temp); // recreate card with new title
-                                    c.notifyDataSetChanged();
-                                    mSelectedTerm = "";
-                                }
-                            }
-                        }
+
                     }
                 });
+                final AlertDialog d = builder.create();
+                setDialogListeners(d, termName, action);
+                d.show();
                 break;
             }
             case REMOVE: {
@@ -157,19 +142,77 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
                         mSelectedTerm = "";
                     }
                 });
+                builder.create().show();
             }
         }
-        final AlertDialog dialog = builder.create();
+    }
+
+    private void setDialogListeners(final AlertDialog d, final EditText termName,
+                                    final Action action) {
+        final OnEntryChangedListener listener = this;
+        d.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button newTerm = d.getButton(AlertDialog.BUTTON_POSITIVE);
+                newTerm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String term = termName.getText().toString().trim();
+                        if (term.isEmpty()) {
+                            String title = mRes.getString(R.string.empty_field_title);
+                            String termError = mRes.getString(R.string
+                                    .empty_term_error_msg);
+                            GenericDialog error = GenericDialog.newInstance(title,
+                                    termError);
+                            error.show(getFragmentManager(), GenericDialog.TAG);
+                        } else {
+                            if (action == Action.ADD) {
+                                setAddTermLogic(term);
+                            } else if (action == Action.EDIT) {
+                                setEditTermLogic(term);
+                            }
+                            listener.onEntryChanged(action);
+                            d.dismiss();
+                        }
+                    }
+                });
+            }
+        });
         termName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
+                    d.getWindow().setSoftInputMode(WindowManager.LayoutParams
                             .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                 }
             }
         });
-        dialog.show();
+    }
+
+    private void setAddTermLogic(String term) {
+        List<Term> currentTerms = Session.getInstance(getActivity()).getAllTerms();
+        currentTerms.add(0, new Term(term, System.currentTimeMillis(),
+                Util.createRandomColor()));
+        Toast.makeText(getActivity(), term + " " + mRes.getString(R.string.term_success_msg), Toast.LENGTH_SHORT).show();
+    }
+
+    private void setEditTermLogic(String newTermName) {
+        if (!newTermName.equals(mSelectedTerm)) {
+            List<Term> allTerms = Session.getInstance(getActivity()).getAllTerms();
+            for (int i = 0; i < allTerms.size(); i++) {
+                CardHeader h = mAllCards.get(i).getCardHeader();
+                if (h.getTitle().equals(mSelectedTerm)) {
+                    allTerms.get(i).setTermName(newTermName);
+                    h.setTitle(newTermName);
+                    Card temp = mAllCards.remove(i);
+                    CardArrayAdapter c = (CardArrayAdapter) mAllTerms.getAdapter();
+                    c.notifyDataSetChanged();
+                    mAllCards.add(i, temp); // recreate card with new title
+                    c.notifyDataSetChanged();
+                    mSelectedTerm = "";
+                }
+            }
+        }
     }
 
     private void removeCard() {

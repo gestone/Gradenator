@@ -11,4 +11,10 @@ public class Constant {
 
     public static final double NO_ASSIGNMENTS = -1.0;
 
+    public static final int OVERVIEW_FRAGMENT = 0;
+
+    public static final int ALL_ASSIGNMENTS_FRAGMENT = 1;
+
+    public static final String TITLE = "Title";
+
 }

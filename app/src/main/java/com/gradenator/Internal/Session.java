@@ -78,6 +78,10 @@ public class Session {
         return null;
     }
 
+    public static Activity getCurrentActivity() {
+        return mActivity;
+    }
+
     private String readJSONFile(File f) {
         String total = "";
         try {
