@@ -22,6 +22,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="left"
+        android:layout_below="@+id/number_of_assignments"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:textColor="@color/card_text"
+        android:text="No assignments"
+        android:id="@+id/number_of_assignments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/category_header"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>

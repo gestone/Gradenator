@@ -227,24 +227,27 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
                         String newClassName = className.getText().toString().trim();
                         String newUnitCount = unitCount.getText().toString();
                         if (newClassName.isEmpty()) { // user did not specify a class name
-                            createErrorDialog(getString(R.string.empty_field_title),
-                                    getString(R.string.no_class_name));
+                            Util.createErrorDialog(getString(R.string.empty_field_title),
+                                    getString(R.string.no_class_name), getActivity());
                         } else if (newUnitCount.isEmpty()) { // user did not specify a new unit count
-                            createErrorDialog(getString(R.string.empty_field_title),
-                                    getString(R.string.no_unit_count));
+                            Util.createErrorDialog(getString(R.string.empty_field_title),
+                                    getString(R.string.no_unit_count), getActivity());
                         } else if (!checkFieldsCompleted(adapter)) { // all category fields are not complete
-                            createErrorDialog(getString(R.string.empty_field_title),
-                                    getString(R.string.no_category_field));
+                            Util.createErrorDialog(getString(R.string.empty_field_title),
+                                    getString(R.string.no_category_field),
+                                    getActivity());
                         } else if (!checkWeights(adapter)) { // weights don't equal to 100
-                            createErrorDialog(getString(R.string.no_total_one_hundred_title),
-                                    getString(R.string.no_total_one_hundred));
+                            Util.createErrorDialog(getString(R.string.no_total_one_hundred_title),
+                                    getString(R.string.no_total_one_hundred),
+                                    getActivity());
                         } else if (checkDupCategories(adapter)) { // duplicate categories exist
-                            createErrorDialog(getString(R.string.duplicate_class_title),
-                                    getString(R.string.duplicate_category_msg));
+                            Util.createErrorDialog(getString(R.string.duplicate_class_title),
+                                    getString(R.string.duplicate_category_msg),
+                                    getActivity());
                         } else if (checkDupClasses(newClassName, action)) {
                             // duplicate classes exist
-                            createErrorDialog(getString(R.string.duplicate_class_title),
-                                    getString(R.string.duplicate_class_msg));
+                            Util.createErrorDialog(getString(R.string.duplicate_class_title),
+                                    getString(R.string.duplicate_class_msg), getActivity());
                         } else {
                             if (action == Action.ADD) {
                                 mCurrentTerm.addClass(new Class(newClassName, Integer.parseInt(newUnitCount),
@@ -271,10 +274,6 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
         });
     }
 
-    private void createErrorDialog(String title, String message) {
-        GenericDialog g = GenericDialog.newInstance(title, message);
-        g.show(getFragmentManager(), TAG);
-    }
 
     private void setCardOnClickListeners(Card classView) {
         classView.addPartialOnClickListener(Card.CLICK_LISTENER_HEADER_VIEW, null);

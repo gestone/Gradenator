@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.widget.Toast;
 
+import com.gradenator.Dialogs.GenericDialog;
 import com.gradenator.R;
 
 import java.text.DateFormat;
@@ -15,7 +16,7 @@ import java.util.Random;
 import java.util.regex.Pattern;
 
 /**
- * Created by Justin on 8/24/2014.
+ * Util class to be used throughout the application.
  */
 public class Util {
 
@@ -38,8 +39,12 @@ public class Util {
      */
     public static String createDate(long epochTime) {
         Date theDate = new Date(epochTime);
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-        return df.format(theDate);
+        DateFormat df = new SimpleDateFormat("MM/dd/yy");
+        String date = df.format(theDate);
+        if (date.startsWith("0")) {
+            date = date.substring(1);
+        }
+        return date;
     }
 
     public static int createRandomColor() {
@@ -54,6 +59,11 @@ public class Util {
     public static double roundToNDigits(double value, int n) {
         int roundTo = (int) Math.pow(10, n);
         return (double) Math.round(value * roundTo) / roundTo;
+    }
+
+    public static void createErrorDialog(String title, String msg, Activity a) {
+        GenericDialog g = GenericDialog.newInstance(title, msg);
+        g.show(a.getFragmentManager(), GenericDialog.TAG);
     }
 
 }

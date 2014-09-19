@@ -36,6 +36,10 @@
     <!--View Class Fragment Strings-->
     <string name="class_header">All Classes</string>
 
+    <!--Class Overview Fragment Strings-->
+    <string name="no_assignments">No Assignments</string>
+    <string name="assignments">Assignments</string>
+
     <!--Add, Edit, and Remove Class Fragment Strings-->
     <string name="create_class_header">Create a new class</string>
     <string name="create_class_btn">Create Class</string>
@@ -79,7 +83,7 @@
     <string name="all_assignments">Assignments</string>
     <string name="filter">Filter: </string>
 
-    <!--Create Assignment Strings-->
+    <!--Create, Edit, and Remove Assignment Strings-->
     <string name="create_assignment_header">Create New Assignment</string>
     <string name="edit_assignment_header">Edit Existing Assignment</string>
     <string name="assignment_title_header">Title:</string>
@@ -99,4 +103,12 @@
     <string name="duplicate_title_header">Duplicate Assignment Titles</string>
     <string name="duplicate_title_msg">It appears that the title you have chosen already
         exists. Please edit your title and try again.</string>
+    <string name="card_text_out_of">out of</string>
+    <string name="assignment_success_edit_msg">Assignment successfully edited!</string>
+    <string name="confirm_edit_msg">Confirm Changes</string>
+    <string name="remove_assignment">Remove Assignment</string>
+    <string name="remove_assignment_1">Are you sure you want to remove</string>
+    <string name="remove_assignment_2">from your class list?</string>
+    <string name="remove_assignment_button">Remove Assignment</string>
+    <string name="remove_assignment_success">has been successfully removed!</string>
 </resources>

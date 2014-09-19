@@ -1,8 +1,12 @@
 package com.gradenator.Internal;
 
+import android.app.Activity;
+
+import com.gradenator.R;
 import com.gradenator.Utilities.Util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,18 +20,18 @@ public class Category {
     private List<Assignment> allAssignments;
 
     public Category() {
-        this("", -1, Util.createRandomColor());
+        this("", -1);
     }
 
-    public Category(String title, int weight, int color) {
+    public Category(String title, int weight) {
         this.title = title;
         this.weight = weight;
-        this.color = color;
+        this.color = Util.createRandomColor();
         allAssignments = new ArrayList<Assignment>();
     }
 
-    public void addAssignment(String title, double earned, double total) {
-        allAssignments.add(new Assignment(title, earned, total, System.currentTimeMillis()));
+    public void addAssignment(Assignment a) {
+        allAssignments.add(a);
     }
 
     public Assignment removeAssignment(String title) {
@@ -39,7 +43,9 @@ public class Category {
         return null;
     }
 
+
     public List<Assignment> getAllAssignments() {
+        Collections.sort(allAssignments);
         return allAssignments;
     }
 
@@ -57,6 +63,10 @@ public class Category {
 
     public void setWeight(int weight) {
         this.weight = weight;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 
     public double getWeightedPercentage() {
@@ -102,5 +112,19 @@ public class Category {
 
     public int getBackgroundColor() {
         return color;
+    }
+
+    public String getAssignmentDisplayText(Activity activity) {
+        if (allAssignments.size() == 0) {
+            return activity.getResources().getString(R.string.no_assignments);
+        } else {
+            String msg = allAssignments.size() + " " + activity.getResources().getString(R.string
+                    .assignments);
+            if (allAssignments.size() == 1) {
+                return msg.substring(0, msg.length() - 1); // 'assignments' to 'assignment'
+            } else {
+                return msg;
+            }
+        }
     }
 }

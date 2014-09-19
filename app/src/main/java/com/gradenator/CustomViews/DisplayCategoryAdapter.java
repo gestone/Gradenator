@@ -42,8 +42,9 @@ public class DisplayCategoryAdapter extends BaseAdapter {
         mAllCategories.addAll(categories); // total percentage not an actual category,
                                            // copy references
         int lightBlueColor = activity.getResources().getColor(R.color.card_text);
-        mAllCategories.add(0, new Category(activity.getString(R.string.total_percentage), 100,
-                lightBlueColor)); // total score
+        Category totalScore = new Category(activity.getString(R.string.total_percentage), 100);
+        totalScore.setColor(lightBlueColor);
+        mAllCategories.add(0, totalScore); // total score
         this.mActivity = activity;
     }
 
@@ -80,10 +81,13 @@ public class DisplayCategoryAdapter extends BaseAdapter {
         Category currentCategory = mAllCategories.get(position);
         TextView categoryHeader = (TextView) convertView.findViewById(R.id.category_header);
         TextView categoryWeight = (TextView) convertView.findViewById(R.id.category_weight);
+        TextView numberOfAssignments = (TextView) convertView.findViewById(R.id
+                .number_of_assignments);
         CircleImageView percentageBackground = (CircleImageView) convertView.findViewById(R.id
                 .percentage_background);
         convertView.setTag(currentCategory.getTitle());
         categoryHeader.setText(currentCategory.getTitle());
+        numberOfAssignments.setText(currentCategory.getAssignmentDisplayText(mActivity));
         TextView percentage = (TextView) convertView.findViewById(R.id.percentage);
         setCircleBackground(percentageBackground, currentCategory);
         String weightMessage = currentCategory.getWeight() + mActivity.getResources().getString(R

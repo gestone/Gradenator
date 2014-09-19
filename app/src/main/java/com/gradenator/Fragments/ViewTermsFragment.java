@@ -162,9 +162,7 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
                             String title = mRes.getString(R.string.empty_field_title);
                             String termError = mRes.getString(R.string
                                     .empty_term_error_msg);
-                            GenericDialog error = GenericDialog.newInstance(title,
-                                    termError);
-                            error.show(getFragmentManager(), GenericDialog.TAG);
+                            Util.createErrorDialog(title, termError, getActivity());
                         } else {
                             if (action == Action.ADD) {
                                 setAddTermLogic(term);
@@ -189,11 +187,10 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
         });
     }
 
-    private void setAddTermLogic(String term) {
+    private void setAddTermLogic(String termName) {
         List<Term> currentTerms = Session.getInstance(getActivity()).getAllTerms();
-        currentTerms.add(0, new Term(term, System.currentTimeMillis(),
-                Util.createRandomColor()));
-        Toast.makeText(getActivity(), term + " " + mRes.getString(R.string.term_success_msg), Toast.LENGTH_SHORT).show();
+        currentTerms.add(0, new Term(termName));
+        Toast.makeText(getActivity(), termName + " " + mRes.getString(R.string.term_success_msg), Toast.LENGTH_SHORT).show();
     }
 
     private void setEditTermLogic(String newTermName) {

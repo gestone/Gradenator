@@ -17,11 +17,11 @@ public class Term {
     private String dateCreated;
     private int backgroundColor;
 
-    public Term(String termName, long epochTime, int backgroundColor) {
+    public Term(String termName) {
         this.termName = termName;
-        this.backgroundColor = backgroundColor;
+        this.backgroundColor = Util.createRandomColor();
         allClasses = new ArrayList<Class>();
-        dateCreated = Util.createDate(epochTime);
+        dateCreated = Util.createDate(System.currentTimeMillis());
     }
 
     public List<Class> getAllClasses() {

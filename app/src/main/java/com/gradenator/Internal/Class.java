@@ -100,6 +100,15 @@ public class Class {
         return null;
     }
 
+    public Category findCategory(Assignment a) {
+        for (Category c : allCategories) {
+            if (c.getAllAssignments().contains(a)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
     public List<Category> getAllCategories() {
         return allCategories;
     }
@@ -123,6 +132,16 @@ public class Class {
         Collections.sort(allAssignments); // sorts all assignments by date created,
                                           // most recent first
         return allAssignments;
+    }
+
+    public Assignment findAssignment(String assignmentTitle) {
+        List<Assignment> allAssignments = getAllAssignments();
+        for (Assignment a : allAssignments) {
+            if (a.getTitle().equals(assignmentTitle)) {
+                return a;
+            }
+        }
+        return null;
     }
 
 }

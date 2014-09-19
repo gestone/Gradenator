@@ -39,6 +39,7 @@
     <it.gmariotti.cardslib.library.view.CardListView
         android:layout_marginTop="10dp"
         android:layout_below="@+id/filter"
+        android:id="@+id/all_assignments_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/add_button_header"/>

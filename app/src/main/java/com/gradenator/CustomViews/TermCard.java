@@ -50,9 +50,9 @@ public class TermCard extends Card {
         mUnitCount = (TextView) parent.findViewById(R.id.unit_count);
         mClassCount = (TextView) parent.findViewById(R.id.class_header);
         mTermImage = (CircleImageView) parent.findViewById(R.id.card_image);
-        Rect rect = new Rect(0, 0, 75, 75);
 
         // setup color for image
+        Rect rect = new Rect(0, 0, 75, 75);
         Bitmap image = Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(image);
         Paint paint = new Paint();

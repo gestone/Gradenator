@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:padding="@dimen/card_padding"
+                android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/header"
+        android:src="@color/card_header"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"/>
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_image"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="#4fc41c"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/header"
+        />
+
+    <TextView
+        android:text="9/15/14"
+        android:id="@+id/assignment_date"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:layout_alignLeft="@+id/card_image"
+        android:layout_alignTop="@+id/card_image"
+        android:layout_alignRight="@+id/card_image"
+        android:layout_alignBottom="@+id/card_image"
+        android:layout_width="75dp"
+        android:layout_height="75dp"/>
+
+    <TextView
+        android:textSize="30sp"
+        android:textColor="@color/card_text"
+        android:text="10.0 out of 15.0"
+        android:id="@+id/card_text"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/assignment_percentage"
+        android:layout_alignEnd="@+id/assignment_percentage"/>
+
+    <TextView
+        android:textColor="@color/card_text"
+        android:id="@+id/assignment_percentage"
+        android:text="66.66%"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/card_image"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+</RelativeLayout>

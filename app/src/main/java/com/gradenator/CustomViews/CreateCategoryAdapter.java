@@ -75,6 +75,30 @@ public class CreateCategoryAdapter extends BaseAdapter {
         if (weight != -1) {
             categoryWeight.setText(weight + "");
         }
+        categoryWeight.addTextChangedListener(new TextWatcher() {
+            private boolean flag = false;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String numbers = categoryWeight.getText().toString();
+                if (numbers.length() > 3 && !flag) {
+                    categoryWeight.setText(numbers.substring(0, 3));
+                    categoryWeight.setSelection(3);
+                    flag = true;
+                } else if (flag) {
+                    flag = false;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         return convertView;
     }
 
