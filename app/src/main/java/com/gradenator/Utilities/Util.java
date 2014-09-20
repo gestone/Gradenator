@@ -3,7 +3,10 @@ package com.gradenator.Utilities;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.gradenator.Dialogs.GenericDialog;
@@ -64,6 +67,13 @@ public class Util {
     public static void createErrorDialog(String title, String msg, Activity a) {
         GenericDialog g = GenericDialog.newInstance(title, msg);
         g.show(a.getFragmentManager(), GenericDialog.TAG);
+    }
+
+    public static void setFocus(View v, Activity a) {
+        v.requestFocus();
+        InputMethodManager input = (InputMethodManager) a.getSystemService(Context
+                .INPUT_METHOD_SERVICE);
+        input.showSoftInput(v, InputMethodManager.SHOW_FORCED);
     }
 
 }

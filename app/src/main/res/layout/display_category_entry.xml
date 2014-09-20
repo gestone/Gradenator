@@ -18,7 +18,7 @@
     <TextView
         android:textColor="@color/card_text"
         android:text="20% weight"
-        android:id="@+id/category_weight"
+        android:id="@+id/category_weight_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="left"

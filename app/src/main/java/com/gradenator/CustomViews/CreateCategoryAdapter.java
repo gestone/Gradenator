@@ -1,12 +1,16 @@
 package com.gradenator.CustomViews;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -27,6 +31,8 @@ public class CreateCategoryAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private List<Category> mAllCategories;
     private Activity mActivity;
+    private boolean mAddCategory;
+    private EditText mCategoryTitle;
 
     public CreateCategoryAdapter(Activity a, List<Category> allCategories) {
         mAllCategories = allCategories;
@@ -65,40 +71,25 @@ public class CreateCategoryAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.category_entry, null);
         }
-        final EditText categoryTitle = (EditText) convertView.findViewById(R.id.category_name);
+        mCategoryTitle = (EditText) convertView.findViewById(R.id.category_name);
         final EditText categoryWeight = (EditText) convertView.findViewById(R.id.category_weight);
         String title = mAllCategories.get(position).getTitle();
         int weight = mAllCategories.get(position).getWeight();
         if (!title.isEmpty()) { // if it already exists...
-            categoryTitle.setText(title);
+            mCategoryTitle.setText(title);
         }
         if (weight != -1) {
             categoryWeight.setText(weight + "");
         }
-        categoryWeight.addTextChangedListener(new TextWatcher() {
-            private boolean flag = false;
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String numbers = categoryWeight.getText().toString();
-                if (numbers.length() > 3 && !flag) {
-                    categoryWeight.setText(numbers.substring(0, 3));
-                    categoryWeight.setSelection(3);
-                    flag = true;
-                } else if (flag) {
-                    flag = false;
+        if (mAddCategory && position != 0 && mAllCategories.size() - 1 == position) {
+            mCategoryTitle.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    Util.setFocus(mCategoryTitle, mActivity);
+                    mCategoryTitle.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+            });
+        }
         return convertView;
     }
 
@@ -112,6 +103,10 @@ public class CreateCategoryAdapter extends BaseAdapter {
             final int childIndex = position - firstListItemPosition;
             return listView.getChildAt(childIndex);
         }
+    }
+
+    public void setRemoveOrAdd(boolean addCategory) {
+        mAddCategory = addCategory;
     }
 
 

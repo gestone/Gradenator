@@ -80,14 +80,13 @@ public class DisplayCategoryAdapter extends BaseAdapter {
         setViewOnClickListener(convertView);
         Category currentCategory = mAllCategories.get(position);
         TextView categoryHeader = (TextView) convertView.findViewById(R.id.category_header);
-        TextView categoryWeight = (TextView) convertView.findViewById(R.id.category_weight);
+        TextView categoryWeight = (TextView) convertView.findViewById(R.id.category_weight_tv);
         TextView numberOfAssignments = (TextView) convertView.findViewById(R.id
                 .number_of_assignments);
         CircleImageView percentageBackground = (CircleImageView) convertView.findViewById(R.id
                 .percentage_background);
         convertView.setTag(currentCategory.getTitle());
         categoryHeader.setText(currentCategory.getTitle());
-        numberOfAssignments.setText(currentCategory.getAssignmentDisplayText(mActivity));
         TextView percentage = (TextView) convertView.findViewById(R.id.percentage);
         setCircleBackground(percentageBackground, currentCategory);
         String weightMessage = currentCategory.getWeight() + mActivity.getResources().getString(R
@@ -95,11 +94,28 @@ public class DisplayCategoryAdapter extends BaseAdapter {
         categoryWeight.setText(weightMessage);
         if (!currentCategory.getTitle().equals(mActivity.getString(R.string.total_percentage))) {
             percentage.setText(currentCategory.getPercentageDisplayHeader());
+            numberOfAssignments.setText(currentCategory.getAssignmentDisplayText(mActivity));
         } else {
             Class c = Session.getInstance(mActivity).getCurrentClass();
             percentage.setText(c.getCardDisplayText());
+            numberOfAssignments.setText(totalNumberAssignments());
         }
         return convertView;
+    }
+
+    private String totalNumberAssignments() {
+        int total = 0;
+        for (Category c : mAllCategories) {
+            total += c.getAllAssignments().size();
+        }
+        String assignments = " " + mActivity.getString(R.string.all_assignments);
+        if (total == 0) { // no assignments
+            return mActivity.getString(R.string.no_assignments);
+        } else if (total == 1) { // one assignment
+            return total + assignments.substring(0, assignments.length() - 1);
+        } else { // more than one assignment
+            return total + assignments;
+        }
     }
 
     private void setViewOnClickListener(View v) {

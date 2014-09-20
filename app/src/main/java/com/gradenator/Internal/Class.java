@@ -91,7 +91,7 @@ public class Class {
         }
     }
 
-    public Category findCategory(String category) {
+    public Category getCategory(String category) {
         for (Category c : allCategories) {
             if (c.getTitle().equals(category)) {
                 return c;
@@ -100,7 +100,7 @@ public class Class {
         return null;
     }
 
-    public Category findCategory(Assignment a) {
+    public Category getCategory(Assignment a) {
         for (Category c : allCategories) {
             if (c.getAllAssignments().contains(a)) {
                 return c;

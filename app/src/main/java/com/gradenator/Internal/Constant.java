@@ -15,6 +15,8 @@ public class Constant {
 
     public static final int ALL_ASSIGNMENTS_FRAGMENT = 1;
 
+    public static final int SELECTION_FILTER = 1;
+
     public static final String TITLE = "Title";
 
 }

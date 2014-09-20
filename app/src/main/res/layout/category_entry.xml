@@ -22,6 +22,7 @@
         android:id="@+id/category_weight"
         android:inputType="number"
         android:layout_width="0dp"
+        android:maxLength="3"
         android:gravity="right"
         android:layout_height="wrap_content"/>
 

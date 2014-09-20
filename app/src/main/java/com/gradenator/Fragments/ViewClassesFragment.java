@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -20,7 +22,6 @@ import com.gradenator.Action;
 import com.gradenator.Callbacks.OnEntryChangedListener;
 import com.gradenator.CustomViews.CreateCategoryAdapter;
 import com.gradenator.CustomViews.ClassCard;
-import com.gradenator.Dialogs.GenericDialog;
 import com.gradenator.Internal.*;
 import com.gradenator.Internal.Class;
 import com.gradenator.R;
@@ -131,7 +132,7 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
 
     private void createDialog(Action action) {
         if (action == Action.ADD || action == Action.EDIT) {
-            createAddClassDialog(action);
+            createClassDialog(action);
         } else {
             createRemoveClassDialog();
         }
@@ -164,7 +165,7 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
         builder.create().show();
     }
 
-    private void createAddClassDialog(Action action) {
+    private void createClassDialog(Action action) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View v = inflater.inflate(R.layout.create_class, null, false);
@@ -194,6 +195,7 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                removeBlankCategories(adapter);
             }
         });
         String createClass = "";
@@ -208,9 +210,30 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
 
             }
         });
+
         final AlertDialog d = builder.create();
+        d.setCancelable(false);
+        className.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    d.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    className.setOnFocusChangeListener(null);
+                }
+            }
+        });
         setCreateClassListener(d, className, unitCount, adapter, allCategories, action);
         d.show();
+    }
+
+    private void removeBlankCategories(CreateCategoryAdapter adapter) {
+        List<Category> allCategories = adapter.getCategoryList();
+        for (int i = 0; i < allCategories.size(); i++) {
+            Category c = allCategories.get(i);
+            if (c.getTitle().length() == 0) {
+                allCategories.remove(i);
+            }
+        }
     }
 
     private void setCreateClassListener(final AlertDialog d, final EditText className,
@@ -298,6 +321,7 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
             public void onClick(View v) {
                 updateCategories(allCategories, adapter);
                 adapter.getCategoryList().add(new Category());
+                adapter.setRemoveOrAdd(true);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -307,6 +331,7 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
                 List<Category> categories = adapter.getCategoryList();
                 if (categories.size() > 1) {
                     categories.remove(categories.size() - 1);
+                    adapter.setRemoveOrAdd(false);
                     adapter.notifyDataSetChanged();
                     updateCategories(allCategories, adapter);
                 } else if (categories.size() == 1) {
