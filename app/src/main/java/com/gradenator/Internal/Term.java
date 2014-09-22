@@ -1,8 +1,10 @@
 package com.gradenator.Internal;
 
-import android.graphics.Color;
-
 import com.gradenator.Utilities.Util;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +16,19 @@ public class Term {
 
     private String termName;
     private List<Class> allClasses;
-    private String dateCreated;
+    private long dateCreated;
     private int backgroundColor;
+
+    public Term(JSONObject j) {
+        allClasses = new ArrayList<Class>();
+        setFromJSON(j);
+    }
 
     public Term(String termName) {
         this.termName = termName;
         this.backgroundColor = Util.createRandomColor();
         allClasses = new ArrayList<Class>();
-        dateCreated = Util.createDate(System.currentTimeMillis());
+        dateCreated = System.currentTimeMillis();
     }
 
     public List<Class> getAllClasses() {
@@ -60,7 +67,7 @@ public class Term {
     }
 
     public String getDateCreated() {
-        return dateCreated;
+        return Util.createDate(dateCreated);
     }
 
     public void setTermName(String termName) {
@@ -73,6 +80,39 @@ public class Term {
             total += c.getUnitCount();
         }
         return total;
+    }
+
+    public JSONObject getJSON() {
+        try {
+            JSONObject singleTerm = new JSONObject();
+            JSONArray totalClasses = new JSONArray();
+            singleTerm.put("term_name", termName);
+            singleTerm.put("date_created", dateCreated);
+            singleTerm.put("background_color", backgroundColor);
+            singleTerm.put("all_classes", totalClasses);
+            for (Class c : allClasses) {
+                totalClasses.put(c.getJSON());
+            }
+            return singleTerm;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void setFromJSON(JSONObject j) {
+        try {
+            termName = j.getString("term_name");
+            dateCreated = j.getLong("date_created");
+            backgroundColor = j.getInt("background_color");
+            JSONArray allClasses = j.getJSONArray("all_classes");
+            for (int i = 0; i < allClasses.length(); i++) {
+                Class c = new Class(allClasses.getJSONObject(i));
+                this.allClasses.add(c);
+            }
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
     }
 
 }

@@ -104,7 +104,6 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
         termHeader.setTitle(curClass.getClassName());
         termHeader.setButtonOverflowVisible(true);
         termHeader.setOtherButtonClickListener(null);
-        final OnEntryChangedListener listener = this;
         termHeader.setPopupMenuListener(new CardHeader.OnClickCardHeaderPopupMenuListener() {
             @Override
             public void onMenuItemClick(BaseCard card, MenuItem item) {
@@ -210,7 +209,6 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
 
             }
         });
-
         final AlertDialog d = builder.create();
         d.setCancelable(false);
         className.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -218,7 +216,17 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     d.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    className.setSelection(className.getText().length());
                     className.setOnFocusChangeListener(null);
+                }
+            }
+        });
+        unitCount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    d.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    unitCount.setSelection(unitCount.getText().length());
                 }
             }
         });

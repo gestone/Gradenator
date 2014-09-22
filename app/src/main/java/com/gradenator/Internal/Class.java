@@ -2,6 +2,10 @@ package com.gradenator.Internal;
 
 import com.gradenator.Utilities.Util;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +19,10 @@ public class Class {
     private String className;
     private int color;
     private List<Category> allCategories;
+
+    public Class(JSONObject j) {
+        setFromJSON(j);
+    }
 
     public Class(String className, int unitCount, int color, List<Category> allCategories) {
         this.className = className;
@@ -142,6 +150,40 @@ public class Class {
             }
         }
         return null;
+    }
+
+    public JSONObject getJSON() {
+        try {
+            JSONObject singleClass = new JSONObject();
+            JSONArray totalCategories = new JSONArray();
+            singleClass.put("unit_count", unitCount);
+            singleClass.put("class_name", className);
+            singleClass.put("background_color", color);
+            singleClass.put("all_categories", totalCategories);
+            for (Category c : allCategories) {
+                totalCategories.put(c.getJSON());
+            }
+            return singleClass;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void setFromJSON(JSONObject j) {
+        try {
+            allCategories = new ArrayList<Category>();
+            unitCount = j.getInt("unit_count");
+            className = j.getString("class_name");
+            color = j.getInt("background_color");
+            JSONArray allCategories = j.getJSONArray("all_categories");
+            for (int i = 0; i < allCategories.length(); i++) {
+                Category c = new Category(allCategories.getJSONObject(i));
+                this.allCategories.add(c);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 }

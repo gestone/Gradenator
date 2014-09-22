@@ -42,6 +42,7 @@
 
     <EditText
         android:inputType="number"
+        android:imeOptions="actionDone"
         android:id="@+id/unit_count_edit"
         android:layout_width="wrap_content"
         android:hint="@string/create_class_unit_hint"

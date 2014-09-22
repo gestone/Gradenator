@@ -48,11 +48,8 @@ public class MainActivity extends SlidingFragmentActivity {
     }
 
     private void chooseFragment(){
-        if (Session.getInstance(this).hasNoTerms()) {
-            Util.displayFragment(new IntroFragment(), IntroFragment.TAG, this);
-        } else { // load terms
-
-        }
+        Util.displayFragment(new IntroFragment(), IntroFragment.TAG,
+            this);
     }
 
 
@@ -80,6 +77,12 @@ public class MainActivity extends SlidingFragmentActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Session.getInstance(this).saveTerms();
     }
 
     @Override

@@ -5,6 +5,10 @@ import android.app.Activity;
 import com.gradenator.R;
 import com.gradenator.Utilities.Util;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +25,11 @@ public class Category {
 
     public Category() {
         this("", -1);
+    }
+
+    public Category(JSONObject j) {
+        allAssignments = new ArrayList<Assignment>();
+        setFromJSON(j);
     }
 
     public Category(String title, int weight) {
@@ -125,6 +134,39 @@ public class Category {
             } else {
                 return msg;
             }
+        }
+    }
+
+    public JSONObject getJSON() {
+        try {
+            JSONObject singleCategory = new JSONObject();
+            JSONArray totalAssignments = new JSONArray();
+            singleCategory.put("title", title);
+            singleCategory.put("weight", weight);
+            singleCategory.put("background_color", color);
+            singleCategory.put("all_assignments", totalAssignments);
+            for (Assignment a : allAssignments) {
+                totalAssignments.put(a.getJSON());
+            }
+            return singleCategory;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void setFromJSON(JSONObject j) {
+        try {
+            title = j.getString("title");
+            weight = j.getInt("weight");
+            color = j.getInt("background_color");
+            JSONArray allAssignments = j.getJSONArray("all_assignments");
+            for (int i = 0; i < allAssignments.length(); i++) {
+                Assignment a = new Assignment(allAssignments.getJSONObject(i));
+                this.allAssignments.add(a);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

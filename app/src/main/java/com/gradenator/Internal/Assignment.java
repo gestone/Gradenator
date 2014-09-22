@@ -5,6 +5,9 @@ import android.app.Activity;
 import com.gradenator.R;
 import com.gradenator.Utilities.Util;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Justin on 8/25/2014.
  */
@@ -15,6 +18,10 @@ public class Assignment implements Comparable<Assignment> {
     private String title;
     private long timeCreated;
     private int assignmentColor;
+
+    public Assignment(JSONObject j) {
+        setFromJSON(j);
+    }
 
     public Assignment(String title, double earnedScore, double maxScore) {
         this.title = title;
@@ -87,4 +94,32 @@ public class Assignment implements Comparable<Assignment> {
         double score = (earnedScore / maxScore) * 100;
         return Util.roundToNDigits(score, 2) + "%";
     }
+
+    public JSONObject getJSON() {
+        try {
+            JSONObject singleAssignment = new JSONObject();
+            singleAssignment.put("earned_score", earnedScore);
+            singleAssignment.put("max_score", maxScore);
+            singleAssignment.put("title", title);
+            singleAssignment.put("time_created", timeCreated);
+            singleAssignment.put("assignment_color", assignmentColor);
+            return singleAssignment;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void setFromJSON(JSONObject j) {
+        try {
+            earnedScore = j.getInt("earned_score");
+            maxScore = j.getInt("max_score");
+            title = j.getString("title");
+            timeCreated = j.getLong("time_created");
+            assignmentColor = j.getInt("assignment_color");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -188,6 +191,12 @@ public class AllAssignmentsFragment extends Fragment {
                                     c.addAssignment(newAssignment);
                                     Util.makeToast(getActivity(), getString(R.string.assignment_success_msg));
                                     mAllCards.add(0, createNewCard(newAssignment));
+                                    if (!mFilter.getSelectedItem().equals(getString(R.string
+                                            .select_prompt)) && !mFilter.getSelectedItem()
+                                            .equals(selectedCategory)) {
+                                        mFilter.setSelection(getCategoryTitles().indexOf
+                                                (selectedCategory) + 1);
+                                    }
                                 } else if (action == Action.EDIT) {
                                     Assignment toModify = mClass.findAssignment(mSelectedAssignment);
                                     Category oldCategory = mClass.getCategory(toModify);
@@ -214,6 +223,12 @@ public class AllAssignmentsFragment extends Fragment {
             }
         });
         d.show();
+        if (action == Action.ADD) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context
+                    .INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        }
+        hideKeyboard();
     }
 
     private void createRemoveDialog() {
@@ -380,6 +395,18 @@ public class AllAssignmentsFragment extends Fragment {
                 card.updateCard();
                 card.getCardHeader().setTitle(newTitle);
             }
+        }
+    }
+
+
+    private void hideKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context
+                .INPUT_METHOD_SERVICE);
+
+        // check if no view has focus:
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
 

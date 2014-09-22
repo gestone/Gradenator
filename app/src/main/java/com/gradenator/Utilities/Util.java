@@ -5,6 +5,8 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Color;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -16,6 +18,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 /**
@@ -74,6 +77,20 @@ public class Util {
         InputMethodManager input = (InputMethodManager) a.getSystemService(Context
                 .INPUT_METHOD_SERVICE);
         input.showSoftInput(v, InputMethodManager.SHOW_FORCED);
+    }
+
+    public static String deviceUDID(Context ctx) {
+        final TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
+
+        final String tmDevice, tmSerial, androidId;
+        tmDevice = "" + tm.getDeviceId();
+        tmSerial = "" + tm.getSimSerialNumber();
+        androidId = "" +android.provider.Settings.Secure.getString(ctx.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+
+        UUID deviceUuid = new UUID(androidId.hashCode(), ((long)tmDevice.hashCode() << 32) | tmSerial.hashCode());
+        String deviceId = deviceUuid.toString();
+        Log.d("Device Id", deviceId);
+        return deviceId;
     }
 
 }
