@@ -54,6 +54,7 @@ public class Util {
         if (date.startsWith("0")) {
             date = date.substring(1);
         }
+
         return date;
     }
 
