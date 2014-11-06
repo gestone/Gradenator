@@ -17,6 +17,12 @@ public class Constant {
 
     public static final int SELECTION_FILTER = 1;
 
+    public static final long ONE_MINUTE = 60; // for testing purposes for the graph
+
+    public static final long ONE_WEEK = 604800000;
+
     public static final String TITLE = "Title";
+
+    public static final String ALARM_ON = "Alarm_On";
 
 }

@@ -1,11 +1,14 @@
 package com.gradenator.Fragments;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.gradenator.Action;
+import com.gradenator.Background.GradeUpdateReceiver;
 import com.gradenator.Callbacks.OnEntryChangedListener;
 import com.gradenator.CustomViews.TermCard;
 import com.gradenator.Dialogs.GenericDialog;
@@ -59,7 +63,6 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
     }
 
     private void findAndSetViews(View v) {
-
         mRes = getActivity().getResources();
         mAddButtonLayout = (RelativeLayout) v.findViewById(R.id.add_button_header);
         mAddButton = (Button) v.findViewById(R.id.add_button);
@@ -100,7 +103,7 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
                 builder.setView(termName);
                 builder.setTitle(mRes.getString(R.string.create_term_title));
                 builder.setPositiveButton(mRes.getString(R.string.create_term),
-                        new DialogInterface.OnClickListener() {
+                        new DialogInterface.OnClickListener() { // placeholder to be overriden
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                             }

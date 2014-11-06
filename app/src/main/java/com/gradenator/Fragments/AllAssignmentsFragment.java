@@ -42,7 +42,7 @@ import it.gmariotti.cardslib.library.view.CardListView;
 /**
  * Displays all assignments for a given class.
  */
-public class AllAssignmentsFragment extends Fragment {
+public class  AllAssignmentsFragment extends Fragment {
 
     private String mSelectedAssignment;
 
@@ -70,7 +70,7 @@ public class AllAssignmentsFragment extends Fragment {
     private void findViews(View v) {
         mClass = Session.getInstance(getActivity()).getCurrentClass();
         mHeader = (TextView) v.findViewById(R.id.all_assignments_header);
-        mHeader.setText(mClass.getClassName() + " " + getString(R.string.all_assignments));
+        mHeader.setText(getString(R.string.all_assignments));
         mFilter = (Spinner) v.findViewById(R.id.filter);
         populateSpinner(mFilter);
         mFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -169,6 +169,24 @@ public class AllAssignmentsFragment extends Fragment {
             }
         });
         final AlertDialog d = builder.create();
+        setPositiveButtonListener(d, action);
+        promptEditText(d);
+        d.show();
+    }
+
+    private void promptEditText(final AlertDialog d) {
+        mAssignmentTitleET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    d.getWindow().setSoftInputMode(WindowManager.LayoutParams
+                            .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
+            }
+        });
+    }
+
+    private void setPositiveButtonListener(final AlertDialog d, final Action action) {
         d.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
@@ -222,14 +240,9 @@ public class AllAssignmentsFragment extends Fragment {
                 });
             }
         });
-        d.show();
-        if (action == Action.ADD) {
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context
-                    .INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-        }
-        hideKeyboard();
     }
+
+
 
     private void createRemoveDialog() {
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
@@ -398,16 +411,5 @@ public class AllAssignmentsFragment extends Fragment {
         }
     }
 
-
-    private void hideKeyboard() {
-        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context
-                .INPUT_METHOD_SERVICE);
-
-        // check if no view has focus:
-        View view = getActivity().getCurrentFocus();
-        if (view != null) {
-            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
 
 }

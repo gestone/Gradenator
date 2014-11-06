@@ -1,9 +1,10 @@
 package com.gradenator.Fragments;
 
-import android.app.Fragment;
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.test.ApplicationTestCase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,6 @@ import com.gradenator.CustomViews.ClassFragmentAdapter;
 import com.gradenator.CustomViews.CustomCirclePageIndicator;
 import com.gradenator.Internal.Constant;
 import com.gradenator.R;
-import com.viewpagerindicator.CirclePageIndicator;
 
 /**
  * Displays information about a single class that the user has selected.
@@ -33,7 +33,7 @@ public class ViewSingleClassFragment extends Fragment {
     }
 
     private void findAndSetViews(View v) {
-        mAdapter = new ClassFragmentAdapter(getFragmentManager(), getActivity());
+        mAdapter = new ClassFragmentAdapter(getActivity().getFragmentManager(), getActivity());
         mViewPager = (ViewPager) v.findViewById(R.id.class_pager);
         mViewPager.setAdapter(mAdapter);
         mIndicator = (CustomCirclePageIndicator) v.findViewById(R.id.class_pager_indicator);

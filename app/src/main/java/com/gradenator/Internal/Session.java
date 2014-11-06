@@ -1,6 +1,7 @@
 package com.gradenator.Internal;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.gradenator.Utilities.Util;
 
@@ -23,7 +24,6 @@ public class Session {
 
     private List<Term> mAllTerms;
     private static Session mUserSession;
-    private static Activity mActivity;
     private Term mCurrentTerm;
     private Class mCurrentClass;
 
@@ -37,10 +37,9 @@ public class Session {
         processJSONFile(f);
     }
 
-    public static Session getInstance(Activity a) {
+    public static Session getInstance(Context c) {
         if (mUserSession == null) {
-            mActivity = a;
-            File sessionFile = new File(mActivity.getFilesDir() + "/" + Util.deviceUDID(a));
+            File sessionFile = new File(c.getFilesDir() + "/" + Util.deviceUDID(c));
             if (sessionFile.exists()) {
                 mUserSession = new Session(sessionFile);
             } else {
@@ -83,8 +82,14 @@ public class Session {
         return null;
     }
 
-    public static Activity getCurrentActivity() {
-        return mActivity;
+    public void checkToRecordData() {
+        if (mAllTerms != null) {
+            Term t = mAllTerms.get(0); // most recent term
+            long difference = System.currentTimeMillis() - t.getLastUpdateTime();
+            if (difference > t.getUpdateInterval()) {
+                t.recordClassPercentages();
+            }
+        }
     }
 
     private String readJSONFile(File f) {
@@ -113,7 +118,8 @@ public class Session {
         }
     }
 
-    public void saveTerms() {
+    public void saveTerms(Activity a) {
+            deleteBlankCategories();
         try {
             JSONObject allData = new JSONObject();
             JSONArray allTerm = new JSONArray();
@@ -122,7 +128,7 @@ public class Session {
                 allTerm.put(t.getJSON());
             }
             if (!mAllTerms.isEmpty()) {
-                File session = new File(mActivity.getFilesDir() + "/" + Util.deviceUDID(mActivity));
+                File session = new File(a.getFilesDir() + "/" + Util.deviceUDID(a));
                 PrintStream p = new PrintStream(session);
                 p.println(allData);
                 p.flush();
@@ -135,8 +141,17 @@ public class Session {
         }
     }
 
-    public void deleteAllTerms() {
-        File f = new File(mActivity.getFilesDir() + "/" + Util.deviceUDID(mActivity));
+    private void deleteBlankCategories() {
+        if (mAllTerms != null && !mAllTerms.isEmpty()) {
+            for (Term t : mAllTerms) {
+                t.deleteAllBlankCategories();
+            }
+        }
+    }
+
+
+    public void deleteAllTerms(Activity a) {
+        File f = new File(a.getFilesDir() + "/" + Util.deviceUDID(a));
         f.delete();
     }
 

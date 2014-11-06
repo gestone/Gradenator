@@ -1,15 +1,15 @@
 package com.gradenator.Fragments;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.gradenator.Action;
-import com.gradenator.Callbacks.OnEntryChangedListener;
 import com.gradenator.CustomViews.CreateCategoryAdapter;
 import com.gradenator.CustomViews.ClassCard;
 import com.gradenator.Internal.*;
@@ -39,7 +38,7 @@ import it.gmariotti.cardslib.library.view.CardListView;
 /**
  * Displays the classes for a given term to the user.
  */
-public class ViewClassesFragment extends Fragment implements OnEntryChangedListener {
+public class ViewClassesFragment extends Fragment {
 
     public static final String TAG = ViewClassesFragment.class.getSimpleName();
 
@@ -77,7 +76,6 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
                 createDialog(Action.ADD);
             }
         });
-        final OnEntryChangedListener listener = this;
         initListCardView();
     }
 
@@ -279,10 +277,15 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
                             // duplicate classes exist
                             Util.createErrorDialog(getString(R.string.duplicate_class_title),
                                     getString(R.string.duplicate_class_msg), getActivity());
+                        } else if (newClassName.length() > 10) { // class title name is too long
+                            Util.createErrorDialog(getString(R.string.class_title_too_long_title),
+                                    getString(R.string.class_title_too_long_msg), getActivity());
                         } else {
                             if (action == Action.ADD) {
-                                mCurrentTerm.addClass(new Class(newClassName, Integer.parseInt(newUnitCount),
+                                mCurrentTerm.addClass(new Class(newClassName,
+                                        Integer.parseInt(newUnitCount),
                                         Util.createRandomColor(), adapter.getCategoryList()));
+                                updateNewClassView(action);
                                 String msg = getString(R.string.class_created_msg_1) + " \"" + newClassName +
                                         "\" " + getString(R.string.class_created_msg_2);
                                 Util.makeToast(getActivity(), msg);
@@ -294,9 +297,9 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
                                 cur.setClassName(newClassName);
                                 cur.setUnitCount(Integer.parseInt(newUnitCount));
                                 cur.setAllCategories(adapter.getCategoryList());
-                                adapter.notifyDataSetChanged();
+                                CardArrayAdapter c = (CardArrayAdapter) mAllClasses.getAdapter();
+                                c.notifyDataSetChanged();
                             }
-                            onEntryChanged(action);
                             d.dismiss();
                         }
                     }
@@ -315,7 +318,7 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
                 mSelectedClass = card.getCardHeader().getTitle();
                 Session.getInstance(getActivity()).setCurrentClass(getSelectedClass());
                 Util.displayFragment(new ViewSingleClassFragment(), ViewSingleClassFragment.TAG,
-                        getActivity());
+                        (FragmentActivity) getActivity());
             }
         });
     }
@@ -416,12 +419,8 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
         return false;
     }
 
-    @Override
-    public void onEntryChanged(Action action) {
-        updateNewTermView(action);
-    }
 
-    private void updateNewTermView(Action action) {
+    private void updateNewClassView(Action action) {
         CardArrayAdapter c = (CardArrayAdapter) mAllClasses.getAdapter();
         List<Class> allClasses = mCurrentTerm.getAllClasses();
         if (!allClasses.isEmpty()) {
@@ -437,6 +436,7 @@ public class ViewClassesFragment extends Fragment implements OnEntryChangedListe
             c.notifyDataSetChanged();
         }
     }
+
 
     private ClassCard findSelectedClassCard() {
         List<Class> allClasses = mCurrentTerm.getAllClasses();

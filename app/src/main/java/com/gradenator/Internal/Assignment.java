@@ -81,10 +81,10 @@ public class Assignment implements Comparable<Assignment> {
             msg += earnedScore;
         }
         msg += " " + a.getResources().getString(R.string.card_text_out_of) + " ";
-        if (maxScore % 1 == 0) {
+        if (maxScore % 1 == 0) { // is not a double
             int integerMaxScore = (int) maxScore;
             msg += integerMaxScore;
-        } else {
+        } else { // it's a double
             msg += maxScore;
         }
         return msg;
@@ -92,6 +92,9 @@ public class Assignment implements Comparable<Assignment> {
 
     public String createPercentageText() {
         double score = (earnedScore / maxScore) * 100;
+        if (maxScore == 0) {
+            score = earnedScore * 100;
+        }
         return Util.roundToNDigits(score, 2) + "%";
     }
 

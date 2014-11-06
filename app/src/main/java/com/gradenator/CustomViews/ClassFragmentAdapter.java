@@ -9,6 +9,7 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 import com.gradenator.Fragments.AllAssignmentsFragment;
 import com.gradenator.Fragments.ClassOverviewFragment;
 import com.gradenator.Fragments.IntroFragment;
+import com.gradenator.Fragments.ViewGraphFragment;
 import com.gradenator.Internal.Class;
 import com.gradenator.Internal.Constant;
 import com.gradenator.Internal.Session;
@@ -23,10 +24,12 @@ import java.util.List;
 public class ClassFragmentAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> mAllFragments;
+    private Activity mActivity;
 
     public ClassFragmentAdapter(FragmentManager fm, Activity a) {
         super(fm);
         mAllFragments = new ArrayList<Fragment>();
+        mActivity = a;
         initializeClassFrags();
     }
 
@@ -43,10 +46,11 @@ public class ClassFragmentAdapter extends FragmentStatePagerAdapter {
     private void initializeClassFrags() {
         mAllFragments.add(new ClassOverviewFragment());
         mAllFragments.add(new AllAssignmentsFragment());
+        mAllFragments.add(new ViewGraphFragment());
     }
 
     public void setCirclePagerIndicator(CustomCirclePageIndicator c) {
-        getClassOverViewFrag().getDisplayCategoryAdapter().setCirclePageIndicator(c);
+        getClassOverViewFrag().getDisplayCategoryAdapter(mActivity).setCirclePageIndicator(c);
     }
 
     public ClassOverviewFragment getClassOverViewFrag() {

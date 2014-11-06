@@ -1,15 +1,22 @@
 package com.gradenator;
 
-import android.app.Fragment;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
+import com.gradenator.Background.GradeUpdateReceiver;
 import com.gradenator.Fragments.IntroFragment;
 import com.gradenator.Fragments.MenuFragment;
+import com.gradenator.Fragments.ViewTermsFragment;
+import com.gradenator.Internal.Constant;
 import com.gradenator.Internal.Session;
 import com.gradenator.Utilities.Util;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -18,7 +25,9 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 public class MainActivity extends SlidingFragmentActivity {
 
-    private SlidingMenu slidingMenu;
+    private SlidingMenu mSlidingMenu;
+    private PendingIntent mRecordGradeIntent;
+    private AlarmManager mRecordGrade;
 
 
     @Override
@@ -30,17 +39,36 @@ public class MainActivity extends SlidingFragmentActivity {
         chooseFragment();
         getActionBar().setDisplayHomeAsUpEnabled(true);
         setTitleColor(Color.WHITE);
+        boolean alarmUp = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constant
+                .ALARM_ON, false);
+        if (!alarmUp) { // check if an alarm has already been set
+//            startAlarm();
+        }
+    }
+
+    /**
+     * Used to start an alarm for the updating the grades class.
+     */
+    private void startAlarm() {
+        Intent alarmIntent = new Intent(this, GradeUpdateReceiver.class);
+        mRecordGradeIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+        mRecordGrade = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        int testInterval = 5000;
+        mRecordGrade.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+                testInterval, mRecordGradeIntent);
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(Constant.ALARM_ON,
+                true).commit();
     }
 
     private void setupSlidingMenu() {
-        slidingMenu = getSlidingMenu();
-        slidingMenu.setMode(SlidingMenu.LEFT);
-        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-        slidingMenu.setShadowWidthRes(R.dimen.slidingmenu_shadow_width);
-        slidingMenu.setShadowDrawable(R.drawable.slidingmenu_shadow);
-        slidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-        slidingMenu.setFadeDegree(0.35f);
-        slidingMenu.setMenu(R.layout.sliding_menu);
+        mSlidingMenu = getSlidingMenu();
+        mSlidingMenu.setMode(SlidingMenu.LEFT);
+        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+        mSlidingMenu.setShadowWidthRes(R.dimen.slidingmenu_shadow_width);
+        mSlidingMenu.setShadowDrawable(R.drawable.slidingmenu_shadow);
+        mSlidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        mSlidingMenu.setFadeDegree(0.35f);
+        mSlidingMenu.setMenu(R.layout.sliding_menu);
         getSupportFragmentManager().beginTransaction().replace(R.id.list_layout,
                 new MenuFragment()).commit();
         setSlidingActionBarEnabled(true);
@@ -48,8 +76,12 @@ public class MainActivity extends SlidingFragmentActivity {
     }
 
     private void chooseFragment(){
-        Util.displayFragment(new IntroFragment(), IntroFragment.TAG,
-            this);
+        if (Session.getInstance(this) == null) {
+            Util.displayFragment(new IntroFragment(), IntroFragment.TAG,
+                    this);
+        } else {
+            Util.displayFragment(new ViewTermsFragment(), ViewTermsFragment.TAG, this);
+        }
     }
 
 
@@ -61,15 +93,7 @@ public class MainActivity extends SlidingFragmentActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
@@ -82,15 +106,21 @@ public class MainActivity extends SlidingFragmentActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Session.getInstance(this).saveTerms();
+        Session.getInstance(this).saveTerms(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Session.getInstance(this); // refresh if it is not in memory
     }
 
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() == 1) {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             this.finish();
         } else {
-            getFragmentManager().popBackStack();
+            getSupportFragmentManager().popBackStack();
         }
     }
 

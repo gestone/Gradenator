@@ -27,8 +27,11 @@ public class ClassOverviewFragment extends Fragment {
 
     public ClassOverviewFragment() {
         mClass = Session.getInstance(getActivity()).getCurrentClass();
-        Activity a = Session.getCurrentActivity();
-        mDisplayCategories = new DisplayCategoryAdapter(a, mClass.getAllCategories());
+    }
+
+    @Override
+    public void onAttach(Activity a) {
+        super.onAttach(a);
     }
 
     @Override
@@ -50,7 +53,10 @@ public class ClassOverviewFragment extends Fragment {
         mAllCategories.setAdapter(mDisplayCategories);
     }
 
-    public DisplayCategoryAdapter getDisplayCategoryAdapter() {
+    public DisplayCategoryAdapter getDisplayCategoryAdapter(Activity a) {
+        if (mDisplayCategories == null) { // first time creating
+            mDisplayCategories = new DisplayCategoryAdapter(a, mClass.getAllCategories());
+        }
         return mDisplayCategories;
     }
 }

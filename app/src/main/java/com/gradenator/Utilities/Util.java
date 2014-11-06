@@ -1,10 +1,11 @@
 package com.gradenator.Utilities;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -14,12 +15,12 @@ import android.widget.Toast;
 import com.gradenator.Dialogs.GenericDialog;
 import com.gradenator.R;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 /**
  * Util class to be used throughout the application.
@@ -33,19 +34,22 @@ public class Util {
 
     }
 
-    public static void displayFragment(Fragment f, String tag, Activity a) {
-        FragmentTransaction ft = a.getFragmentManager().beginTransaction().addToBackStack(tag);
+    public static void displayFragment(Fragment f, String tag, FragmentActivity a) {
+        FragmentTransaction ft = a.getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right,
+                        R.anim.slide_in_left, R.anim.exit_right).addToBackStack(tag);
         ft.replace(R.id.container, f).commit();
     }
 
     /**
      * Creates a String representing the current date in MM/dd/yyyy format.
+     *
      * @param epochTime The current epoch time.
-     * @return          A String representing the date in MM/dd/yyyy format.
+     * @return A String representing the date in MM/dd/yyyy format.
      */
     public static String createDate(long epochTime) {
         Date theDate = new Date(epochTime);
-        DateFormat df = new SimpleDateFormat("MM/dd/yy");
+        DateFormat df = new SimpleDateFormat("MM/dd");
         String date = df.format(theDate);
         if (date.startsWith("0")) {
             date = date.substring(1);
@@ -54,12 +58,15 @@ public class Util {
     }
 
     public static int createRandomColor() {
-        Random r = new Random();
-        return Color.argb(255, r.nextInt(256), r.nextInt(256), r.nextInt(256));
+        Random random = new Random();
+        int red = random.nextInt(256);
+        int green = random.nextInt(256);
+        int blue = random.nextInt(256);
+        return Color.rgb(red, green, blue);
     }
 
-    public static void makeToast(Activity a, String text) {
-        Toast.makeText(a, text, Toast.LENGTH_SHORT).show();
+    public static void makeToast(Context c, String text) {
+        Toast.makeText(c, text, Toast.LENGTH_SHORT).show();
     }
 
     public static double roundToNDigits(double value, int n) {
@@ -85,12 +92,24 @@ public class Util {
         final String tmDevice, tmSerial, androidId;
         tmDevice = "" + tm.getDeviceId();
         tmSerial = "" + tm.getSimSerialNumber();
-        androidId = "" +android.provider.Settings.Secure.getString(ctx.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+        androidId = "" + android.provider.Settings.Secure.getString(ctx.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
 
-        UUID deviceUuid = new UUID(androidId.hashCode(), ((long)tmDevice.hashCode() << 32) | tmSerial.hashCode());
+        UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
         String deviceId = deviceUuid.toString();
         Log.d("Device Id", deviceId);
         return deviceId;
+    }
+
+    public static void hideSoftKeyboard(Activity activity, View v) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+    public static void deleteAllInternalFiles(Activity a) {
+        File[] files = a.getFilesDir().listFiles();
+        for (File f : files) {
+            f.delete();
+        }
     }
 
 }

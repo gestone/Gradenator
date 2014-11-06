@@ -19,12 +19,20 @@ public class Class {
     private String className;
     private int color;
     private List<Category> allCategories;
+    private List<DataPoint> allDataPoints;
+
+    public Class() {
+        allCategories = new ArrayList<Category>();
+        allDataPoints = new ArrayList<DataPoint>();
+    }
 
     public Class(JSONObject j) {
+        this();
         setFromJSON(j);
     }
 
     public Class(String className, int unitCount, int color, List<Category> allCategories) {
+        this();
         this.className = className;
         this.unitCount = unitCount;
         this.color = color;
@@ -121,6 +129,10 @@ public class Class {
         return allCategories;
     }
 
+    public List<DataPoint> getDataPoints() {
+        return allDataPoints;
+    }
+
     public void setAllCategories(List<Category> l) {
         allCategories = l;
     }
@@ -152,16 +164,29 @@ public class Class {
         return null;
     }
 
+    public void recordData() {
+        DataPoint d = new DataPoint(getCurrentPercentage(), System.currentTimeMillis());
+        allDataPoints.add(d);
+    }
+
     public JSONObject getJSON() {
         try {
             JSONObject singleClass = new JSONObject();
             JSONArray totalCategories = new JSONArray();
+            JSONArray totalDataPoints = new JSONArray();
             singleClass.put("unit_count", unitCount);
             singleClass.put("class_name", className);
             singleClass.put("background_color", color);
             singleClass.put("all_categories", totalCategories);
+            singleClass.put("all_data_points", totalDataPoints);
             for (Category c : allCategories) {
                 totalCategories.put(c.getJSON());
+            }
+            for (DataPoint d : allDataPoints) {
+                JSONObject dataPoint = new JSONObject();
+                dataPoint.put("percentage", d.getPercentage());
+                dataPoint.put("time_recorded", d.getTimeRecorded());
+                totalDataPoints.put(dataPoint);
             }
             return singleClass;
         } catch (JSONException e) {
@@ -172,14 +197,20 @@ public class Class {
 
     private void setFromJSON(JSONObject j) {
         try {
-            allCategories = new ArrayList<Category>();
             unitCount = j.getInt("unit_count");
             className = j.getString("class_name");
             color = j.getInt("background_color");
             JSONArray allCategories = j.getJSONArray("all_categories");
+            JSONArray allDataPoints = j.getJSONArray("all_data_points");
             for (int i = 0; i < allCategories.length(); i++) {
                 Category c = new Category(allCategories.getJSONObject(i));
                 this.allCategories.add(c);
+            }
+            for (int k = 0; k < allDataPoints.length(); k++) {
+                JSONObject dataPoint = allDataPoints.getJSONObject(k);
+                DataPoint d = new DataPoint(dataPoint.getDouble("percentage"),
+                        dataPoint.getLong("time_recorded"));
+                this.allDataPoints.add(d);
             }
         } catch (JSONException e) {
             e.printStackTrace();
