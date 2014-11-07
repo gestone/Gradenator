@@ -7,6 +7,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v13.app.FragmentStatePagerAdapter;
 
 import com.gradenator.Fragments.AllAssignmentsFragment;
+import com.gradenator.Fragments.CalculateMinGradeFragment;
 import com.gradenator.Fragments.ClassOverviewFragment;
 import com.gradenator.Fragments.IntroFragment;
 import com.gradenator.Fragments.ViewGraphFragment;
@@ -47,6 +48,7 @@ public class ClassFragmentAdapter extends FragmentStatePagerAdapter {
         mAllFragments.add(new ClassOverviewFragment());
         mAllFragments.add(new AllAssignmentsFragment());
         mAllFragments.add(new ViewGraphFragment());
+        mAllFragments.add(new CalculateMinGradeFragment());
     }
 
     public void setCirclePagerIndicator(CustomCirclePageIndicator c) {

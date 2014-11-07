@@ -78,7 +78,7 @@ public class Class {
         double rawPercentage = 0;
         int totalWeight = 0;
         for (Category c : allCategories) {
-            if (c.getWeightedPercentage() != -1.0) {
+            if (c.getWeightedPercentage() != Constant.NO_ASSIGNMENTS) {
                 rawPercentage += c.getWeightedPercentage();
                 totalWeight += c.getWeight();
             }

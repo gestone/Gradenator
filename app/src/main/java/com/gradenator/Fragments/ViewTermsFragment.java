@@ -17,13 +17,16 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gradenator.Action;
 import com.gradenator.Background.GradeUpdateReceiver;
 import com.gradenator.Callbacks.OnEntryChangedListener;
+import com.gradenator.CustomViews.CustomCardHeader;
 import com.gradenator.CustomViews.TermCard;
 import com.gradenator.Dialogs.GenericDialog;
 import com.gradenator.Internal.Session;
@@ -49,6 +52,8 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
 
     private RelativeLayout mAddButtonLayout;
     private Button mAddButton;
+    private ImageView mImage;
+    private TextView mMessage;
     private CardListView mAllTerms;
     private List<Card> mAllCards;
     private String mSelectedTerm;
@@ -66,6 +71,8 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
         mRes = getActivity().getResources();
         mAddButtonLayout = (RelativeLayout) v.findViewById(R.id.add_button_header);
         mAddButton = (Button) v.findViewById(R.id.add_button);
+        mImage = (ImageView) v.findViewById(R.id.info_image);
+        mMessage = (TextView) v.findViewById(R.id.no_terms_msg);
         final OnEntryChangedListener listener = this;
         mAddButtonLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +87,15 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
             }
         });
         initListCardView(v);
+        hideOrShowNoTermsMsg();
+    }
+
+    private void hideOrShowNoTermsMsg() {
+        if (Session.getInstance(getActivity()).hasTerms()) {
+            Util.hideViews(mImage, mMessage);
+        } else {
+            Util.showViews(mImage, mMessage);
+        }
     }
 
     /**
@@ -140,6 +156,7 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         removeCard();
+                        hideOrShowNoTermsMsg();
                         Toast.makeText(getActivity(), mSelectedTerm + " " + mRes.getString(R.string
                                 .successfully_deleted), Toast.LENGTH_SHORT).show();
                         mSelectedTerm = "";
@@ -166,6 +183,10 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
                             String termError = mRes.getString(R.string
                                     .empty_term_error_msg);
                             Util.createErrorDialog(title, termError, getActivity());
+                        } else if (isDuplicateTerm(term)) {
+                            String title = getString(R.string.dup_term_title);
+                            String termError = getString(R.string.dup_term_msg);
+                            Util.createErrorDialog(title, termError, getActivity());
                         } else {
                             if (action == Action.ADD) {
                                 setAddTermLogic(term);
@@ -173,6 +194,7 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
                                 setEditTermLogic(term);
                             }
                             listener.onEntryChanged(action);
+                            hideOrShowNoTermsMsg();
                             d.dismiss();
                         }
                     }
@@ -189,6 +211,23 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
             }
         });
     }
+
+
+    /**
+     * Checks if a term with the same name already exists, if so, returns true otherwise, false.
+     * @param termTitle
+     * @return
+     */
+    private boolean isDuplicateTerm(String termTitle) {
+        List<Term> allTerms = Session.getInstance(getActivity()).getAllTerms();
+        for (Term t : allTerms) {
+            if (t.getTermName().equals(termTitle)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private void setAddTermLogic(String termName) {
         List<Term> currentTerms = Session.getInstance(getActivity()).getAllTerms();
@@ -240,10 +279,6 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
         mAllTerms.setAdapter(c);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
 
     private void updateNewTermView(Action action) {
         CardArrayAdapter c = (CardArrayAdapter) mAllTerms.getAdapter();
@@ -279,7 +314,7 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
 
     private Card createNewCard(Term t) {
         Card termView = new TermCard(t, getActivity(), R.layout.custom_term_card);
-        CardHeader termHeader = createCardHeader(t);
+        CustomCardHeader termHeader = createCardHeader(t);
         termView.addCardHeader(termHeader);
         setCardOnClickListeners(termView);
         return termView;
@@ -299,9 +334,9 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
     }
 
 
-    private CardHeader createCardHeader(Term t) {
-        CardHeader termHeader = new CardHeader(getActivity());
-        termHeader.setTitle(t.getTermName());
+    private CustomCardHeader createCardHeader(Term t) {
+        CustomCardHeader termHeader = new CustomCardHeader(getActivity(), R.layout.card_header, t.getTermName());
+//        termHeader.setTitle(t.getTermName());
         termHeader.setButtonOverflowVisible(true);
         termHeader.setOtherButtonClickListener(null);
         final OnEntryChangedListener listener = this;

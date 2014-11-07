@@ -49,8 +49,8 @@ public class Session {
         return mUserSession;
     }
 
-    public boolean hasNoTerms() {
-        return mAllTerms.isEmpty();
+    public boolean hasTerms() {
+        return !mAllTerms.isEmpty();
     }
 
     public List<Term> getAllTerms() {

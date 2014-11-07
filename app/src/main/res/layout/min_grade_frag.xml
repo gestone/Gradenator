@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:background="@color/blue_dark"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_above="@+id/which_category_msg"/>
+
+    <TextView
+        android:layout_alignParentTop="true"
+        android:text="@string/min_grade_header"
+        android:id="@+id/min_grade_header"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="50dp"/>
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:textSize="16sp"
+        android:id="@+id/which_category_msg"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/min_grade_header"
+        android:text="@string/which_category_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Spinner
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/which_category_msg"
+        android:id="@+id/choose_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/which_category_msg"
+        android:layout_alignStart="@+id/which_category_msg"
+        android:layout_alignRight="@+id/which_category_msg"
+        android:layout_alignEnd="@+id/which_category_msg"/>
+
+    <TextView
+        android:layout_below="@+id/choose_category"
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"
+        android:id="@+id/percentage_maintain_msg"
+        android:text="@string/percentage_maintain_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_alignLeft="@+id/choose_category"
+        android:layout_alignStart="@+id/choose_category"
+        android:layout_alignBottom="@+id/percentage_maintain"/>
+
+    <EditText
+        android:gravity="right"
+        android:id="@+id/percentage_maintain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:layout_marginTop="20dp"
+        android:hint="@string/percentage_hint"
+        android:layout_below="@+id/choose_category"
+        android:layout_alignRight="@+id/choose_category"
+        android:layout_alignEnd="@+id/choose_category"
+        android:layout_toRightOf="@+id/maximum_points_msg"/>
+
+    <TextView
+        android:id="@+id/maximum_points_msg"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:text="@string/maximum_points_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/percentage_maintain_msg"
+        android:layout_alignLeft="@+id/percentage_maintain_msg"
+        android:layout_alignStart="@+id/percentage_maintain_msg"
+        android:layout_marginTop="34dp"/>
+
+    <EditText
+        android:inputType="numberDecimal"
+        android:id="@+id/maximum_points"
+        android:gravity="right"
+        android:hint="@string/maximum_points_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/maximum_points_msg"
+        android:layout_alignLeft="@+id/percentage_maintain"
+        android:layout_alignStart="@+id/percentage_maintain"
+        android:layout_alignRight="@+id/percentage_maintain"
+        android:layout_alignEnd="@+id/percentage_maintain"/>
+
+    <Button
+        android:background="@color/blue_dark"
+        android:textColor="@color/white"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/calculate"
+        android:text="@string/calculate"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:textSize="25sp"
+        android:gravity="center"
+        android:id="@+id/calculated_score_result"
+        android:text="You need 45.2/50 points to maintain your grade."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_above="@+id/calculate"
+        android:layout_centerHorizontal="true"/>
+
+
+
+
+</RelativeLayout>

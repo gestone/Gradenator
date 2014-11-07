@@ -51,6 +51,24 @@
 
     </RelativeLayout>
 
+    <ImageView
+        android:alpha=".25"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_action"
+        android:layout_width="60dp"
+        android:id="@+id/info_image"
+        android:layout_height="60dp"/>
+
+    <TextView
+        android:layout_below="@+id/info_image"
+        android:alpha=".35"
+        android:textSize="16sp"
+        android:id="@+id/no_terms_msg"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:text="@string/no_classes_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 
 

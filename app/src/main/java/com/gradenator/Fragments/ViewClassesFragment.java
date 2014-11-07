@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.gradenator.Action;
 import com.gradenator.CustomViews.CreateCategoryAdapter;
 import com.gradenator.CustomViews.ClassCard;
+import com.gradenator.CustomViews.CustomCardHeader;
 import com.gradenator.Internal.*;
 import com.gradenator.Internal.Class;
 import com.gradenator.R;
@@ -91,15 +92,15 @@ public class ViewClassesFragment extends Fragment {
 
     private Card createNewCard(Class curClass) {
         Card classView = new ClassCard(curClass, getActivity(), R.layout.custom_class_card);
-        CardHeader classHeader = createCardHeader(curClass);
+        CustomCardHeader classHeader = createCardHeader(curClass);
         classView.addCardHeader(classHeader);
         setCardOnClickListeners(classView);
         return classView;
     }
 
-    private CardHeader createCardHeader(Class curClass) {
-        CardHeader termHeader = new CardHeader(getActivity());
-        termHeader.setTitle(curClass.getClassName());
+    private CustomCardHeader createCardHeader(Class curClass) {
+        CustomCardHeader termHeader = new CustomCardHeader(getActivity(), R.layout.card_header,
+                curClass.getClassName());
         termHeader.setButtonOverflowVisible(true);
         termHeader.setOtherButtonClickListener(null);
         termHeader.setPopupMenuListener(new CardHeader.OnClickCardHeaderPopupMenuListener() {
@@ -442,7 +443,8 @@ public class ViewClassesFragment extends Fragment {
         List<Class> allClasses = mCurrentTerm.getAllClasses();
         for (int i = 0; i < allClasses.size(); i++) {
             CardHeader h = mAllCards.get(i).getCardHeader();
-            if (h.getTitle().equals(mSelectedClass)) {
+            CustomCardHeader custom = (CustomCardHeader) h;
+            if (custom.getTitle().equals(mSelectedClass)) {
                 return (ClassCard) mAllCards.get(i);
             }
         }

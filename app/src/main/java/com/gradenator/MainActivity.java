@@ -1,23 +1,32 @@
 package com.gradenator;
 
+import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.TypefaceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 
 
 import com.gradenator.Background.GradeUpdateReceiver;
+import com.gradenator.CustomViews.CustomTypefaceSpan;
 import com.gradenator.Fragments.IntroFragment;
 import com.gradenator.Fragments.MenuFragment;
 import com.gradenator.Fragments.ViewTermsFragment;
 import com.gradenator.Internal.Constant;
 import com.gradenator.Internal.Session;
+import com.gradenator.Utilities.TypefaceUtil;
 import com.gradenator.Utilities.Util;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -35,16 +44,28 @@ public class MainActivity extends SlidingFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setBehindContentView(R.layout.intro_frag);
+        setupActionBar();
         setupSlidingMenu();
         chooseFragment();
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitleColor(Color.WHITE);
+        TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "quicksandregular.ttf");
         boolean alarmUp = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constant
                 .ALARM_ON, false);
         if (!alarmUp) { // check if an alarm has already been set
 //            startAlarm();
         }
     }
+
+    private void setupActionBar() {
+        SpannableStringBuilder newTitle = new SpannableStringBuilder(getString(R.string.app_name));
+        Typeface customFontTypeface = Typeface.createFromAsset(this.getAssets(),
+                "quicksandregular.ttf");
+        newTitle.setSpan(new CustomTypefaceSpan("", customFontTypeface), 0, newTitle.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setTitle(newTitle);
+        getActionBar().show();
+    }
+
 
     /**
      * Used to start an alarm for the updating the grades class.
@@ -76,7 +97,7 @@ public class MainActivity extends SlidingFragmentActivity {
     }
 
     private void chooseFragment(){
-        if (Session.getInstance(this) == null) {
+        if (!Session.getInstance(this).hasTerms()) {
             Util.displayFragment(new IntroFragment(), IntroFragment.TAG,
                     this);
         } else {

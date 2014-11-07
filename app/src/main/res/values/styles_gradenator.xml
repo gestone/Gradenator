@@ -20,6 +20,7 @@
 <resources>
 
     <style name="Theme.Gradenator" parent="@android:style/Theme.Holo.Light">
+        <item name="android:typeface">serif</item>
         <item name="android:actionBarItemBackground">@drawable/selectable_background_gradenator</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Gradenator</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Gradenator</item>
@@ -29,7 +30,7 @@
         <item name="android:actionModeBackground">@drawable/cab_background_top_gradenator</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_gradenator</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Gradenator</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_drawer</item>
+        <item name="android:homeAsUpIndicator"> @drawable/ic_drawer</item>
         
     </style>
 

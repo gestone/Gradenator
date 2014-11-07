@@ -25,6 +25,10 @@
     <string name="confirm_msg_2">from your term list?</string>
     <string name="successfully_deleted">has been successfully deleted!</string>
     <string name="empty_term_error_msg">Please specify a term name.</string>
+    <string name="dup_term_title">Duplicate term</string>
+    <string name="dup_term_msg">There exists a term with the same name. Please rename this term </string>
+    <string name="no_terms_msg">There are no terms on record.\nPress the add button below
+        to make a new term!</string>
 
     <!--Term Card Strings-->
     <string name="classes_single">class</string>
@@ -80,6 +84,8 @@
     <string name="remove_class_title">Remove Class</string>
     <string name="remove_class_msg_1">Are you sure you want to remove</string>
     <string name="remove_class_msg_2">from your class list?</string>
+    <string name="no_classes_msg">You have no classes for this term.\nPress the add button below
+    to record a new class!</string>
 
     <!--ViewSingleClass Fragment Strings-->
     <string name="total_percentage">Total Percentage</string>
@@ -123,4 +129,17 @@
     <string name="grade_update_title">Grades Updated</string>
     <string name="grade_update_text">Your grades have been recorded!</string>
 
+    <!--Min Grade Calculations-->
+    <string name="min_grade_header">Hypothetical Grade Calculator</string>
+    <string name="which_category_msg">Which category is this assignment going in?</string>
+    <string name="percentage_maintain_msg">% Goal:</string>
+    <string name="percentage_hint">95.3</string>
+    <string name="maximum_points_msg">Max Points:</string>
+    <string name="maximum_points_hint">50</string>
+    <string name="calculate">Calculate!</string>
+    <string name="min_grade_msg_part_1">You need</string>
+    <string name="min_grade_msg_part_2">points to hit your goal %.</string>
+    <string name="empty_fields_msg_min_grade">Please enter the overall % you would like to
+        obtain/maintain and the maximum amount of points this future assignment will be
+        worth.</string>
 </resources>

@@ -59,11 +59,8 @@ public class Util {
     }
 
     public static int createRandomColor() {
-        Random random = new Random();
-        int red = random.nextInt(256);
-        int green = random.nextInt(256);
-        int blue = random.nextInt(256);
-        return Color.rgb(red, green, blue);
+        Random r = new Random();
+        return Color.rgb(r.nextInt(256), r.nextInt(256), r.nextInt(256));
     }
 
     public static void makeToast(Context c, String text) {
@@ -110,6 +107,18 @@ public class Util {
         File[] files = a.getFilesDir().listFiles();
         for (File f : files) {
             f.delete();
+        }
+    }
+
+    public static void hideViews(View... v) {
+        for (View view : v) {
+            view.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public static void showViews(View... v) {
+        for (View view : v) {
+            view.setVisibility(View.VISIBLE);
         }
     }
 

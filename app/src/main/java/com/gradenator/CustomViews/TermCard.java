@@ -22,6 +22,7 @@ import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardHeader;
 
 /**
  * Custom card view that allows for the viewing of terms.
@@ -68,6 +69,8 @@ public class TermCard extends Card {
         String termName = mCurrentTerm.getTermName();
         mTermImageText.setText(termName.substring(0, 1)); // first letter for text
     }
+
+
 
     private String constructClassHeader() {
         Resources r = mActivity.getResources();
