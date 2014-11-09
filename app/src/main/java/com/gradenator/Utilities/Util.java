@@ -13,6 +13,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.gradenator.Dialogs.GenericDialog;
+import com.gradenator.Fragments.ViewClassesFragment;
+import com.gradenator.Fragments.ViewSingleClassFragment;
+import com.gradenator.Internal.Constant;
 import com.gradenator.R;
 
 import java.io.File;
@@ -36,8 +39,11 @@ public class Util {
 
     public static void displayFragment(Fragment f, String tag, FragmentActivity a) {
         FragmentTransaction ft = a.getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right,
-                        R.anim.slide_in_left, R.anim.exit_right).addToBackStack(tag);
+                .addToBackStack(tag);
+//        if (!(f instanceof ViewSingleClassFragment)) {
+            ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right,
+                    R.anim.slide_in_left, R.anim.exit_right);
+//        }
         ft.replace(R.id.container, f).commit();
     }
 
@@ -60,7 +66,10 @@ public class Util {
 
     public static int createRandomColor() {
         Random r = new Random();
-        return Color.rgb(r.nextInt(256), r.nextInt(256), r.nextInt(256));
+        String color = Constant.DEFAULT_COLOR_SCHEME[r.nextInt(Constant.DEFAULT_COLOR_SCHEME
+                .length)];
+        int colorIntRepresentation = Color.parseColor(color);
+        return colorIntRepresentation;
     }
 
     public static void makeToast(Context c, String text) {
@@ -98,10 +107,16 @@ public class Util {
         return deviceId;
     }
 
-    public static void hideSoftKeyboard(Activity activity, View v) {
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    /**
+     * Hides the soft keyboard
+     */
+    public static void hideSoftKeyboard(Activity a) {
+        if(a.getCurrentFocus()!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) a.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(a.getCurrentFocus().getWindowToken(), 0);
+        }
     }
+
 
     public static void deleteAllInternalFiles(Activity a) {
         File[] files = a.getFilesDir().listFiles();

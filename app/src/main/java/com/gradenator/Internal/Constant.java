@@ -15,6 +15,8 @@ public class Constant {
 
     public static final int ALL_ASSIGNMENTS_FRAGMENT = 1;
 
+    public static final int GRAPH_FRAGMENT = 2;
+
     public static final int SELECTION_FILTER = 1;
 
     public static final long ONE_MINUTE = 60; // for testing purposes for the graph
@@ -25,5 +27,7 @@ public class Constant {
 
     public static final String ALARM_ON = "Alarm_On";
 
+    public static final String[] DEFAULT_COLOR_SCHEME = new String[]{"#FF7A00", "#ACE600",
+            "#E6AC00", "#FF9900"};
 
 }

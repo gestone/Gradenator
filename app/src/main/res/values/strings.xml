@@ -3,6 +3,8 @@
 
     <string name="app_name">Gradenator</string>
     <string name="grade_service_update_name">Grade Update</string>
+    <string name="crash_toast_text">Gradenator has crashed. An email has been sent to the
+        developer.</string>
 
     <!--Intro Fragment Strings-->
     <string name="intro_header">Welcome to Gradenator!</string>
@@ -88,7 +90,7 @@
     to record a new class!</string>
 
     <!--ViewSingleClass Fragment Strings-->
-    <string name="total_percentage">Total Percentage</string>
+    <string name="total_percentage">Total %</string>
     <string name="weight_percentage">% weight</string>  <!--Used for constructing display header-->
     <string name="all_assignments">Assignments</string>
     <string name="filter">Filter: </string>
@@ -113,7 +115,13 @@
     <string name="duplicate_title_header">Duplicate Assignment Titles</string>
     <string name="duplicate_title_msg">It appears that the title you have chosen already
         exists. Please edit your title and try again.</string>
-    <string name="card_text_out_of">out of</string>
+    <string name="zero_out_of_zero_title">Undefined Score</string>
+    <string name="zero_out_of_zero_msg">You cannot have 0 out of 0 as a score for an
+        assignment. Please change one of the fields and try again.</string>
+    <string name="too_many_digits">Too many digits</string>
+    <string name="too_many_digits_msg">There are too many digits for your earned score or
+        max score. Please modify your entries and try again.</string>
+    <string name="card_text_out_of">/</string>
     <string name="assignment_success_edit_msg">Assignment successfully edited!</string>
     <string name="confirm_edit_msg">Confirm Changes</string>
     <string name="remove_assignment">Remove Assignment</string>

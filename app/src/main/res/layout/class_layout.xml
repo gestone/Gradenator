@@ -11,12 +11,14 @@
         android:layout_height="match_parent"/>
 
     <com.gradenator.CustomViews.CustomCirclePageIndicator
-        android:layout_alignParentBottom="true"
         android:id="@+id/class_pager_indicator"
-        android:layout_width="match_parent"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:layout_height="18dp"/>
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
+        android:layout_marginBottom="10dp"/>
+
 
 
 </RelativeLayout>

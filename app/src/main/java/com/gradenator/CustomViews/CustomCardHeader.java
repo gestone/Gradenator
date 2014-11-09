@@ -22,8 +22,8 @@ public class CustomCardHeader extends CardHeader {
     private TextView mHeader;
 
 
-    public CustomCardHeader(Context context, int innerLayout, String title) {
-        super(context, innerLayout);
+    public CustomCardHeader(Context context, String title) {
+        super(context, R.layout.card_header);
         mTitle = title;
     }
 

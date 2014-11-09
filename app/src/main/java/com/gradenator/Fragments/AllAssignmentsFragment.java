@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.gradenator.Action;
 import com.gradenator.CustomViews.AssignmentCard;
+import com.gradenator.CustomViews.CustomCardHeader;
 import com.gradenator.Internal.Assignment;
 import com.gradenator.Internal.Category;
 import com.gradenator.Internal.Class;
@@ -198,7 +199,7 @@ public class  AllAssignmentsFragment extends Fragment {
                         String earnedPoints = mEarnedPointsET.getText().toString();
                         String maxPoints = mMaxPointsET.getText().toString();
                         String selectedCategory = mAssignmentCategory.getSelectedItem().toString();
-                        if (fieldsAreValid(assignmentTitle)) {
+                        if (fieldsAreValid(assignmentTitle, earnedPoints, maxPoints)) {
                             try {
                                 Category c = mClass.getCategory(selectedCategory);
                                 double parsedEarnedPoints = Double.parseDouble(earnedPoints);
@@ -315,7 +316,7 @@ public class  AllAssignmentsFragment extends Fragment {
      * @return A boolean representing whether or not all of the fields are in a
      * valid format.
      */
-    private boolean fieldsAreValid(String assignmentTitle) {
+    private boolean fieldsAreValid(String assignmentTitle, String earnedPoints, String maxPoints) {
         if (areFieldsEmpty()) {
             Util.createErrorDialog(getString(R.string.empty_field_title),
                     getString(R.string.empty_field_error_msg), getActivity());
@@ -324,9 +325,18 @@ public class  AllAssignmentsFragment extends Fragment {
             Util.createErrorDialog(getString(R.string.duplicate_title_header),
                     getString(R.string.duplicate_title_msg), getActivity());
             return false;
+        } else if (earnedPoints.equals("0") && maxPoints.equals("0")) {
+            Util.createErrorDialog(getString(R.string.zero_out_of_zero_title),
+                    getString(R.string.zero_out_of_zero_msg), getActivity());
+            return false;
+        } else if (earnedPoints.length() > 4 || maxPoints.length() > 4) {
+            Util.createErrorDialog(getString(R.string.too_many_digits),
+                    getString(R.string.too_many_digits_msg), getActivity());
+            return false;
         }
         return true;
     }
+
 
     /**
      * Checks if the fields are empty.
@@ -366,17 +376,17 @@ public class  AllAssignmentsFragment extends Fragment {
 
     private AssignmentCard createNewCard(Assignment a) {
         AssignmentCard assignmentView = new AssignmentCard(a, getActivity(), R.layout.custom_assignment_card);
-        CardHeader classHeader = createCardHeader(a);
+        CustomCardHeader classHeader = createCardHeader(a);
         assignmentView.addCardHeader(classHeader);
         return assignmentView;
     }
 
-    private CardHeader createCardHeader(Assignment a) {
-        CardHeader termHeader = new CardHeader(getActivity());
-        termHeader.setTitle(a.getTitle());
-        termHeader.setButtonOverflowVisible(true);
-        termHeader.setOtherButtonClickListener(null);
-        termHeader.setPopupMenuListener(new CardHeader.OnClickCardHeaderPopupMenuListener() {
+    private CustomCardHeader createCardHeader(Assignment a) {
+        CustomCardHeader assignmentHeader = new CustomCardHeader(getActivity(),
+              a.getTitle());
+        assignmentHeader.setButtonOverflowVisible(true);
+        assignmentHeader.setOtherButtonClickListener(null);
+        assignmentHeader.setPopupMenuListener(new CardHeader.OnClickCardHeaderPopupMenuListener() {
             @Override
             public void onMenuItemClick(BaseCard card, MenuItem item) {
                 Card c = (Card) card;
@@ -389,7 +399,7 @@ public class  AllAssignmentsFragment extends Fragment {
             }
         });
 
-        termHeader.setPopupMenuPrepareListener(new CardHeader.OnPrepareCardHeaderPopupMenuListener() {
+        assignmentHeader.setPopupMenuPrepareListener(new CardHeader.OnPrepareCardHeaderPopupMenuListener() {
             @Override
             public boolean onPreparePopupMenu(BaseCard baseCard, PopupMenu popupMenu) {
                 popupMenu.getMenu().add(getString(R.string.edit));
@@ -398,7 +408,7 @@ public class  AllAssignmentsFragment extends Fragment {
             }
         });
 
-        return termHeader;
+        return assignmentHeader;
     }
 
     private void updateAssignmentCard(String newTitle) {

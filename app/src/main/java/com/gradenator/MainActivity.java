@@ -1,28 +1,25 @@
 package com.gradenator;
 
-import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.style.TypefaceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 
 
 import com.gradenator.Background.GradeUpdateReceiver;
 import com.gradenator.CustomViews.CustomTypefaceSpan;
 import com.gradenator.Fragments.IntroFragment;
 import com.gradenator.Fragments.MenuFragment;
+import com.gradenator.Fragments.ViewSingleClassFragment;
 import com.gradenator.Fragments.ViewTermsFragment;
 import com.gradenator.Internal.Constant;
 import com.gradenator.Internal.Session;
@@ -32,6 +29,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 
+
 public class MainActivity extends SlidingFragmentActivity {
 
     private SlidingMenu mSlidingMenu;
@@ -39,15 +37,17 @@ public class MainActivity extends SlidingFragmentActivity {
     private AlarmManager mRecordGrade;
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getApplicationContext().setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);
         setBehindContentView(R.layout.intro_frag);
         setupActionBar();
         setupSlidingMenu();
         chooseFragment();
-        TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "quicksandregular.ttf");
+        TypefaceUtil.overrideFont(getApplicationContext(), "SANS_SERIF", "quicksandregular.ttf");
         boolean alarmUp = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constant
                 .ALARM_ON, false);
         if (!alarmUp) { // check if an alarm has already been set
@@ -63,7 +63,6 @@ public class MainActivity extends SlidingFragmentActivity {
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setTitle(newTitle);
-        getActionBar().show();
     }
 
 
@@ -138,10 +137,17 @@ public class MainActivity extends SlidingFragmentActivity {
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-            this.finish();
-        } else {
-            getSupportFragmentManager().popBackStack();
+        FragmentManager.BackStackEntry backEntry= getSupportFragmentManager().getBackStackEntryAt(this
+                .getSupportFragmentManager().getBackStackEntryCount()-1);
+        String str= backEntry.getName();
+        Fragment fragment= getSupportFragmentManager().findFragmentByTag(str);
+        if (fragment instanceof ViewSingleClassFragment) {
+
+            if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+                this.finish();
+            } else {
+                getSupportFragmentManager().popBackStack();
+            }
         }
     }
 

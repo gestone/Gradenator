@@ -335,7 +335,7 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
 
 
     private CustomCardHeader createCardHeader(Term t) {
-        CustomCardHeader termHeader = new CustomCardHeader(getActivity(), R.layout.card_header, t.getTermName());
+        CustomCardHeader termHeader = new CustomCardHeader(getActivity(), t.getTermName());
 //        termHeader.setTitle(t.getTermName());
         termHeader.setButtonOverflowVisible(true);
         termHeader.setOtherButtonClickListener(null);

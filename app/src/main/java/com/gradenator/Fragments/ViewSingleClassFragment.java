@@ -13,6 +13,7 @@ import com.gradenator.CustomViews.ClassFragmentAdapter;
 import com.gradenator.CustomViews.CustomCirclePageIndicator;
 import com.gradenator.Internal.Constant;
 import com.gradenator.R;
+import com.gradenator.Utilities.Util;
 
 /**
  * Displays information about a single class that the user has selected.
@@ -30,6 +31,10 @@ public class ViewSingleClassFragment extends Fragment {
         View v = inflater.inflate(R.layout.class_layout, container, false);
         findAndSetViews(v);
         return v;
+    }
+
+    public void checkIfSwitch() {
+
     }
 
     private void findAndSetViews(View v) {
@@ -51,6 +56,8 @@ public class ViewSingleClassFragment extends Fragment {
             public void onPageSelected(int newPosition) {
                 if (newPosition == Constant.OVERVIEW_FRAGMENT) {
                     mAdapter.getClassOverViewFrag().updateViews();
+                } else if (newPosition == Constant.GRAPH_FRAGMENT) {
+                    Util.hideSoftKeyboard(getActivity());
                 }
             }
 

@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,9 +14,11 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gradenator.Action;
@@ -50,6 +53,8 @@ public class ViewClassesFragment extends Fragment {
     private RelativeLayout mAddClassHeader;
     private Button mAddClass;
     private Term mCurrentTerm;
+    private ImageView mInfoIcon;
+    private TextView mNoClassMessage;
 
 
     @Override
@@ -65,6 +70,8 @@ public class ViewClassesFragment extends Fragment {
         mAllClasses = (CardListView) v.findViewById(R.id.all_entries);
         mAddClassHeader = (RelativeLayout) v.findViewById(R.id.add_button_header);
         mAddClass = (Button) v.findViewById(R.id.add_button);
+        mInfoIcon = (ImageView) v.findViewById(R.id.info_image);
+        mNoClassMessage = (TextView) v.findViewById(R.id.no_class_msg);
         mAddClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +89,9 @@ public class ViewClassesFragment extends Fragment {
 
     private void initListCardView() {
         List<Class> allClasses = mCurrentTerm.getAllClasses();
+        if (!allClasses.isEmpty()) {
+            Util.hideViews(mInfoIcon, mNoClassMessage);
+        }
         mAllCards = new ArrayList<Card>();
         for (Class c : allClasses) {
             mAllCards.add(createNewCard(c));
@@ -99,7 +109,7 @@ public class ViewClassesFragment extends Fragment {
     }
 
     private CustomCardHeader createCardHeader(Class curClass) {
-        CustomCardHeader termHeader = new CustomCardHeader(getActivity(), R.layout.card_header,
+        CustomCardHeader termHeader = new CustomCardHeader(getActivity(),
                 curClass.getClassName());
         termHeader.setButtonOverflowVisible(true);
         termHeader.setOtherButtonClickListener(null);
@@ -152,6 +162,9 @@ public class ViewClassesFragment extends Fragment {
                 ((CardArrayAdapter) mAllClasses.getAdapter()).notifyDataSetChanged();
                 Util.makeToast(getActivity(), selectedClass.getClassName() + " " + getString(R
                         .string.successfully_deleted));
+                if (mCurrentTerm.getAllClasses().isEmpty()) {
+                    Util.showViews(mInfoIcon, mNoClassMessage);
+                }
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

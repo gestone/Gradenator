@@ -115,8 +115,8 @@ public class Assignment implements Comparable<Assignment> {
 
     private void setFromJSON(JSONObject j) {
         try {
-            earnedScore = j.getInt("earned_score");
-            maxScore = j.getInt("max_score");
+            earnedScore = j.getDouble("earned_score");
+            maxScore = j.getDouble("max_score");
             title = j.getString("title");
             timeCreated = j.getLong("time_created");
             assignmentColor = j.getInt("assignment_color");

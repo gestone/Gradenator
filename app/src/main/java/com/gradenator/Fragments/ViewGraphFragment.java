@@ -57,6 +57,7 @@ public class ViewGraphFragment extends Fragment {
 //        mGraph.getGraphViewStyle().setNumHorizontalLabels(allDataPoints.size());
 //        mGraph.getGraphViewStyle().setNumVerticalLabels(20);
         mGraph.addSeries(percentage);
+        mGraph.getGraphViewStyle().useTextColorFromTheme(getActivity());
         mGraphView.addView(mGraph);
     }
 

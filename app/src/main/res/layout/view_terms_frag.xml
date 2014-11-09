@@ -55,7 +55,7 @@
     <ImageView
         android:alpha=".25"
         android:layout_centerInParent="true"
-        android:src="@drawable/ic_action"
+        android:src="@drawable/ic_action_info"
         android:layout_width="60dp"
         android:id="@+id/info_image"
         android:layout_height="60dp"/>

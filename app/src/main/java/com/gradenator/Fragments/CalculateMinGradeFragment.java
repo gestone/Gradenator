@@ -29,25 +29,40 @@ import butterknife.OnClick;
  */
 public class CalculateMinGradeFragment extends Fragment {
 
-    @InjectView(R.id.choose_category)
-    Spinner mCategory;
-    @InjectView(R.id.percentage_maintain)
-    EditText mMaintain;
-    @InjectView(R.id.maximum_points)
-    EditText mMaxPoints;
-    @InjectView(R.id.calculate)
-    Button mCalculate;
-    @InjectView(R.id.calculated_score_result)
-    TextView mResult;
+    private Spinner mCategory;
+    private EditText mMaintain;
+    private EditText mMaxPoints;
+    private Button mCalculate;
+    private TextView mResult;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.min_grade_frag, container, false);
-        ButterKnife.inject(this, layout);
+        findViews(layout);
         mResult.setVisibility(View.INVISIBLE);
         populateSpinner();
         return layout;
+    }
+
+    private void findViews(View v) {
+        mResult = (TextView) v.findViewById(R.id.calculated_score_result);
+        mCalculate = (Button) v.findViewById(R.id.calculate);
+        mMaxPoints = (EditText) v.findViewById(R.id.maximum_points);
+        mMaintain = (EditText) v.findViewById(R.id.percentage_maintain);
+        mCategory = (Spinner) v.findViewById(R.id.choose_category);
+        mCalculate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String category = mCategory.getSelectedItem().toString();
+                if (!mMaxPoints.getText().toString().isEmpty() && !mMaintain.getText().toString().isEmpty
+                        ()) {
+                    calculatePoints(category);
+                } else {
+                    createNoFieldsErrorDialog();
+                }
+            }
+        });
     }
 
     /**
@@ -63,17 +78,6 @@ public class CalculateMinGradeFragment extends Fragment {
         ArrayAdapter<String> categoryNames = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, categories);
         mCategory.setAdapter(categoryNames);
-    }
-
-    @OnClick(R.id.calculate)
-    public void calculateGrade(Button b) {
-        String category = mCategory.getSelectedItem().toString();
-        if (!mMaxPoints.getText().toString().isEmpty() && !mMaintain.getText().toString().isEmpty
-                ()) {
-           calculatePoints(category);
-        } else {
-           createNoFieldsErrorDialog();
-        }
     }
 
     private void createNoFieldsErrorDialog() {
