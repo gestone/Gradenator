@@ -25,19 +25,19 @@ public class ClassOverviewFragment extends Fragment {
     private Class mClass;
 
 
-    public ClassOverviewFragment() {
-        mClass = Session.getInstance(getActivity()).getCurrentClass();
-    }
-
     @Override
     public void onAttach(Activity a) {
         super.onAttach(a);
+        if (mClass == null) {
+            mClass = Session.getInstance(a).getCurrentClass();
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.overview_fragment, container, false);
         findViews(v);
+        mClass = Session.getInstance(getActivity()).getCurrentClass();
         return v;
     }
 
@@ -55,6 +55,7 @@ public class ClassOverviewFragment extends Fragment {
 
     public DisplayCategoryAdapter getDisplayCategoryAdapter(Activity a) {
         if (mDisplayCategories == null) { // first time creating
+            mClass = Session.getInstance(a).getCurrentClass();
             mDisplayCategories = new DisplayCategoryAdapter(a, mClass.getAllCategories());
         }
         return mDisplayCategories;

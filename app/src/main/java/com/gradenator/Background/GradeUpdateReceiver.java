@@ -32,7 +32,7 @@ public class GradeUpdateReceiver extends BroadcastReceiver {
 
     private void updateGradePercentages(Context c) {
         // if the application is not active...
-        if (!noFilesContained(c) ) {
+        if (!noFilesContained(c)) {
             Term curTerm = Session.getInstance(c).getAllTerms().get(0);
             List<Class> allClasses = curTerm.getAllClasses();
             boolean updated = false;

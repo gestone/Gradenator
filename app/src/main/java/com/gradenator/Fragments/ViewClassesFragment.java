@@ -441,6 +441,7 @@ public class ViewClassesFragment extends Fragment {
             switch (action) {
                 case ADD: {
                     mAllCards.add(createNewCard(allClasses.get(allClasses.size() - 1)));
+                    Util.hideViews(mInfoIcon, mNoClassMessage);
                     break;
                 }
                 case REMOVE: {

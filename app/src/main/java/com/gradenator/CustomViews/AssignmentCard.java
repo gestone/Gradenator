@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.gradenator.Internal.Assignment;
 import com.gradenator.R;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import it.gmariotti.cardslib.library.internal.Card;
 
 /**
@@ -24,10 +23,9 @@ public class AssignmentCard extends Card {
     private Activity mActivity;
     private Assignment mAssignment;
 
-    private TextView mDate;
     private TextView mCardText;
     private TextView mAssignmentPercentage;
-    private CircleImageView mDateBackground;
+    private RoundedLetterView mDateBackground;
 
 
     public AssignmentCard(Assignment a, Activity activity, int innerLayout) {
@@ -38,21 +36,9 @@ public class AssignmentCard extends Card {
 
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-        mDate = (TextView) parent.findViewById(R.id.assignment_date);
         mCardText = (TextView) parent.findViewById(R.id.card_text);
         mAssignmentPercentage = (TextView) parent.findViewById(R.id.assignment_percentage);
-        mDateBackground = (CircleImageView) parent.findViewById(R.id.card_image);
-
-        // setup color for image
-        Rect rect = new Rect(0, 0, 75, 75);
-        Bitmap image = Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(image);
-        Paint paint = new Paint();
-        paint.setColor(mAssignment.getBackgroundColor());
-        canvas.drawRect(rect, paint);
-        BitmapDrawable b = new BitmapDrawable(image);
-        mDateBackground.setImageDrawable(b);
-
+        mDateBackground = (RoundedLetterView) parent.findViewById(R.id.card_image);
         updateCard();
     }
 
@@ -61,7 +47,8 @@ public class AssignmentCard extends Card {
     }
 
     public void updateCard() {
-        mDate.setText(mAssignment.getDateCreated());
+        mDateBackground.setTitleText(mAssignment.getDateCreated());
+        mDateBackground.setBackgroundColor(mAssignment.getBackgroundColor());
         mCardText.setText(mAssignment.createScoreMessage(mActivity));
         mAssignmentPercentage.setText(mAssignment.createPercentageText());
     }

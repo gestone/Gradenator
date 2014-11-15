@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -59,6 +60,8 @@ public class  AllAssignmentsFragment extends Fragment {
     private CardListView mAllAssignments;
     private CardArrayAdapter mAssignmentAdapter;
     private List<Card> mAllCards;
+    private ImageView mNoAssignmentsImage;
+    private TextView mNoAssignmentsMessage;
 
 
     @Override
@@ -73,6 +76,8 @@ public class  AllAssignmentsFragment extends Fragment {
         mHeader = (TextView) v.findViewById(R.id.all_assignments_header);
         mHeader.setText(getString(R.string.all_assignments));
         mFilter = (Spinner) v.findViewById(R.id.filter);
+        mNoAssignmentsImage = (ImageView) v.findViewById(R.id.info_image);
+        mNoAssignmentsMessage = (TextView) v.findViewById(R.id.no_terms_msg);
         populateSpinner(mFilter);
         mFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -117,6 +122,9 @@ public class  AllAssignmentsFragment extends Fragment {
         mAllAssignments = (CardListView) v.findViewById(R.id.all_assignments_list);
         mAllCards = new ArrayList<Card>();
         List<Assignment> assignmentList = mClass.getAllAssignments();
+        if (!assignmentList.isEmpty()){
+            Util.hideViews(mNoAssignmentsImage, mNoAssignmentsMessage);
+        }
         for (Assignment a : assignmentList) {
             mAllCards.add(createNewCard(a));
         }
@@ -209,6 +217,7 @@ public class  AllAssignmentsFragment extends Fragment {
                                             parsedEarnedPoints, parsedMaxPoints);
                                     c.addAssignment(newAssignment);
                                     Util.makeToast(getActivity(), getString(R.string.assignment_success_msg));
+                                    Util.hideViews(mNoAssignmentsImage, mNoAssignmentsMessage);
                                     mAllCards.add(0, createNewCard(newAssignment));
                                     if (!mFilter.getSelectedItem().equals(getString(R.string
                                             .select_prompt)) && !mFilter.getSelectedItem()
@@ -262,6 +271,9 @@ public class  AllAssignmentsFragment extends Fragment {
                         (mSelectedAssignment);
                 removeAssignmentCard();
                 mAssignmentAdapter.notifyDataSetChanged();
+                if (mClass.getAllAssignments().isEmpty()) {
+                    Util.showViews(mNoAssignmentsImage, mNoAssignmentsMessage);
+                }
                 Util.makeToast(getActivity(), mSelectedAssignment + " " + getString(R.string
                         .remove_assignment_success));
                 mSelectedAssignment = null;
@@ -289,7 +301,9 @@ public class  AllAssignmentsFragment extends Fragment {
         mMaxPointsET = (EditText) v.findViewById(R.id.max_points);
         mAssignmentCategory = (Spinner) v.findViewById(R.id.assignment_category);
         populateSpinner(mAssignmentCategory);
-        if (action == Action.EDIT) {
+        if (action == Action.ADD) {
+            mAssignmentCategory.setSelection(mFilter.getSelectedItemPosition());
+        } else if (action == Action.EDIT) {
             Assignment selectedAssignment = mClass.findAssignment(mSelectedAssignment);
             mAssignmentTitleET.setText(selectedAssignment.getTitle());
             mEarnedPointsET.setText(createNumberString(selectedAssignment.getEarnedScore()));

@@ -21,13 +21,18 @@ public class Constant {
 
     public static final long ONE_MINUTE = 60; // for testing purposes for the graph
 
+    public static final long ONE_DAY = 86400;
+
     public static final long ONE_WEEK = 604800000;
+
+    public static final String DEFAULT_FONT = "quicksandregular.ttf";
 
     public static final String TITLE = "Title";
 
     public static final String ALARM_ON = "Alarm_On";
 
-    public static final String[] DEFAULT_COLOR_SCHEME = new String[]{"#FF7A00", "#ACE600",
-            "#E6AC00", "#FF9900"};
+    public static final String[] DEFAULT_COLOR_SCHEME = new String[]{"#FFB705", "#FF3005",
+            "#FF9635", "#9AE000", "#692DAC", "#BCDD11", "#EFD13B", "#E8487F", "#9FE339",
+            "#57D8FF", "#29CDFF", "#8FE5FF", "#23B0DB", "#AEDB17", "#F0BD1B"};
 
 }

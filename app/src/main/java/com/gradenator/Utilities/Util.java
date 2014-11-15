@@ -44,7 +44,7 @@ public class Util {
             ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right,
                     R.anim.slide_in_left, R.anim.exit_right);
 //        }
-        ft.replace(R.id.container, f).commit();
+        ft.replace(R.id.container, f, tag).commit();
     }
 
     /**

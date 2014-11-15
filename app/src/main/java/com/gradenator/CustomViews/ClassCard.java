@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.gradenator.R;
 import com.gradenator.Internal.Class;
-import de.hdodenhof.circleimageview.CircleImageView;
 import it.gmariotti.cardslib.library.internal.Card;
 
 /**
@@ -26,8 +25,7 @@ public class ClassCard extends Card {
 
     private TextView mUnitCount;
     private TextView mPercentage;
-    private CircleImageView mTermImage;
-    private TextView mTermImageText;
+    private RoundedLetterView mTermImage;
 
     public ClassCard(Class c, Activity activity, int innerLayout) {
         super(activity, innerLayout);
@@ -37,27 +35,15 @@ public class ClassCard extends Card {
 
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-        // setup views
         mUnitCount = (TextView) parent.findViewById(R.id.unit_count);
         mPercentage = (TextView) parent.findViewById(R.id.percentage);
-        mTermImage = (CircleImageView) parent.findViewById(R.id.card_image);
-
-        // setup color for image
-        Rect rect = new Rect(0, 0, 75, 75);
-        Bitmap image = Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(image);
-        Paint paint = new Paint();
-        paint.setColor(mClass.getBackgroundColor());
-        canvas.drawRect(rect, paint);
-        BitmapDrawable b = new BitmapDrawable(image);
-        mTermImage.setImageDrawable(b);
-        mTermImageText = (TextView) parent.findViewById(R.id.term_image_text);
-
-        //setup text
+        mTermImage = (RoundedLetterView) parent.findViewById(R.id.card_image);
         mUnitCount.setText(constructTotalUnitsHeader());
         mPercentage.setText(mClass.getCardDisplayText());
         String className = mClass.getClassName();
-        mTermImageText.setText(constructImageText(className)); // first letter for text
+        mTermImage.setBackgroundColor(mClass.getBackgroundColor());
+        mTermImage.setTitleText(constructImageText(className));
+        mTermImage.setTitleSize(80f);
     }
 
     private String constructTotalUnitsHeader() {
@@ -74,16 +60,26 @@ public class ClassCard extends Card {
 
     private String constructImageText(String className) {
         String total = "";
-        for (int i = 0; i < className.length(); i++) {
-            if (Character.isDigit(className.charAt(i))) {
-                total += className.charAt(i);
+        if (className.contains(" ")) {
+            String[] split = className.split(" ");
+            int leastLength = split[0].length();
+            int index = 0;
+            for (int i = 1; i < split.length; i++) {
+                if (split[i].length() < leastLength || split[i].matches(".*\\d.*")) {
+                    leastLength = split[i].length();
+                    index = i;
+                }
             }
-        }
-        if (total.isEmpty() && total.length() >= 3) {
-            total = className.substring(0, 3);
-        }
-        if (total.length() < 3) {
-            total = className;
+            String chosen = split[index];
+            if (chosen.length() > 4) {
+                total = chosen.substring(0, 4);
+            } else {
+                total = chosen;
+            }
+        } else {
+            if (className.length() >= 4) {
+                total = className.substring(0, 4);
+            }
         }
         return total;
     }

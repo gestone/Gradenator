@@ -74,6 +74,7 @@
         android:textSize="16sp"
         android:gravity="center_vertical"
         android:text="@string/maximum_points_msg"
+        android:paddingRight="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/percentage_maintain_msg"

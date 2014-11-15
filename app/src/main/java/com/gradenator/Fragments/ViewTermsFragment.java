@@ -1,10 +1,7 @@
 package com.gradenator.Fragments;
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,11 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gradenator.Action;
-import com.gradenator.Background.GradeUpdateReceiver;
 import com.gradenator.Callbacks.OnEntryChangedListener;
 import com.gradenator.CustomViews.CustomCardHeader;
 import com.gradenator.CustomViews.TermCard;
-import com.gradenator.Dialogs.GenericDialog;
 import com.gradenator.Internal.Session;
 import com.gradenator.Internal.Term;
 import com.gradenator.R;
@@ -232,6 +227,7 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
     private void setAddTermLogic(String termName) {
         List<Term> currentTerms = Session.getInstance(getActivity()).getAllTerms();
         currentTerms.add(0, new Term(termName));
+        Util.hideViews(mImage, mMessage);
         Toast.makeText(getActivity(), termName + " " + mRes.getString(R.string.term_success_msg), Toast.LENGTH_SHORT).show();
     }
 
@@ -336,7 +332,6 @@ public class ViewTermsFragment extends Fragment implements OnEntryChangedListene
 
     private CustomCardHeader createCardHeader(Term t) {
         CustomCardHeader termHeader = new CustomCardHeader(getActivity(), t.getTermName());
-//        termHeader.setTitle(t.getTermName());
         termHeader.setButtonOverflowVisible(true);
         termHeader.setOtherButtonClickListener(null);
         final OnEntryChangedListener listener = this;

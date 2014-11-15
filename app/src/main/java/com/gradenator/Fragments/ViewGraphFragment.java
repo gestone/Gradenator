@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import com.gradenator.Internal.Class;
 import com.gradenator.Internal.DataPoint;
 import com.gradenator.Internal.Session;
 import com.gradenator.R;
+import com.gradenator.Utilities.Util;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.LineGraphView;
@@ -28,6 +30,8 @@ public class ViewGraphFragment extends Fragment {
     private GraphView mGraph;
     private Class mClass;
     private TextView mGraphTitle;
+    private TextView mNoData;
+    private ImageView mInfo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,25 +44,30 @@ public class ViewGraphFragment extends Fragment {
     private void setupGraph(View v) {
         mGraphTitle = (TextView) v.findViewById(R.id.graph_title);
         mGraphView = (LinearLayout) v.findViewById(R.id.graph);
+        mNoData = (TextView) v.findViewById(R.id.no_data_msg);
+        mInfo = (ImageView) v.findViewById(R.id.info_image);
         mGraph = new LineGraphView(getActivity(), "");
         mGraph.setManualMaxY(true);
         mGraph.setManualYAxisBounds(100, 0);
         List<DataPoint> allDataPoints = mClass.getDataPoints();
-        if (allDataPoints.size() > 6) { // display only the newest 6 points
-            allDataPoints = allDataPoints.subList(allDataPoints.size() - 6, allDataPoints.size());
+        if (allDataPoints.size() < 2) {
+            Util.hideViews(mGraphTitle, mGraphView);
+        } else {
+            Util.hideViews(mNoData, mInfo);
+            if (allDataPoints.size() > 6) { // display only the newest 6 points
+                allDataPoints = allDataPoints.subList(allDataPoints.size() - 6, allDataPoints.size());
+            }
+            String title = mClass.getClassName() + " " + getResources().getString(R.string
+                    .graph_title_msg);
+            mGraphTitle.setText(title);
+            GraphView.GraphViewData[] percentageData = createDataPoints(allDataPoints);
+            GraphViewSeries percentage = new GraphViewSeries("Total Percentage",
+                    new GraphViewSeries.GraphViewSeriesStyle(Color.rgb(0, 0, 0), 3), percentageData);
+            mGraph.setHorizontalLabels(createHorizontalLabels(allDataPoints));
+            mGraph.addSeries(percentage);
+            mGraph.getGraphViewStyle().useTextColorFromTheme(getActivity());
+            mGraphView.addView(mGraph);
         }
-        String title = mClass.getClassName() + " " + getResources().getString(R.string
-                .graph_title_msg);
-        mGraphTitle.setText(title);
-        GraphView.GraphViewData[] percentageData = createDataPoints(allDataPoints);
-        GraphViewSeries percentage = new GraphViewSeries("Total Percentage",
-                new GraphViewSeries.GraphViewSeriesStyle(Color.rgb(0, 0, 0), 3), percentageData);
-        mGraph.setHorizontalLabels(createHorizontalLabels(allDataPoints));
-//        mGraph.getGraphViewStyle().setNumHorizontalLabels(allDataPoints.size());
-//        mGraph.getGraphViewStyle().setNumVerticalLabels(20);
-        mGraph.addSeries(percentage);
-        mGraph.getGraphViewStyle().useTextColorFromTheme(getActivity());
-        mGraphView.addView(mGraph);
     }
 
     private String[] createHorizontalLabels(List<DataPoint> allDataPoints) {

@@ -47,11 +47,11 @@ public class MainActivity extends SlidingFragmentActivity {
         setupActionBar();
         setupSlidingMenu();
         chooseFragment();
-        TypefaceUtil.overrideFont(getApplicationContext(), "SANS_SERIF", "quicksandregular.ttf");
+        TypefaceUtil.overrideFont(getApplicationContext(), "SANS_SERIF", Constant.DEFAULT_FONT);
         boolean alarmUp = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constant
                 .ALARM_ON, false);
         if (!alarmUp) { // check if an alarm has already been set
-//            startAlarm();
+            startAlarm();
         }
     }
 
@@ -73,9 +73,8 @@ public class MainActivity extends SlidingFragmentActivity {
         Intent alarmIntent = new Intent(this, GradeUpdateReceiver.class);
         mRecordGradeIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
         mRecordGrade = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        int testInterval = 5000;
         mRecordGrade.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
-                testInterval, mRecordGradeIntent);
+                Constant.ONE_WEEK, mRecordGradeIntent);
         PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(Constant.ALARM_ON,
                 true).commit();
     }
@@ -138,11 +137,15 @@ public class MainActivity extends SlidingFragmentActivity {
     @Override
     public void onBackPressed() {
         FragmentManager.BackStackEntry backEntry= getSupportFragmentManager().getBackStackEntryAt(this
-                .getSupportFragmentManager().getBackStackEntryCount()-1);
+                .getSupportFragmentManager().getBackStackEntryCount() - 1);
         String str= backEntry.getName();
-        Fragment fragment= getSupportFragmentManager().findFragmentByTag(str);
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(str);
         if (fragment instanceof ViewSingleClassFragment) {
-
+            ViewSingleClassFragment frag = (ViewSingleClassFragment) fragment;
+            if (frag.shouldSwitch()) {
+                getSupportFragmentManager().popBackStack();
+            }
+        } else {
             if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
                 this.finish();
             } else {

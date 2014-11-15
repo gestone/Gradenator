@@ -25,7 +25,6 @@ import com.viewpagerindicator.CirclePageIndicator;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Adapter used in displaying the categories for the ClassOverViewFragment.
@@ -83,21 +82,21 @@ public class DisplayCategoryAdapter extends BaseAdapter {
         TextView categoryWeight = (TextView) convertView.findViewById(R.id.category_weight_tv);
         TextView numberOfAssignments = (TextView) convertView.findViewById(R.id
                 .number_of_assignments);
-        CircleImageView percentageBackground = (CircleImageView) convertView.findViewById(R.id
+        RoundedLetterView percentageBackground = (RoundedLetterView) convertView.findViewById(R.id
                 .percentage_background);
         convertView.setTag(currentCategory.getTitle());
         categoryHeader.setText(currentCategory.getTitle());
-        TextView percentage = (TextView) convertView.findViewById(R.id.percentage);
-        setCircleBackground(percentageBackground, currentCategory);
         String weightMessage = currentCategory.getWeight() + mActivity.getResources().getString(R
                 .string.weight_percentage);
         categoryWeight.setText(weightMessage);
+        percentageBackground.setTitleText(weightMessage);
+        percentageBackground.setBackgroundColor(currentCategory.getBackgroundColor());
         if (!currentCategory.getTitle().equals(mActivity.getString(R.string.total_percentage))) {
-            percentage.setText(currentCategory.getPercentageDisplayHeader());
+            percentageBackground.setTitleText(currentCategory.getPercentageDisplayHeader());
             numberOfAssignments.setText(currentCategory.getAssignmentDisplayText(mActivity));
         } else {
             Class c = Session.getInstance(mActivity).getCurrentClass();
-            percentage.setText(c.getCardDisplayText());
+            percentageBackground.setTitleText(c.getCardDisplayText());
             numberOfAssignments.setText(totalNumberAssignments());
         }
         return convertView;
@@ -133,14 +132,4 @@ public class DisplayCategoryAdapter extends BaseAdapter {
         return false;
     }
 
-    private void setCircleBackground(CircleImageView percentageBackground, Category c) {
-        Rect rect = new Rect(0, 0, 75, 75);
-        Bitmap image = Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(image);
-        Paint paint = new Paint();
-        paint.setColor(c.getBackgroundColor());
-        canvas.drawRect(rect, paint);
-        BitmapDrawable b = new BitmapDrawable(image);
-        percentageBackground.setImageDrawable(b);
-    }
 }

@@ -20,7 +20,6 @@ import com.gradenator.R;
 
 import java.util.Random;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 
@@ -34,8 +33,7 @@ public class TermCard extends Card {
 
     private TextView mUnitCount;
     private TextView mClassCount;
-    private CircleImageView mTermImage;
-    private TextView mTermImageText;
+    private RoundedLetterView mTermImage;
 
 
     public TermCard(Term t, Activity activity, int innerLayout) {
@@ -46,28 +44,16 @@ public class TermCard extends Card {
 
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-
         // setup views
         mUnitCount = (TextView) parent.findViewById(R.id.unit_count);
         mClassCount = (TextView) parent.findViewById(R.id.class_header);
-        mTermImage = (CircleImageView) parent.findViewById(R.id.card_image);
-
-        // setup color for image
-        Rect rect = new Rect(0, 0, 75, 75);
-        Bitmap image = Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(image);
-        Paint paint = new Paint();
-        paint.setColor(mCurrentTerm.getBackgroundColor());
-        canvas.drawRect(rect, paint);
-        BitmapDrawable b = new BitmapDrawable(image);
-        mTermImage.setImageDrawable(b);
-        mTermImageText = (TextView) parent.findViewById(R.id.term_image_text);
-
-        //setup text
+        mTermImage = (RoundedLetterView) parent.findViewById(R.id.card_image);
         mUnitCount.setText(constructTotalUnitsHeader());
         mClassCount.setText(constructClassHeader());
+        mTermImage.setBackgroundColor(mCurrentTerm.getBackgroundColor());
         String termName = mCurrentTerm.getTermName();
-        mTermImageText.setText(termName.substring(0, 1)); // first letter for text
+        mTermImage.setTitleSize(150f);
+        mTermImage.setTitleText(termName.substring(0, 1)); // first letter for text
     }
 
 

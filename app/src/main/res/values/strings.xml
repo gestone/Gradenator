@@ -129,9 +129,13 @@
     <string name="remove_assignment_2">from your class list?</string>
     <string name="remove_assignment_button">Remove Assignment</string>
     <string name="remove_assignment_success">has been successfully removed!</string>
+    <string name="no_assignments_msg">There are no assignments on record.\nPress the add button
+        below to add a new assignment!</string>
 
     <!--Graph-->
     <string name="graph_title_msg">Percentage vs Time</string>
+    <string name="no_data_msg">There is not enough data to graph your progress yet. Check
+        back in about a week!</string>
 
     <!--Grade Update Notifications-->
     <string name="grade_update_title">Grades Updated</string>

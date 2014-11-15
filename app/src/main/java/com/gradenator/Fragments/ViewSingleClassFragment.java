@@ -33,9 +33,15 @@ public class ViewSingleClassFragment extends Fragment {
         return v;
     }
 
-    public void checkIfSwitch() {
-
+    public boolean shouldSwitch() {
+        if (mViewPager.getCurrentItem() == 0) {
+            return true;
+        } else {
+            mViewPager.setCurrentItem(0);
+            return false;
+        }
     }
+
 
     private void findAndSetViews(View v) {
         mAdapter = new ClassFragmentAdapter(getActivity().getFragmentManager(), getActivity());

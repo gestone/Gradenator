@@ -12,7 +12,7 @@
         android:layout_height="3dp"/>
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <com.gradenator.CustomViews.RoundedLetterView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_image"
         android:layout_width="75dp"
@@ -21,19 +21,6 @@
         android:layout_marginTop="5dp"
         android:layout_below="@+id/header"
         />
-
-    <TextView
-        android:text="9/15/14"
-        android:id="@+id/assignment_date"
-        android:gravity="center"
-        android:textSize="18sp"
-        android:textColor="#FFFFFF"
-        android:layout_alignLeft="@+id/card_image"
-        android:layout_alignTop="@+id/card_image"
-        android:layout_alignRight="@+id/card_image"
-        android:layout_alignBottom="@+id/card_image"
-        android:layout_width="75dp"
-        android:layout_height="75dp"/>
 
     <TextView
         android:textSize="30sp"
