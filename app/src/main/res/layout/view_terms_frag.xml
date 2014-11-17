@@ -3,54 +3,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-    <TextView
-        android:gravity="center"
-        android:textSize="30sp"
-        android:text="@string/term_header"
-        android:textColor="#FFFFFF"
-        android:id="@+id/term_header"
-        android:background="@color/blue_dark"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"/>
 
     <it.gmariotti.cardslib.library.view.CardListView
         android:id="@+id/all_entries"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/term_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/add_button_header">
+        >
 
 
 
     </it.gmariotti.cardslib.library.view.CardListView>
 
-    <RelativeLayout
-        android:clickable="true"
-        android:layout_alignParentBottom="true"
-        android:paddingRight="5dp"
-        android:paddingLeft="5dp"
-        android:background="@color/blue_dark"
-        android:id="@+id/add_button_header"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        >
-
-
-
-        <Button
-            android:id="@+id/add_button"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/ic_action_add"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            />
-
-
-
-        </RelativeLayout>
+    <!--<at.markushi.ui.CircleButton-->
+        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--app:cb_color="#99CC00"-->
+        <!--app:cb_pressedRingWidth="8dip"-->
+        <!--android:id="@+id/add_term_button"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:paddingRight="5dp"-->
+        <!--android:paddingLeft="5dp"-->
+        <!--android:layout_width="80dp"-->
+        <!--android:layout_height="80dp"-->
+        <!--android:src="@drawable/ic_action_add"-->
+         <!--/>-->
 
     <ImageView
         android:alpha=".25"

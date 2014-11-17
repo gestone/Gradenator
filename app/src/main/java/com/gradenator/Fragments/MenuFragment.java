@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.gradenator.MainActivity;
 import com.gradenator.R;
 
 public class MenuFragment extends ListFragment {
@@ -20,26 +22,27 @@ public class MenuFragment extends ListFragment {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        SampleAdapter adapter = new SampleAdapter(getActivity());
+        SidebarAdapter adapter = new SidebarAdapter(getActivity());
         // read from internal JSON file and create objects based on the file
-        for (int i = 0; i < 20; i++) {
-            adapter.add(new SampleItem("Sample List", android.R.drawable.ic_menu_search));
-        }
+        adapter.add(new SidebarItem(getString(R.string.sidebar_search),
+                R.drawable.ic_action_search));
+        adapter.add(new SidebarItem(getString(R.string.sidebar_settings),
+                R.drawable.ic_action_settings));
         setListAdapter(adapter);
     }
 
-    private class SampleItem {
+    private class SidebarItem {
         public String tag;
         public int iconRes;
-        public SampleItem(String tag, int iconRes) {
+        public SidebarItem(String tag, int iconRes) {
             this.tag = tag;
             this.iconRes = iconRes;
         }
     }
 
-    public class SampleAdapter extends ArrayAdapter<SampleItem> {
+    public class SidebarAdapter extends ArrayAdapter<SidebarItem> {
 
-        public SampleAdapter(Context context) {
+        public SidebarAdapter(Context context) {
             super(context, 0);
         }
 
@@ -51,9 +54,15 @@ public class MenuFragment extends ListFragment {
             icon.setImageResource(getItem(position).iconRes);
             TextView title = (TextView) convertView.findViewById(R.id.row_title);
             title.setText(getItem(position).tag);
-
             return convertView;
         }
+    }
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        if (getActivity() instanceof MainActivity) {
+            MainActivity m = (MainActivity) getActivity();
+            m.switchContent(new SettingsFragment(), ViewTermsFragment.TAG);
+        }
     }
 }

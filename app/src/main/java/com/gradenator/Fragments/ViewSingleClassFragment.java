@@ -11,9 +11,12 @@ import android.view.ViewGroup;
 
 import com.gradenator.CustomViews.ClassFragmentAdapter;
 import com.gradenator.CustomViews.CustomCirclePageIndicator;
+import com.gradenator.Internal.Class;
 import com.gradenator.Internal.Constant;
+import com.gradenator.Internal.Session;
 import com.gradenator.R;
 import com.gradenator.Utilities.Util;
+import com.gradenator.Internal.*;
 
 /**
  * Displays information about a single class that the user has selected.
@@ -65,6 +68,20 @@ public class ViewSingleClassFragment extends Fragment {
                 } else if (newPosition == Constant.GRAPH_FRAGMENT) {
                     Util.hideSoftKeyboard(getActivity());
                 }
+                changeActionBar(newPosition);
+            }
+
+            private void changeActionBar(int newPosition) {
+                Class cur = Session.getInstance(getActivity()).getCurrentClass();
+                String newTitle = cur.getClassName().trim() + " ";
+                if (newPosition == Constant.ALL_ASSIGNMENTS_FRAGMENT) {
+                    newTitle += getString(R.string.ab_assignments);
+                } else if (newPosition == Constant.GRAPH_FRAGMENT) {
+                    newTitle += getString(R.string.ab_graph);
+                } else if (newPosition == Constant.CALCULATOR_FRAGMENT) {
+                    newTitle = getString(R.string.ab_grade_calc);
+                }
+                Util.changeActionBarTitle(getActivity(), newTitle);
             }
 
             @Override

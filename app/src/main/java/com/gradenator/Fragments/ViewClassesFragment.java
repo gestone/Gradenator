@@ -5,8 +5,6 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +22,7 @@ import com.gradenator.Action;
 import com.gradenator.CustomViews.CreateCategoryAdapter;
 import com.gradenator.CustomViews.ClassCard;
 import com.gradenator.CustomViews.CustomCardHeader;
+import com.gradenator.CustomViews.FloatingAction;
 import com.gradenator.Internal.*;
 import com.gradenator.Internal.Class;
 import com.gradenator.R;
@@ -42,7 +40,7 @@ import it.gmariotti.cardslib.library.view.CardListView;
 /**
  * Displays the classes for a given term to the user.
  */
-public class ViewClassesFragment extends Fragment {
+public class ViewClassesFragment extends Fragment implements View.OnClickListener{
 
     public static final String TAG = ViewClassesFragment.class.getSimpleName();
 
@@ -50,11 +48,14 @@ public class ViewClassesFragment extends Fragment {
     private List<Card> mAllCards;
     private String mSelectedClass;
     private Resources mRes;
-    private RelativeLayout mAddClassHeader;
-    private Button mAddClass;
     private Term mCurrentTerm;
     private ImageView mInfoIcon;
     private TextView mNoClassMessage;
+    private FloatingAction mFloat;
+
+    public FloatingAction getAction() {
+        return mFloat;
+    }
 
 
     @Override
@@ -68,22 +69,8 @@ public class ViewClassesFragment extends Fragment {
     private void findAndSetViews(View v) {
         mRes = getActivity().getResources();
         mAllClasses = (CardListView) v.findViewById(R.id.all_entries);
-        mAddClassHeader = (RelativeLayout) v.findViewById(R.id.add_button_header);
-        mAddClass = (Button) v.findViewById(R.id.add_button);
         mInfoIcon = (ImageView) v.findViewById(R.id.info_image);
         mNoClassMessage = (TextView) v.findViewById(R.id.no_class_msg);
-        mAddClass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createDialog(Action.ADD);
-            }
-        });
-        mAddClassHeader.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createDialog(Action.ADD);
-            }
-        });
         initListCardView();
     }
 
@@ -98,6 +85,8 @@ public class ViewClassesFragment extends Fragment {
         }
         CardArrayAdapter c = new CardArrayAdapter(getActivity(), mAllCards);
         mAllClasses.setAdapter(c);
+        mFloat = FloatingAction.from(getActivity()).listenTo(mAllClasses).icon(R.drawable
+                .ic_action_add).listener(this).colorResId(R.color.white).build();
     }
 
     private Card createNewCard(Class curClass) {
@@ -322,7 +311,6 @@ public class ViewClassesFragment extends Fragment {
         });
     }
 
-
     private void setCardOnClickListeners(Card classView) {
         classView.addPartialOnClickListener(Card.CLICK_LISTENER_HEADER_VIEW, null);
         classView.addPartialOnClickListener(Card.CLICK_LISTENER_THUMBNAIL_VIEW, null);
@@ -331,11 +319,15 @@ public class ViewClassesFragment extends Fragment {
             public void onClick(Card card, View view) {
                 mSelectedClass = card.getCardHeader().getTitle();
                 Session.getInstance(getActivity()).setCurrentClass(getSelectedClass());
+                Util.changeActionBarTitle(getActivity(), getSelectedClass().getClassName());
+                mFloat.hide(true);
                 Util.displayFragment(new ViewSingleClassFragment(), ViewSingleClassFragment.TAG,
-                        (FragmentActivity) getActivity());
+                        getActivity());
+                mFloat.onDestroy();
             }
         });
     }
+
 
     private void setCategoryButtonListeners(View v, final CreateCategoryAdapter adapter,
                                             final ListView allCategories) {
@@ -380,7 +372,6 @@ public class ViewClassesFragment extends Fragment {
             adapter.getCategoryList().get(i).setTitle(title.getText().toString());
         }
     }
-
 
     private boolean checkFieldsCompleted(CreateCategoryAdapter adapter) {
         List<Category> allCategories = adapter.getCategoryList();
@@ -433,7 +424,6 @@ public class ViewClassesFragment extends Fragment {
         return false;
     }
 
-
     private void updateNewClassView(Action action) {
         CardArrayAdapter c = (CardArrayAdapter) mAllClasses.getAdapter();
         List<Class> allClasses = mCurrentTerm.getAllClasses();
@@ -465,6 +455,7 @@ public class ViewClassesFragment extends Fragment {
         return null;
     }
 
+
     private Class getSelectedClass() {
         List<Class> allClasses = mCurrentTerm.getAllClasses();
         for (Class c : allClasses) {
@@ -475,4 +466,13 @@ public class ViewClassesFragment extends Fragment {
         return null;
     }
 
+    @Override
+    public void onClick(View v) {
+        createClassDialog(Action.ADD);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

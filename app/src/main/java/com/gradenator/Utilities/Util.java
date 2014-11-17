@@ -3,15 +3,19 @@ package com.gradenator.Utilities;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.telephony.TelephonyManager;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.gradenator.CustomViews.CustomTypefaceSpan;
 import com.gradenator.Dialogs.GenericDialog;
 import com.gradenator.Fragments.ViewClassesFragment;
 import com.gradenator.Fragments.ViewSingleClassFragment;
@@ -116,6 +120,16 @@ public class Util {
             inputMethodManager.hideSoftInputFromWindow(a.getCurrentFocus().getWindowToken(), 0);
         }
     }
+
+    public static void changeActionBarTitle(Activity a, String title) {
+        SpannableStringBuilder newTitle = new SpannableStringBuilder(title);
+        Typeface customFontTypeface = Typeface.createFromAsset(a.getAssets(),
+                "quicksandregular.ttf");
+        newTitle.setSpan(new CustomTypefaceSpan("", customFontTypeface), 0, newTitle.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        a.getActionBar().setTitle(newTitle);
+    }
+
 
 
     public static void deleteAllInternalFiles(Activity a) {

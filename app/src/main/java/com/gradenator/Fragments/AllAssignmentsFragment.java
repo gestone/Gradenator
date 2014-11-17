@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.gradenator.Action;
 import com.gradenator.CustomViews.AssignmentCard;
 import com.gradenator.CustomViews.CustomCardHeader;
+import com.gradenator.CustomViews.FloatingAction;
 import com.gradenator.Internal.Assignment;
 import com.gradenator.Internal.Category;
 import com.gradenator.Internal.Class;
@@ -35,6 +36,7 @@ import com.gradenator.Utilities.Util;
 import java.util.ArrayList;
 import java.util.List;
 
+import at.markushi.ui.CircleButton;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -44,15 +46,12 @@ import it.gmariotti.cardslib.library.view.CardListView;
 /**
  * Displays all assignments for a given class.
  */
-public class  AllAssignmentsFragment extends Fragment {
+public class  AllAssignmentsFragment extends Fragment implements View.OnClickListener {
 
     private String mSelectedAssignment;
 
-    private TextView mHeader;
     private Spinner mFilter;
     private Class mClass;
-    private RelativeLayout mAddAssignmentHeader;
-    private Button mAddAssignment;
     private EditText mAssignmentTitleET;
     private EditText mEarnedPointsET;
     private EditText mMaxPointsET;
@@ -62,6 +61,7 @@ public class  AllAssignmentsFragment extends Fragment {
     private List<Card> mAllCards;
     private ImageView mNoAssignmentsImage;
     private TextView mNoAssignmentsMessage;
+    private CircleButton mAddAssignment;
 
 
     @Override
@@ -73,11 +73,16 @@ public class  AllAssignmentsFragment extends Fragment {
 
     private void findViews(View v) {
         mClass = Session.getInstance(getActivity()).getCurrentClass();
-        mHeader = (TextView) v.findViewById(R.id.all_assignments_header);
-        mHeader.setText(getString(R.string.all_assignments));
         mFilter = (Spinner) v.findViewById(R.id.filter);
         mNoAssignmentsImage = (ImageView) v.findViewById(R.id.info_image);
         mNoAssignmentsMessage = (TextView) v.findViewById(R.id.no_terms_msg);
+        mAddAssignment = (CircleButton) v.findViewById(R.id.add_assignment_btn);
+        mAddAssignment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createAssignmentDialog(Action.ADD);
+            }
+        });
         populateSpinner(mFilter);
         mFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -105,20 +110,10 @@ public class  AllAssignmentsFragment extends Fragment {
 
             }
         });
-        mAddAssignmentHeader = (RelativeLayout) v.findViewById(R.id.add_button_header);
-        mAddAssignment = (Button) v.findViewById(R.id.add_button);
-        mAddAssignment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createAssignmentDialog(Action.ADD);
-            }
-        });
-        mAddAssignmentHeader.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createAssignmentDialog(Action.ADD);
-            }
-        });
+        initCardView(v);
+    }
+
+    private void initCardView(View v) {
         mAllAssignments = (CardListView) v.findViewById(R.id.all_assignments_list);
         mAllCards = new ArrayList<Card>();
         List<Assignment> assignmentList = mClass.getAllAssignments();
@@ -130,6 +125,11 @@ public class  AllAssignmentsFragment extends Fragment {
         }
         mAssignmentAdapter = new CardArrayAdapter(getActivity(), mAllCards);
         mAllAssignments.setAdapter(mAssignmentAdapter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     private List<String> getCategoryTitles() {
@@ -436,4 +436,8 @@ public class  AllAssignmentsFragment extends Fragment {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        createAssignmentDialog(Action.ADD);
+    }
 }

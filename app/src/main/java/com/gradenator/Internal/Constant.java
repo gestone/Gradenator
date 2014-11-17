@@ -17,6 +17,8 @@ public class Constant {
 
     public static final int GRAPH_FRAGMENT = 2;
 
+    public static final int CALCULATOR_FRAGMENT = 3;
+
     public static final int SELECTION_FILTER = 1;
 
     public static final long ONE_MINUTE = 60; // for testing purposes for the graph

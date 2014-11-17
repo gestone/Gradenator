@@ -4,21 +4,19 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
 import com.gradenator.Background.GradeUpdateReceiver;
-import com.gradenator.CustomViews.CustomTypefaceSpan;
+import com.gradenator.CustomViews.FloatingAction;
 import com.gradenator.Fragments.IntroFragment;
 import com.gradenator.Fragments.MenuFragment;
+import com.gradenator.Fragments.ViewClassesFragment;
 import com.gradenator.Fragments.ViewSingleClassFragment;
 import com.gradenator.Fragments.ViewTermsFragment;
 import com.gradenator.Internal.Constant;
@@ -37,14 +35,14 @@ public class MainActivity extends SlidingFragmentActivity {
     private AlarmManager mRecordGrade;
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getApplicationContext().setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);
         setBehindContentView(R.layout.intro_frag);
-        setupActionBar();
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        Util.changeActionBarTitle(this, getString(R.string.app_name));
         setupSlidingMenu();
         chooseFragment();
         TypefaceUtil.overrideFont(getApplicationContext(), "SANS_SERIF", Constant.DEFAULT_FONT);
@@ -54,17 +52,6 @@ public class MainActivity extends SlidingFragmentActivity {
             startAlarm();
         }
     }
-
-    private void setupActionBar() {
-        SpannableStringBuilder newTitle = new SpannableStringBuilder(getString(R.string.app_name));
-        Typeface customFontTypeface = Typeface.createFromAsset(this.getAssets(),
-                "quicksandregular.ttf");
-        newTitle.setSpan(new CustomTypefaceSpan("", customFontTypeface), 0, newTitle.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setTitle(newTitle);
-    }
-
 
     /**
      * Used to start an alarm for the updating the grades class.
@@ -100,6 +87,7 @@ public class MainActivity extends SlidingFragmentActivity {
                     this);
         } else {
             Util.displayFragment(new ViewTermsFragment(), ViewTermsFragment.TAG, this);
+            Util.changeActionBarTitle(this, getString(R.string.ab_all_terms));
         }
     }
 
@@ -136,22 +124,50 @@ public class MainActivity extends SlidingFragmentActivity {
 
     @Override
     public void onBackPressed() {
-        FragmentManager.BackStackEntry backEntry= getSupportFragmentManager().getBackStackEntryAt(this
-                .getSupportFragmentManager().getBackStackEntryCount() - 1);
-        String str= backEntry.getName();
+        FragmentManager.BackStackEntry backEntry = getSupportFragmentManager()
+                .getBackStackEntryAt(this.getSupportFragmentManager().getBackStackEntryCount() - 1);
+        String str = backEntry.getName();
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(str);
+        changeActionBarOnBack(fragment);
         if (fragment instanceof ViewSingleClassFragment) {
             ViewSingleClassFragment frag = (ViewSingleClassFragment) fragment;
             if (frag.shouldSwitch()) {
                 getSupportFragmentManager().popBackStack();
+                String allClassTitle = Session.getInstance(this).getCurrentTerm().getTermName() +
+                        " " + getString(R.string.ab_classes);
+                Util.changeActionBarTitle(this, allClassTitle); // changing back to all classes
             }
         } else {
             if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
                 this.finish();
             } else {
                 getSupportFragmentManager().popBackStack();
+                checkForFloatingAction(fragment);
             }
         }
+    }
+
+    private void changeActionBarOnBack(Fragment f) {
+        if (f instanceof ViewClassesFragment) {
+            Util.changeActionBarTitle(this, getString(R.string.ab_all_terms));
+        }
+    }
+
+    /**
+     * Work around for the FloatingAction button
+     * @param f The Fragment being popped off of the backstack.
+     */
+    private void checkForFloatingAction(Fragment f) {
+        if (f instanceof ViewClassesFragment) {
+            ViewClassesFragment frag = (ViewClassesFragment) f;
+            FloatingAction floating = frag.getAction();
+            floating.onDestroy();
+        }
+    }
+
+    public void switchContent(Fragment f, String tag) {
+        Util.displayFragment(f, tag, this);
+        getSlidingMenu().showContent();
     }
 
 }

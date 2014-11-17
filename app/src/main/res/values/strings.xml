@@ -6,6 +6,18 @@
     <string name="crash_toast_text">Gradenator has crashed. An email has been sent to the
         developer.</string>
 
+    <!--ActionBar Strings-->
+    <string name="ab_classes">Classes</string>
+    <string name="ab_all_terms">All Terms</string>
+    <string name="ab_assignments">Assignments</string>
+    <string name="ab_graph">Graph</string>
+    <string name="ab_grade_calc">Grade Calculator</string>
+
+    <!--Sidebar Strings-->
+    <string name="sidebar_home">Home</string>
+    <string name="sidebar_search">Search</string>
+    <string name="sidebar_settings">Settings</string>
+
     <!--Intro Fragment Strings-->
     <string name="intro_header">Welcome to Gradenator!</string>
     <string name="intro_msg">Tap the button below to add a new term to start tracking your

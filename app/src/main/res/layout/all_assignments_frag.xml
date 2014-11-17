@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-    <TextView
-        android:gravity="center"
-        android:textSize="30sp"
-        android:text="Math 308 Assignments"
-        android:textColor="#FFFFFF"
-        android:id="@+id/all_assignments_header"
-        android:background="@color/blue_dark"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"/>
 
     <TextView
         android:textSize="18sp"
@@ -19,7 +11,7 @@
         android:layout_marginLeft="10dp"
         android:id="@+id/filter_header"
         android:gravity="center"
-        android:textColor="@color/blue_dark"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -30,11 +22,23 @@
     <Spinner
         android:id="@+id/filter"
         android:layout_marginLeft="5dp"
-        android:layout_width="match_parent"
-        android:layout_marginRight="5dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/all_assignments_header"
-        android:layout_toRightOf="@+id/filter_header"/>
+        android:layout_toRightOf="@+id/filter_header"
+        android:layout_toLeftOf="@+id/add_assignment_btn"/>
+
+    <at.markushi.ui.CircleButton
+        app:cb_color="@color/green"
+        app:cb_pressedRingWidth="8dip"
+        android:id="@+id/add_assignment_btn"
+        android:src="@drawable/ic_action_add"
+        android:layout_width="wrap_content"
+        android:padding="15dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/filter"/>
 
     <it.gmariotti.cardslib.library.view.CardListView
         android:layout_marginTop="10dp"
@@ -42,7 +46,7 @@
         android:id="@+id/all_assignments_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/add_button_header"/>
+        />
 
     <ImageView
         android:alpha=".25"
@@ -63,29 +67,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-
-    <RelativeLayout
-        android:clickable="true"
-        android:layout_alignParentBottom="true"
-        android:paddingRight="5dp"
-        android:paddingLeft="5dp"
-        android:background="@color/blue_dark"
-        android:id="@+id/add_button_header"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        >
-
-        <Button
-            android:id="@+id/add_button"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/ic_action_add"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            />
-
-    </RelativeLayout>
 
 
 

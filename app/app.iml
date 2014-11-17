@@ -67,8 +67,10 @@
     <orderEntry type="library" exported="" name="library-2.4.1" level="project" />
     <orderEntry type="library" exported="" name="butterknife-6.0.0" level="project" />
     <orderEntry type="library" exported="" name="android-support-v4" level="project" />
+    <orderEntry type="library" exported="" name="circlebutton-1.1" level="project" />
     <orderEntry type="library" exported="" name="acra-4.5.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
+    <orderEntry type="module" module-name="android-support-v4-preferencefragment-master" exported="" />
     <orderEntry type="module" module-name="GraphView-master" exported="" />
     <orderEntry type="module" module-name="library" exported="" />
   </component>
