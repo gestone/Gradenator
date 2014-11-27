@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.gradenator.Internal.Constant;
 import com.gradenator.MainActivity;
 import com.gradenator.R;
 
@@ -24,6 +25,7 @@ public class MenuFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         SidebarAdapter adapter = new SidebarAdapter(getActivity());
         // read from internal JSON file and create objects based on the file
+        adapter.add(new SidebarItem(getString(R.string.sidebar_home), R.drawable.ic_action_home));
         adapter.add(new SidebarItem(getString(R.string.sidebar_search),
                 R.drawable.ic_action_search));
         adapter.add(new SidebarItem(getString(R.string.sidebar_settings),
@@ -62,7 +64,20 @@ public class MenuFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         if (getActivity() instanceof MainActivity) {
             MainActivity m = (MainActivity) getActivity();
-            m.switchContent(new SettingsFragment(), ViewTermsFragment.TAG);
+            switch (position) {
+                case Constant.SIDEBAR_HOME: {
+                    m.switchToHome();
+                    break;
+                }
+                case Constant.SIDEBAR_SEARCH: {
+
+                    break;
+                }
+                case Constant.SIDEBAR_SETTINGS: {
+
+                    break;
+                }
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
@@ -19,6 +20,7 @@ import com.gradenator.CustomViews.CustomTypefaceSpan;
 import com.gradenator.Dialogs.GenericDialog;
 import com.gradenator.Fragments.ViewClassesFragment;
 import com.gradenator.Fragments.ViewSingleClassFragment;
+import com.gradenator.Fragments.ViewTermsFragment;
 import com.gradenator.Internal.Constant;
 import com.gradenator.R;
 
@@ -42,13 +44,28 @@ public class Util {
     }
 
     public static void displayFragment(Fragment f, String tag, FragmentActivity a) {
+        checkForFloatingAction(a);
         FragmentTransaction ft = a.getSupportFragmentManager().beginTransaction()
                 .addToBackStack(tag);
-//        if (!(f instanceof ViewSingleClassFragment)) {
-            ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right,
-                    R.anim.slide_in_left, R.anim.exit_right);
-//        }
+        ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right,
+                R.anim.slide_in_left, R.anim.exit_right);
         ft.replace(R.id.container, f, tag).commit();
+    }
+
+    private static void checkForFloatingAction(FragmentActivity a) {
+        if (a.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            FragmentManager.BackStackEntry backEntry = a.getSupportFragmentManager()
+                    .getBackStackEntryAt(a.getSupportFragmentManager().getBackStackEntryCount() - 1);
+            String str = backEntry.getName();
+            Fragment fragment = a.getSupportFragmentManager().findFragmentByTag(str);
+            if (fragment instanceof ViewTermsFragment) {
+                ViewTermsFragment f = (ViewTermsFragment) fragment;
+                f.getFloatingAction().onDestroy(); // destory floating action
+            } else if (fragment instanceof ViewClassesFragment) {
+                ViewClassesFragment f = (ViewClassesFragment) fragment;
+                f.getFloatingAction().onDestroy(); // destroy floating action
+            }
+        }
     }
 
     /**
@@ -115,7 +132,7 @@ public class Util {
      * Hides the soft keyboard
      */
     public static void hideSoftKeyboard(Activity a) {
-        if(a.getCurrentFocus()!=null) {
+        if (a.getCurrentFocus() != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) a.getSystemService(Activity.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(a.getCurrentFocus().getWindowToken(), 0);
         }
@@ -129,7 +146,6 @@ public class Util {
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         a.getActionBar().setTitle(newTitle);
     }
-
 
 
     public static void deleteAllInternalFiles(Activity a) {

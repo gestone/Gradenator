@@ -21,6 +21,12 @@ public class Constant {
 
     public static final int SELECTION_FILTER = 1;
 
+    public static final int SIDEBAR_HOME = 0;
+
+    public static final int SIDEBAR_SEARCH = 1;
+
+    public static final int SIDEBAR_SETTINGS = 2;
+
     public static final long ONE_MINUTE = 60; // for testing purposes for the graph
 
     public static final long ONE_DAY = 86400;

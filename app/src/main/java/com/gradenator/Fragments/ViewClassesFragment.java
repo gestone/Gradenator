@@ -53,7 +53,7 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
     private TextView mNoClassMessage;
     private FloatingAction mFloat;
 
-    public FloatingAction getAction() {
+    public FloatingAction getFloatingAction() {
         return mFloat;
     }
 
@@ -323,7 +323,6 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
                 mFloat.hide(true);
                 Util.displayFragment(new ViewSingleClassFragment(), ViewSingleClassFragment.TAG,
                         getActivity());
-                mFloat.onDestroy();
             }
         });
     }

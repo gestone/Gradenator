@@ -124,13 +124,10 @@ public class MainActivity extends SlidingFragmentActivity {
 
     @Override
     public void onBackPressed() {
-        FragmentManager.BackStackEntry backEntry = getSupportFragmentManager()
-                .getBackStackEntryAt(this.getSupportFragmentManager().getBackStackEntryCount() - 1);
-        String str = backEntry.getName();
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(str);
-        changeActionBarOnBack(fragment);
+        Fragment fragment = getFragmentOnBackStack();
         if (fragment instanceof ViewSingleClassFragment) {
             ViewSingleClassFragment frag = (ViewSingleClassFragment) fragment;
+            Util.changeActionBarTitle(this, getString(R.string.ab_all_terms));
             if (frag.shouldSwitch()) {
                 getSupportFragmentManager().popBackStack();
                 String allClassTitle = Session.getInstance(this).getCurrentTerm().getTermName() +
@@ -147,27 +144,38 @@ public class MainActivity extends SlidingFragmentActivity {
         }
     }
 
-    private void changeActionBarOnBack(Fragment f) {
-        if (f instanceof ViewClassesFragment) {
-            Util.changeActionBarTitle(this, getString(R.string.ab_all_terms));
-        }
+    private Fragment getFragmentOnBackStack() {
+        FragmentManager.BackStackEntry backEntry = getSupportFragmentManager()
+                .getBackStackEntryAt(this.getSupportFragmentManager().getBackStackEntryCount() - 1);
+        String str = backEntry.getName();
+        return getSupportFragmentManager().findFragmentByTag(str);
     }
+
 
     /**
      * Work around for the FloatingAction button
      * @param f The Fragment being popped off of the backstack.
      */
     private void checkForFloatingAction(Fragment f) {
+        if (f instanceof ViewTermsFragment) {
+            ViewTermsFragment frag = (ViewTermsFragment) f; // destroy floating action
+            frag.getFloatingAction().onDestroy();
+        }
         if (f instanceof ViewClassesFragment) {
             ViewClassesFragment frag = (ViewClassesFragment) f;
-            FloatingAction floating = frag.getAction();
+            FloatingAction floating = frag.getFloatingAction();
             floating.onDestroy();
         }
     }
 
-    public void switchContent(Fragment f, String tag) {
-        Util.displayFragment(f, tag, this);
-        getSlidingMenu().showContent();
+    public void switchToHome() {
+        FragmentManager f = getSupportFragmentManager();
+        if (!(getFragmentOnBackStack() instanceof ViewTermsFragment)){ // already at home screen
+            f.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            Util.displayFragment(new ViewTermsFragment(), ViewTermsFragment.TAG, this);
+            Util.changeActionBarTitle(this, getString(R.string.ab_all_terms));
+        }
+        showContent();
     }
 
 }

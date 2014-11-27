@@ -311,7 +311,6 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
                 s.setCurrentTerm(s.findTerm(termTitle));
                 termTitle += " " + getString(R.string.ab_classes);
                 mFloat.hide();
-                mFloat.onDestroy(); // don't want to see it in the next fragment
                 Util.changeActionBarTitle(getActivity(), termTitle);
                 Util.displayFragment(new ViewClassesFragment(), ViewClassesFragment.TAG, getActivity());
             }
@@ -326,7 +325,6 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mFloat.onDestroy();
     }
 
     private CustomCardHeader createCardHeader(Term t) {
@@ -356,6 +354,10 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
         });
 
         return termHeader;
+    }
+
+    public FloatingAction getFloatingAction() {
+        return mFloat;
     }
 
     @Override
