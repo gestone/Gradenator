@@ -58,6 +58,9 @@ public class Session {
     }
 
     public Term getCurrentTerm() {
+        if (mCurrentTerm == null && !mAllTerms.isEmpty()) {
+            return mAllTerms.get(0);
+        }
         return mCurrentTerm;
     }
 

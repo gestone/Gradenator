@@ -14,6 +14,7 @@ import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gradenator.CustomViews.CustomTypefaceSpan;
@@ -22,6 +23,7 @@ import com.gradenator.Fragments.ViewClassesFragment;
 import com.gradenator.Fragments.ViewSingleClassFragment;
 import com.gradenator.Fragments.ViewTermsFragment;
 import com.gradenator.Internal.Constant;
+import com.gradenator.MainActivity;
 import com.gradenator.R;
 
 import java.io.File;
@@ -138,13 +140,9 @@ public class Util {
         }
     }
 
-    public static void changeActionBarTitle(Activity a, String title) {
-        SpannableStringBuilder newTitle = new SpannableStringBuilder(title);
-        Typeface customFontTypeface = Typeface.createFromAsset(a.getAssets(),
-                "quicksandregular.ttf");
-        newTitle.setSpan(new CustomTypefaceSpan("", customFontTypeface), 0, newTitle.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        a.getActionBar().setTitle(newTitle);
+    public static void changeActionBarTitle(Activity a, String newTitle) {
+        MainActivity m = (MainActivity) a;
+        m.changeActionBar(newTitle);
     }
 
 

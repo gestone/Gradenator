@@ -1,10 +1,11 @@
 package com.gradenator.Fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,7 +47,7 @@ import it.gmariotti.cardslib.library.view.CardListView;
 /**
  * Displays all assignments for a given class.
  */
-public class  AllAssignmentsFragment extends Fragment implements View.OnClickListener {
+public class AllAssignmentsFragment extends Fragment implements View.OnClickListener {
 
     private String mSelectedAssignment;
 
@@ -382,11 +383,14 @@ public class  AllAssignmentsFragment extends Fragment implements View.OnClickLis
     /**
      * Sets the filter to the view that the user clicked from the categories.
      *
-     * @param selected The category title of the selected view.
+//     * @param selected The category title of the selected view.
      */
-    public void setSpinner(String selected) {
-        mFilter.setSelection(getCategoryTitles().indexOf(selected) + 1);
-    }
+//    private void setSpinner(String selected, Activity a) {
+//        if (mClass == null) {
+//            mClass = Session.getInstance(a).getCurrentClass();
+//        }
+//        mFilter.setSelection(getCategoryTitles().indexOf(selected) + 1);
+//    }
 
     private AssignmentCard createNewCard(Assignment a) {
         AssignmentCard assignmentView = new AssignmentCard(a, getActivity(), R.layout.custom_assignment_card);

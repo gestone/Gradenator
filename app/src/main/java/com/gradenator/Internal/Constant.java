@@ -25,6 +25,8 @@ public class Constant {
 
     public static final int SIDEBAR_SEARCH = 1;
 
+    public static final int EMAIL_FORWARDING = 2;
+
     public static final int SIDEBAR_SETTINGS = 2;
 
     public static final long ONE_MINUTE = 60; // for testing purposes for the graph

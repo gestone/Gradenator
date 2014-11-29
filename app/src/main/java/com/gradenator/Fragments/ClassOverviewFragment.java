@@ -1,8 +1,9 @@
 package com.gradenator.Fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,6 @@ public class ClassOverviewFragment extends Fragment {
     private TextView mOverviewHeader;
     private Class mClass;
 
-
     @Override
     public void onAttach(Activity a) {
         super.onAttach(a);
@@ -44,13 +44,13 @@ public class ClassOverviewFragment extends Fragment {
     private void findViews(View v) {
         mOverviewHeader = (TextView) v.findViewById(R.id.overview_image);
         mAllCategories = (ListView) v.findViewById(R.id.overview_categories);
-        updateViews();
+        mOverviewHeader.setText(mClass.getClassName().toUpperCase());
+        mOverviewHeader.setBackgroundColor(mClass.getBackgroundColor());
+        mAllCategories.setAdapter(getDisplayCategoryAdapter(getActivity()));
     }
 
     public void updateViews() {
-        mOverviewHeader.setBackgroundColor(mClass.getBackgroundColor());
-        mOverviewHeader.setText(mClass.getClassName().toUpperCase());
-        mAllCategories.setAdapter(mDisplayCategories);
+        mDisplayCategories.notifyDataSetChanged();
     }
 
     public DisplayCategoryAdapter getDisplayCategoryAdapter(Activity a) {
@@ -60,4 +60,5 @@ public class ClassOverviewFragment extends Fragment {
         }
         return mDisplayCategories;
     }
+
 }

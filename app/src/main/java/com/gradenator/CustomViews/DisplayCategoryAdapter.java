@@ -117,12 +117,13 @@ public class DisplayCategoryAdapter extends BaseAdapter {
         }
     }
 
+    // to be reimplemented
     private void setViewOnClickListener(View v) {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMainViewPager.setCurrentItem(Constant.ALL_ASSIGNMENTS_FRAGMENT);
-                mMainViewPager.getAllAssignmentsFrag().setSpinner((String) v.getTag());
+//                mMainViewPager.setCurrentItem(Constant.ALL_ASSIGNMENTS_FRAGMENT);
+//                mMainViewPager.getAllAssignmentsFrag().setSpinner((String) v.getTag(), mActivity);
             }
         });
     }

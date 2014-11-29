@@ -1,21 +1,27 @@
 package com.gradenator;
 
+import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 
 import com.gradenator.Background.GradeUpdateReceiver;
 import com.gradenator.CustomViews.FloatingAction;
 import com.gradenator.Fragments.IntroFragment;
-import com.gradenator.Fragments.MenuFragment;
 import com.gradenator.Fragments.ViewClassesFragment;
 import com.gradenator.Fragments.ViewSingleClassFragment;
 import com.gradenator.Fragments.ViewTermsFragment;
@@ -23,29 +29,29 @@ import com.gradenator.Internal.Constant;
 import com.gradenator.Internal.Session;
 import com.gradenator.Utilities.TypefaceUtil;
 import com.gradenator.Utilities.Util;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 
 
-public class MainActivity extends SlidingFragmentActivity {
+public class MainActivity extends FragmentActivity {
 
-    private SlidingMenu mSlidingMenu;
     private PendingIntent mRecordGradeIntent;
     private AlarmManager mRecordGrade;
-
+    private TextView mActionBarText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getApplicationContext().setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);
-        setBehindContentView(R.layout.intro_frag);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        Util.changeActionBarTitle(this, getString(R.string.app_name));
-        setupSlidingMenu();
-        chooseFragment();
+        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getActionBar().setCustomView(R.layout.custom_action_bar);
         TypefaceUtil.overrideFont(getApplicationContext(), "SANS_SERIF", Constant.DEFAULT_FONT);
+        View customActionBar = getActionBar().getCustomView();
+        Typeface tf = Typeface.createFromAsset(this.getAssets(), Constant.DEFAULT_FONT);
+        mActionBarText = (TextView) customActionBar.findViewById(R.id.action_bar_text);
+        mActionBarText.setTypeface(tf);
+        mActionBarText.setText(getString(R.string.app_name));
+        chooseFragment();
         boolean alarmUp = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constant
                 .ALARM_ON, false);
         if (!alarmUp) { // check if an alarm has already been set
@@ -66,20 +72,6 @@ public class MainActivity extends SlidingFragmentActivity {
                 true).commit();
     }
 
-    private void setupSlidingMenu() {
-        mSlidingMenu = getSlidingMenu();
-        mSlidingMenu.setMode(SlidingMenu.LEFT);
-        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-        mSlidingMenu.setShadowWidthRes(R.dimen.slidingmenu_shadow_width);
-        mSlidingMenu.setShadowDrawable(R.drawable.slidingmenu_shadow);
-        mSlidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-        mSlidingMenu.setFadeDegree(0.35f);
-        mSlidingMenu.setMenu(R.layout.sliding_menu);
-        getSupportFragmentManager().beginTransaction().replace(R.id.list_layout,
-                new MenuFragment()).commit();
-        setSlidingActionBarEnabled(true);
-        getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-    }
 
     private void chooseFragment(){
         if (!Session.getInstance(this).hasTerms()) {
@@ -87,7 +79,7 @@ public class MainActivity extends SlidingFragmentActivity {
                     this);
         } else {
             Util.displayFragment(new ViewTermsFragment(), ViewTermsFragment.TAG, this);
-            Util.changeActionBarTitle(this, getString(R.string.ab_all_terms));
+            mActionBarText.setText(getString(R.string.ab_all_terms));
         }
     }
 
@@ -101,12 +93,6 @@ public class MainActivity extends SlidingFragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case android.R.id.home:
-                getSlidingMenu().toggle();
-                break;
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -127,12 +113,12 @@ public class MainActivity extends SlidingFragmentActivity {
         Fragment fragment = getFragmentOnBackStack();
         if (fragment instanceof ViewSingleClassFragment) {
             ViewSingleClassFragment frag = (ViewSingleClassFragment) fragment;
-            Util.changeActionBarTitle(this, getString(R.string.ab_all_terms));
+            mActionBarText.setText(getString(R.string.ab_all_terms));
             if (frag.shouldSwitch()) {
                 getSupportFragmentManager().popBackStack();
                 String allClassTitle = Session.getInstance(this).getCurrentTerm().getTermName() +
                         " " + getString(R.string.ab_classes);
-                Util.changeActionBarTitle(this, allClassTitle); // changing back to all classes
+                mActionBarText.setText(allClassTitle);
             }
         } else {
             if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
@@ -168,14 +154,8 @@ public class MainActivity extends SlidingFragmentActivity {
         }
     }
 
-    public void switchToHome() {
-        FragmentManager f = getSupportFragmentManager();
-        if (!(getFragmentOnBackStack() instanceof ViewTermsFragment)){ // already at home screen
-            f.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            Util.displayFragment(new ViewTermsFragment(), ViewTermsFragment.TAG, this);
-            Util.changeActionBarTitle(this, getString(R.string.ab_all_terms));
-        }
-        showContent();
+    public void changeActionBar(String newTitle) {
+        mActionBarText.setText(newTitle);
     }
 
 }

@@ -47,7 +47,7 @@ public class ViewSingleClassFragment extends Fragment {
 
 
     private void findAndSetViews(View v) {
-        mAdapter = new ClassFragmentAdapter(getActivity().getFragmentManager(), getActivity());
+        mAdapter = new ClassFragmentAdapter(getChildFragmentManager(), getActivity());
         mViewPager = (ViewPager) v.findViewById(R.id.class_pager);
         mViewPager.setAdapter(mAdapter);
         mIndicator = (CustomCirclePageIndicator) v.findViewById(R.id.class_pager_indicator);

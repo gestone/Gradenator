@@ -55,6 +55,7 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.view_terms_frag, container, false);
+        Util.changeActionBarTitle(getActivity(), getString(R.string.ab_all_terms));
         findAndSetViews(v);
         return v;
     }
