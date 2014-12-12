@@ -46,7 +46,6 @@ public class Util {
     }
 
     public static void displayFragment(Fragment f, String tag, FragmentActivity a) {
-        checkForFloatingAction(a);
         FragmentTransaction ft = a.getSupportFragmentManager().beginTransaction()
                 .addToBackStack(tag);
         ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right,
@@ -54,21 +53,6 @@ public class Util {
         ft.replace(R.id.container, f, tag).commit();
     }
 
-    private static void checkForFloatingAction(FragmentActivity a) {
-        if (a.getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            FragmentManager.BackStackEntry backEntry = a.getSupportFragmentManager()
-                    .getBackStackEntryAt(a.getSupportFragmentManager().getBackStackEntryCount() - 1);
-            String str = backEntry.getName();
-            Fragment fragment = a.getSupportFragmentManager().findFragmentByTag(str);
-            if (fragment instanceof ViewTermsFragment) {
-                ViewTermsFragment f = (ViewTermsFragment) fragment;
-                f.getFloatingAction().onDestroy(); // destory floating action
-            } else if (fragment instanceof ViewClassesFragment) {
-                ViewClassesFragment f = (ViewClassesFragment) fragment;
-                f.getFloatingAction().onDestroy(); // destroy floating action
-            }
-        }
-    }
 
     /**
      * Creates a String representing the current date in MM/dd/yyyy format.

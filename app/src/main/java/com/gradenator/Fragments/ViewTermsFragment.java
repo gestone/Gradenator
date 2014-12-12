@@ -31,6 +31,7 @@ import com.gradenator.Utilities.Util;
 import java.util.ArrayList;
 import java.util.List;
 
+import at.markushi.ui.CircleButton;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -50,7 +51,7 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
     private List<Card> mAllCards;
     private String mSelectedTerm;
     private Resources mRes;
-    private FloatingAction mFloat;
+    private CircleButton mAddButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +65,8 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
         mRes = getActivity().getResources();
         mImage = (ImageView) v.findViewById(R.id.info_image);
         mMessage = (TextView) v.findViewById(R.id.no_terms_msg);
+        mAddButton = (CircleButton) v.findViewById(R.id.add_term_button);
+        mAddButton.setOnClickListener(this);
         initListCardView(v);
         hideOrShowNoTermsMsg();
     }
@@ -256,8 +259,6 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
         }
         CardArrayAdapter c = new CardArrayAdapter(getActivity(), mAllCards);
         mAllTerms.setAdapter(c);
-        mFloat = FloatingAction.from(getActivity()).listenTo(mAllTerms).icon(R.drawable
-                .ic_action_add).listener(this).colorResId(R.color.white).build();
     }
 
 
@@ -311,7 +312,6 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
                 String termTitle = card.getCardHeader().getTitle();
                 s.setCurrentTerm(s.findTerm(termTitle));
                 termTitle += " " + getString(R.string.ab_classes);
-                mFloat.hide();
                 Util.changeActionBarTitle(getActivity(), termTitle);
                 Util.displayFragment(new ViewClassesFragment(), ViewClassesFragment.TAG, getActivity());
             }
@@ -357,9 +357,6 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
         return termHeader;
     }
 
-    public FloatingAction getFloatingAction() {
-        return mFloat;
-    }
 
     @Override
     public void onClick(View v) {

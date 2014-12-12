@@ -133,8 +133,8 @@ public class Class {
         return allDataPoints;
     }
 
-    public void setAllCategories(List<Category> l) {
-        allCategories = l;
+    public void setAllCategories(List<Category> updatedCategories) {
+        allCategories = updatedCategories;
     }
 
     public void setUnitCount(int unitCount) {

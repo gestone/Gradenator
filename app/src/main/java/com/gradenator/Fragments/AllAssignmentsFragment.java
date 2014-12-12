@@ -26,7 +26,6 @@ import android.widget.TextView;
 import com.gradenator.Action;
 import com.gradenator.CustomViews.AssignmentCard;
 import com.gradenator.CustomViews.CustomCardHeader;
-import com.gradenator.CustomViews.FloatingAction;
 import com.gradenator.Internal.Assignment;
 import com.gradenator.Internal.Category;
 import com.gradenator.Internal.Class;

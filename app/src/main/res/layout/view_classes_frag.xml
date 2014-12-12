@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:clickable="true"
                 android:layout_height="match_parent">
@@ -9,7 +10,8 @@
         android:id="@+id/all_entries"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/add_class_btn"/>
 
 
     <ImageView
@@ -30,6 +32,17 @@
         android:text="@string/no_classes_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <at.markushi.ui.CircleButton
+        app:cb_color="@color/green"
+        app:cb_pressedRingWidth="8dip"
+        android:id="@+id/add_class_btn"
+        android:src="@drawable/ic_action_add"
+        android:padding="15dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
 
 
 

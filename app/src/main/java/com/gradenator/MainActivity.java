@@ -6,13 +6,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +18,7 @@ import android.widget.TextView;
 
 
 import com.gradenator.Background.GradeUpdateReceiver;
-import com.gradenator.CustomViews.FloatingAction;
 import com.gradenator.Fragments.IntroFragment;
-import com.gradenator.Fragments.ViewClassesFragment;
 import com.gradenator.Fragments.ViewSingleClassFragment;
 import com.gradenator.Fragments.ViewTermsFragment;
 import com.gradenator.Internal.Constant;
@@ -125,7 +121,6 @@ public class MainActivity extends FragmentActivity {
                 this.finish();
             } else {
                 getSupportFragmentManager().popBackStack();
-                checkForFloatingAction(fragment);
             }
         }
     }
@@ -137,22 +132,6 @@ public class MainActivity extends FragmentActivity {
         return getSupportFragmentManager().findFragmentByTag(str);
     }
 
-
-    /**
-     * Work around for the FloatingAction button
-     * @param f The Fragment being popped off of the backstack.
-     */
-    private void checkForFloatingAction(Fragment f) {
-        if (f instanceof ViewTermsFragment) {
-            ViewTermsFragment frag = (ViewTermsFragment) f; // destroy floating action
-            frag.getFloatingAction().onDestroy();
-        }
-        if (f instanceof ViewClassesFragment) {
-            ViewClassesFragment frag = (ViewClassesFragment) f;
-            FloatingAction floating = frag.getFloatingAction();
-            floating.onDestroy();
-        }
-    }
 
     public void changeActionBar(String newTitle) {
         mActionBarText.setText(newTitle);

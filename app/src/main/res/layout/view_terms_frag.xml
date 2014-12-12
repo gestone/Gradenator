@@ -4,30 +4,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
     <it.gmariotti.cardslib.library.view.CardListView
         android:id="@+id/all_entries"
         android:layout_marginTop="10dp"
+        android:layout_above="@+id/add_term_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="match_parent"
+        />
 
-
-
-    </it.gmariotti.cardslib.library.view.CardListView>
-
-    <!--<at.markushi.ui.CircleButton-->
-        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-        <!--app:cb_color="#99CC00"-->
-        <!--app:cb_pressedRingWidth="8dip"-->
-        <!--android:id="@+id/add_term_button"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:paddingRight="5dp"-->
-        <!--android:paddingLeft="5dp"-->
-        <!--android:layout_width="80dp"-->
-        <!--android:layout_height="80dp"-->
-        <!--android:src="@drawable/ic_action_add"-->
-         <!--/>-->
+    <at.markushi.ui.CircleButton
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cb_color="#99CC00"
+        app:cb_pressedRingWidth="8dip"
+        android:id="@+id/add_term_button"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_action_add"
+        />
 
     <ImageView
         android:alpha=".25"

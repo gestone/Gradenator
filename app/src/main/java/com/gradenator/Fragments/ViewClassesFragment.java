@@ -22,7 +22,6 @@ import com.gradenator.Action;
 import com.gradenator.CustomViews.CreateCategoryAdapter;
 import com.gradenator.CustomViews.ClassCard;
 import com.gradenator.CustomViews.CustomCardHeader;
-import com.gradenator.CustomViews.FloatingAction;
 import com.gradenator.Internal.*;
 import com.gradenator.Internal.Class;
 import com.gradenator.R;
@@ -30,7 +29,9 @@ import com.gradenator.Utilities.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
+import at.markushi.ui.CircleButton;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -51,12 +52,7 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
     private Term mCurrentTerm;
     private ImageView mInfoIcon;
     private TextView mNoClassMessage;
-    private FloatingAction mFloat;
-
-    public FloatingAction getFloatingAction() {
-        return mFloat;
-    }
-
+    private CircleButton mAddClassButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,6 +67,8 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
         mAllClasses = (CardListView) v.findViewById(R.id.all_entries);
         mInfoIcon = (ImageView) v.findViewById(R.id.info_image);
         mNoClassMessage = (TextView) v.findViewById(R.id.no_class_msg);
+        mAddClassButton = (CircleButton) v.findViewById(R.id.add_class_btn);
+        mAddClassButton.setOnClickListener(this);
         initListCardView();
     }
 
@@ -85,8 +83,6 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
         }
         CardArrayAdapter c = new CardArrayAdapter(getActivity(), mAllCards);
         mAllClasses.setAdapter(c);
-        mFloat = FloatingAction.from(getActivity()).listenTo(mAllClasses).icon(R.drawable
-                .ic_action_add).listener(this).colorResId(R.color.white).build();
     }
 
     private Card createNewCard(Class curClass) {
@@ -175,7 +171,10 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
 
         List<Category> listOfCategories = new ArrayList<Category>();
         if (action == Action.EDIT) {
-            listOfCategories = getSelectedClass().getAllCategories();
+            List<Category> copyCategories = getSelectedClass().getAllCategories();
+            for (Category c : copyCategories) {
+                listOfCategories.add(c);
+            }
         }
         final CreateCategoryAdapter adapter = new CreateCategoryAdapter(getActivity(),
                 listOfCategories);
@@ -195,7 +194,6 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                removeBlankCategories(adapter);
             }
         });
         String createClass = "";
@@ -211,7 +209,6 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
             }
         });
         final AlertDialog d = builder.create();
-        d.setCancelable(false);
         className.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -233,16 +230,6 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
         });
         setCreateClassListener(d, className, unitCount, adapter, allCategories, action);
         d.show();
-    }
-
-    private void removeBlankCategories(CreateCategoryAdapter adapter) {
-        List<Category> allCategories = adapter.getCategoryList();
-        for (int i = 0; i < allCategories.size(); i++) {
-            Category c = allCategories.get(i);
-            if (c.getTitle().length() == 0) {
-                allCategories.remove(i);
-            }
-        }
     }
 
     private void setCreateClassListener(final AlertDialog d, final EditText className,
@@ -291,6 +278,7 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
                                 updateNewClassView(action);
                                 String msg = getString(R.string.class_created_msg_1) + " \"" + newClassName +
                                         "\" " + getString(R.string.class_created_msg_2);
+                                getSelectedClass().setAllCategories(adapter.getCategoryList());
                                 Util.makeToast(getActivity(), msg);
                             } else if (action == Action.EDIT) {
                                 Util.makeToast(getActivity(), getString(R.string.class_success_updated));
@@ -301,6 +289,7 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
                                 cur.setUnitCount(Integer.parseInt(newUnitCount));
                                 cur.setAllCategories(adapter.getCategoryList());
                                 CardArrayAdapter c = (CardArrayAdapter) mAllClasses.getAdapter();
+                                getSelectedClass().setAllCategories(adapter.getCategoryList());
                                 c.notifyDataSetChanged();
                             }
                             d.dismiss();
@@ -320,13 +309,11 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
                 mSelectedClass = card.getCardHeader().getTitle();
                 Session.getInstance(getActivity()).setCurrentClass(getSelectedClass());
                 Util.changeActionBarTitle(getActivity(), getSelectedClass().getClassName());
-                mFloat.hide(true);
                 Util.displayFragment(new ViewSingleClassFragment(), ViewSingleClassFragment.TAG,
                         getActivity());
             }
         });
     }
-
 
     private void setCategoryButtonListeners(View v, final CreateCategoryAdapter adapter,
                                             final ListView allCategories) {
@@ -336,7 +323,8 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 updateCategories(allCategories, adapter);
-                adapter.getCategoryList().add(new Category());
+                Category newCategory = new Category();
+                adapter.getCategoryList().add(newCategory);
                 adapter.setRemoveOrAdd(true);
                 adapter.notifyDataSetChanged();
             }
@@ -346,7 +334,6 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
             public void onClick(View v) {
                 List<Category> categories = adapter.getCategoryList();
                 if (categories.size() > 1) {
-                    categories.remove(categories.size() - 1);
                     adapter.setRemoveOrAdd(false);
                     adapter.notifyDataSetChanged();
                     updateCategories(allCategories, adapter);
