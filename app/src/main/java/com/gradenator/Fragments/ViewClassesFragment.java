@@ -29,7 +29,6 @@ import com.gradenator.Utilities.Util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import at.markushi.ui.CircleButton;
 import it.gmariotti.cardslib.library.internal.Card;
@@ -41,7 +40,7 @@ import it.gmariotti.cardslib.library.view.CardListView;
 /**
  * Displays the classes for a given term to the user.
  */
-public class ViewClassesFragment extends Fragment implements View.OnClickListener{
+public class ViewClassesFragment extends Fragment implements View.OnClickListener {
 
     public static final String TAG = ViewClassesFragment.class.getSimpleName();
 
@@ -62,6 +61,9 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
         return v;
     }
 
+    /**
+     * @param v The inflated view.
+     */
     private void findAndSetViews(View v) {
         mRes = getActivity().getResources();
         mAllClasses = (CardListView) v.findViewById(R.id.all_entries);
@@ -230,6 +232,7 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
         });
         setCreateClassListener(d, className, unitCount, adapter, allCategories, action);
         d.show();
+        Util.changeDialogColor(d, getActivity());
     }
 
     private void setCreateClassListener(final AlertDialog d, final EditText className,
@@ -272,13 +275,14 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
                                     getString(R.string.class_title_too_long_msg), getActivity());
                         } else {
                             if (action == Action.ADD) {
-                                mCurrentTerm.addClass(new Class(newClassName,
+                                Class newClass = new Class(newClassName,
                                         Integer.parseInt(newUnitCount),
-                                        Util.createRandomColor(), adapter.getCategoryList()));
+                                        Util.createRandomColor(), adapter.getCategoryList());
+                                mCurrentTerm.addClass(newClass);
                                 updateNewClassView(action);
                                 String msg = getString(R.string.class_created_msg_1) + " \"" + newClassName +
                                         "\" " + getString(R.string.class_created_msg_2);
-                                getSelectedClass().setAllCategories(adapter.getCategoryList());
+                                newClass.setAllCategories(adapter.getCategoryList());
                                 Util.makeToast(getActivity(), msg);
                             } else if (action == Action.EDIT) {
                                 Util.makeToast(getActivity(), getString(R.string.class_success_updated));
@@ -334,6 +338,7 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
             public void onClick(View v) {
                 List<Category> categories = adapter.getCategoryList();
                 if (categories.size() > 1) {
+                    categories.remove(categories.size() - 1);
                     adapter.setRemoveOrAdd(false);
                     adapter.notifyDataSetChanged();
                     updateCategories(allCategories, adapter);
@@ -457,8 +462,4 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
         createClassDialog(Action.ADD);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
 }

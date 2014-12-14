@@ -4,6 +4,6 @@
               android:id="@+id/list_layout"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:background="@color/blue_dark" >
+              android:background="@color/green_dark" >
 
 </FrameLayout>

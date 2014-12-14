@@ -1,6 +1,7 @@
 package com.gradenator.Utilities;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -147,6 +148,15 @@ public class Util {
         for (View view : v) {
             view.setVisibility(View.VISIBLE);
         }
+    }
+
+    public static void changeDialogColor(Dialog d, Context c) {
+        int dividerId = d.getContext().getResources().getIdentifier("android:id/titleDivider", null, null);
+        View divider = d.findViewById(dividerId);
+        divider.setBackgroundColor(c.getResources().getColor(R.color.green_medium));
+        int textViewId = d.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
+        TextView tv = (TextView) d.findViewById(textViewId);
+        tv.setTextColor(c.getResources().getColor(R.color.green_medium));
     }
 
 }

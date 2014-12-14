@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <color name="blue_light">#56d0ff</color>
-    <color name="blue_middle">#3dc9ff</color>
-    <color name="blue_dark">#3dc9ff</color>
-    <color name="card_text">#62d3ff</color>
-    <color name="card_header">#98e2ff</color>
+    <color name="green_light">#88B430</color>
+    <color name="green_medium">#699315</color>
+    <color name="green_dark">#344F00</color>
+    <color name="card_text">#699315</color>
+    <color name="card_header">#699315</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="light_grey">#f2f2f2</color>
-    <color name="card_click">#00b7ff</color>
     <color name="green">#99CC00</color>
 
 </resources>

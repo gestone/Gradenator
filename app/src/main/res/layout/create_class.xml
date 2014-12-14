@@ -15,6 +15,7 @@
         android:layout_alignTop="@+id/class_title_edit"/>
 
     <EditText
+        style="@style/EditText.Gradenator"
         android:layout_width="wrap_content"
         android:gravity="right"
         android:id="@+id/class_title_edit"
@@ -41,6 +42,7 @@
         android:layout_alignParentStart="true"/>
 
     <EditText
+        style="@style/EditText.Gradenator"
         android:inputType="number"
         android:imeOptions="actionDone"
         android:id="@+id/unit_count_edit"
@@ -55,12 +57,12 @@
         android:layout_alignStart="@+id/class_title_edit"/>
 
     <TextView
-        android:background="@color/card_text"
+        android:textStyle="bold"
         android:textSize="25sp"
         android:gravity="center"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:text="@string/category_title"
-        android:layout_marginTop="10dp"
+        android:padding="15dp"
         android:id="@+id/category_header"
         android:layout_width="match_parent"
         android:layout_below="@+id/unit_count_edit"

@@ -1,7 +1,5 @@
 package com.gradenator.Fragments;
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -16,7 +14,6 @@ import com.gradenator.Internal.Constant;
 import com.gradenator.Internal.Session;
 import com.gradenator.R;
 import com.gradenator.Utilities.Util;
-import com.gradenator.Internal.*;
 
 /**
  * Displays information about a single class that the user has selected.
@@ -52,9 +49,9 @@ public class ViewSingleClassFragment extends Fragment {
         mViewPager.setAdapter(mAdapter);
         mIndicator = (CustomCirclePageIndicator) v.findViewById(R.id.class_pager_indicator);
         mIndicator.setViewPager(mViewPager);
-        mIndicator.setFillColor(getResources().getColor(R.color.blue_light));
+        mIndicator.setFillColor(getResources().getColor(R.color.green_medium));
         mIndicator.setRadius(20);
-        mIndicator.setStrokeColor(getResources().getColor(R.color.blue_dark));
+        mIndicator.setStrokeColor(getResources().getColor(R.color.green_dark));
         mIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {

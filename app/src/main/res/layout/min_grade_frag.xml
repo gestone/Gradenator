@@ -4,32 +4,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:background="@color/blue_dark"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_above="@+id/which_category_msg"/>
-
     <TextView
-        android:layout_alignParentTop="true"
-        android:text="@string/min_grade_header"
-        android:id="@+id/min_grade_header"
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:layout_centerHorizontal="true"
-        android:layout_height="50dp"/>
-
-    <TextView
-        android:layout_centerHorizontal="true"
         android:textSize="16sp"
+        android:gravity="center"
         android:id="@+id/which_category_msg"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/min_grade_header"
         android:text="@string/which_category_msg"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
     <Spinner
         android:gravity="center"
@@ -54,9 +40,12 @@
         android:gravity="center_vertical"
         android:layout_alignLeft="@+id/choose_category"
         android:layout_alignStart="@+id/choose_category"
-        android:layout_alignBottom="@+id/percentage_maintain"/>
+        android:layout_alignBottom="@+id/percentage_maintain"
+        android:layout_alignRight="@+id/maximum_points_msg"
+        android:layout_alignEnd="@+id/maximum_points_msg"/>
 
     <EditText
+        style="@style/EditText.Gradenator"
         android:gravity="right"
         android:id="@+id/percentage_maintain"
         android:layout_width="match_parent"
@@ -77,12 +66,12 @@
         android:paddingRight="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
         android:layout_below="@+id/percentage_maintain_msg"
-        android:layout_alignLeft="@+id/percentage_maintain_msg"
-        android:layout_alignStart="@+id/percentage_maintain_msg"
-        android:layout_marginTop="34dp"/>
+        android:layout_toLeftOf="@+id/calculate"/>
 
     <EditText
+        style="@style/EditText.Gradenator"
         android:inputType="numberDecimal"
         android:id="@+id/maximum_points"
         android:gravity="right"
@@ -96,14 +85,15 @@
         android:layout_alignEnd="@+id/percentage_maintain"/>
 
     <Button
-        android:background="@color/blue_dark"
+        android:background="@color/green_dark"
         android:textColor="@color/white"
-        android:layout_alignParentBottom="true"
         android:id="@+id/calculate"
         android:text="@string/calculate"
-        android:layout_centerHorizontal="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/maximum_points_msg"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:textSize="25sp"
@@ -112,9 +102,10 @@
         android:text="You need 45.2/50 points to maintain your grade."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:layout_above="@+id/calculate"
-        android:layout_centerHorizontal="true"/>
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/calculate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
 
 

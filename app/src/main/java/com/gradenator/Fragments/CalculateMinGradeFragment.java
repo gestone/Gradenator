@@ -53,6 +53,7 @@ public class CalculateMinGradeFragment extends Fragment {
                 String category = mCategory.getSelectedItem().toString();
                 if (!mMaxPoints.getText().toString().isEmpty() && !mMaintain.getText().toString().isEmpty
                         ()) {
+                    Util.hideSoftKeyboard(getActivity());
                     calculatePoints(category);
                 } else {
                     createNoFieldsErrorDialog();

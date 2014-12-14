@@ -181,6 +181,7 @@ public class AllAssignmentsFragment extends Fragment implements View.OnClickList
         setPositiveButtonListener(d, action);
         promptEditText(d);
         d.show();
+        Util.changeDialogColor(d, getActivity());
     }
 
     private void promptEditText(final AlertDialog d) {

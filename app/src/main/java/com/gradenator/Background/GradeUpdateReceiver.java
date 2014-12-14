@@ -27,7 +27,7 @@ public class GradeUpdateReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context c, Intent i) {
         updateGradePercentages(c);
-        // if the user has enabled to send reports every week... then execute
+
     }
 
     private void updateGradePercentages(Context c) {

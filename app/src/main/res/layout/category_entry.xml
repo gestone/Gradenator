@@ -8,6 +8,7 @@
               android:layout_height="wrap_content">
 
     <EditText
+        style="@style/EditText.Gradenator"
         android:hint="@string/category_name_hint"
         android:id="@+id/category_name"
         android:layout_weight="2"
@@ -16,6 +17,7 @@
         android:layout_height="wrap_content"/>
 
     <EditText
+        style="@style/EditText.Gradenator"
         android:hint="@string/category_weight_hint"
         android:layout_weight="1"
         android:layout_marginLeft="10dp"

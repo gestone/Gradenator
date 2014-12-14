@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 
 import com.gradenator.Background.GradeUpdateReceiver;
@@ -26,6 +27,7 @@ import com.gradenator.Internal.Session;
 import com.gradenator.Utilities.TypefaceUtil;
 import com.gradenator.Utilities.Util;
 
+import java.util.Calendar;
 
 
 public class MainActivity extends FragmentActivity {
@@ -62,13 +64,21 @@ public class MainActivity extends FragmentActivity {
         Intent alarmIntent = new Intent(this, GradeUpdateReceiver.class);
         mRecordGradeIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
         mRecordGrade = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        mRecordGrade.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
-                Constant.ONE_WEEK, mRecordGradeIntent);
+        TimePicker t = new TimePicker(this);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, t.getCurrentHour());
+        cal.set(Calendar.MINUTE, t.getCurrentMinute());
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        mRecordGrade.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
+                Constant.ONE_DAY, mRecordGradeIntent);
         PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(Constant.ALARM_ON,
                 true).commit();
     }
 
-
+    /**
+     *
+     */
     private void chooseFragment(){
         if (!Session.getInstance(this).hasTerms()) {
             Util.displayFragment(new IntroFragment(), IntroFragment.TAG,
@@ -98,11 +108,6 @@ public class MainActivity extends FragmentActivity {
         Session.getInstance(this).saveTerms(this);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Session.getInstance(this); // refresh if it is not in memory
-    }
 
     @Override
     public void onBackPressed() {
@@ -117,12 +122,17 @@ public class MainActivity extends FragmentActivity {
                 mActionBarText.setText(allClassTitle);
             }
         } else {
-            if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+            if (getSupportFragmentManager().getBackStackEntryCount() == 1 || classAlreadyCreated
+                    (fragment)) {
                 this.finish();
             } else {
                 getSupportFragmentManager().popBackStack();
             }
         }
+    }
+
+    private boolean classAlreadyCreated(Fragment f) {
+        return f instanceof ViewTermsFragment && Session.getInstance(this).hasTerms();
     }
 
     private Fragment getFragmentOnBackStack() {

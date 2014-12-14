@@ -15,6 +15,7 @@
         android:layout_alignTop="@+id/assignment_title"/>
 
     <EditText
+        style="@style/EditText.Gradenator"
         android:textSize="20sp"
         android:hint="@string/assignment_title_hint"
         android:layout_width="wrap_content"
@@ -38,6 +39,7 @@
         android:layout_below="@+id/assignment_title_header"/>
 
     <EditText
+        style="@style/EditText.Gradenator"
         android:id="@+id/earned_points"
         android:textSize="20sp"
         android:layout_marginTop="5dp"
@@ -63,6 +65,7 @@
         android:layout_below="@+id/earned_points_header"/>
 
     <EditText
+        style="@style/EditText.Gradenator"
         android:id="@+id/max_points"
         android:layout_marginTop="5dp"
         android:textSize="20sp"

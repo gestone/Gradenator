@@ -105,9 +105,7 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
                             }
                         }
                 );
-                final AlertDialog d = builder.create();
-                setDialogListeners(d, termName, action);
-                d.show();
+                setupDialog(builder.create(), termName, action);
                 break;
             }
             case EDIT: {
@@ -122,9 +120,7 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
 
                     }
                 });
-                final AlertDialog d = builder.create();
-                setDialogListeners(d, termName, action);
-                d.show();
+                setupDialog(builder.create(), termName, action);
                 break;
             }
             case REMOVE: {
@@ -142,9 +138,16 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
                         mSelectedTerm = "";
                     }
                 });
-                builder.create().show();
+                builder.create();
+                Util.changeDialogColor(builder.show(), getActivity());
             }
         }
+    }
+
+    private void setupDialog(AlertDialog d, EditText termName, Action action) {
+        setDialogListeners(d, termName, action);
+        d.show();
+        Util.changeDialogColor(d, getActivity());
     }
 
     private void setDialogListeners(final AlertDialog d, final EditText termName,
@@ -356,7 +359,6 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
 
         return termHeader;
     }
-
 
     @Override
     public void onClick(View v) {
