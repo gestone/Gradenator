@@ -4,25 +4,17 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.telephony.TelephonyManager;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gradenator.CustomViews.CustomTypefaceSpan;
 import com.gradenator.Dialogs.GenericDialog;
-import com.gradenator.Fragments.ViewClassesFragment;
-import com.gradenator.Fragments.ViewSingleClassFragment;
-import com.gradenator.Fragments.ViewTermsFragment;
 import com.gradenator.Internal.Constant;
 import com.gradenator.MainActivity;
 import com.gradenator.R;
@@ -72,12 +64,10 @@ public class Util {
         return date;
     }
 
-    public static int createRandomColor() {
+    public static int createRandomColor(Activity a) {
         Random r = new Random();
-        String color = Constant.DEFAULT_COLOR_SCHEME[r.nextInt(Constant.DEFAULT_COLOR_SCHEME
-                .length)];
-        int colorIntRepresentation = Color.parseColor(color);
-        return colorIntRepresentation;
+        int[] colorPalette = a.getResources().getIntArray(R.array.color_palette);
+        return colorPalette[r.nextInt(colorPalette.length)];
     }
 
     public static void makeToast(Context c, String text) {
@@ -91,7 +81,7 @@ public class Util {
 
     public static void createErrorDialog(String title, String msg, Activity a) {
         GenericDialog g = GenericDialog.newInstance(title, msg);
-        g.show(a.getFragmentManager(), GenericDialog.TAG);
+        Util.changeDialogColor(g.show(a), a);
     }
 
     public static void setFocus(View v, Activity a) {

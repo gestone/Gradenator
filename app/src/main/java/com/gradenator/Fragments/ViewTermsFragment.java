@@ -83,7 +83,8 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
      * Creates a new term dialog
      */
     private void createNewTermDialog(final Action action) {
-        final EditText termName = new EditText(getActivity());
+        final EditText termName = (EditText) getActivity().getLayoutInflater().inflate(R.layout
+                .custom_edit_text, null);
         termName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_CLASS_TEXT);
         termName.setHint(mRes.getString(R.string.term_title_hint));
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -101,8 +102,7 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
                 builder.setPositiveButton(mRes.getString(R.string.create_term),
                         new DialogInterface.OnClickListener() { // placeholder to be overriden
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
+                            public void onClick(DialogInterface dialog, int which) {}
                         }
                 );
                 setupDialog(builder.create(), termName, action);
@@ -116,9 +116,7 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
                 builder.setPositiveButton(mRes.getString(R.string
                         .save_edit), new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
+                    public void onClick(DialogInterface dialog, int which) {}
                 });
                 setupDialog(builder.create(), termName, action);
                 break;
@@ -144,12 +142,24 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
         }
     }
 
+    /**
+     *
+     * @param d
+     * @param termName
+     * @param action
+     */
     private void setupDialog(AlertDialog d, EditText termName, Action action) {
         setDialogListeners(d, termName, action);
         d.show();
         Util.changeDialogColor(d, getActivity());
     }
 
+    /**
+     *
+     * @param d
+     * @param termName
+     * @param action
+     */
     private void setDialogListeners(final AlertDialog d, final EditText termName,
                                     final Action action) {
         d.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -165,7 +175,7 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
                             String termError = mRes.getString(R.string
                                     .empty_term_error_msg);
                             Util.createErrorDialog(title, termError, getActivity());
-                        } else if (isDuplicateTerm(term)) {
+                        } else if (isDuplicateTerm(term, action)) {
                             String title = getString(R.string.dup_term_title);
                             String termError = getString(R.string.dup_term_msg);
                             Util.createErrorDialog(title, termError, getActivity());
@@ -197,24 +207,22 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
 
     /**
      * Checks if a term with the same name already exists, if so, returns true otherwise, false.
-     *
-     * @param termTitle
-     * @return
+     * @param termTitle The term title that is to be considered.
+     * @return          A boolean if the term with a same name exists, true if so, otherwise, false.
      */
-    private boolean isDuplicateTerm(String termTitle) {
-        List<Term> allTerms = Session.getInstance(getActivity()).getAllTerms();
-        for (Term t : allTerms) {
-            if (t.getTermName().equals(termTitle)) {
-                return true;
-            }
+    private boolean isDuplicateTerm(String termTitle, Action action) {
+        List<String> allTerms = Session.getInstance(getActivity()).getAllTermNames();
+        if (action == Action.EDIT && termTitle.equals(mSelectedTerm)) { // if the user doesn't edit,
+                                                                        // it's not a duplicate
+            return false;
         }
-        return false;
+        return allTerms.contains(termTitle);
     }
 
 
     private void setAddTermLogic(String termName) {
         List<Term> currentTerms = Session.getInstance(getActivity()).getAllTerms();
-        currentTerms.add(0, new Term(termName));
+        currentTerms.add(0, new Term(termName, Util.createRandomColor(getActivity())));
         Util.hideViews(mImage, mMessage);
         Toast.makeText(getActivity(), termName + " " + mRes.getString(R.string.term_success_msg), Toast.LENGTH_SHORT).show();
     }
@@ -236,6 +244,8 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
                 }
             }
         }
+        Toast.makeText(getActivity(), newTermName + " " + mRes.getString(R.string.term_edited_msg),
+                Toast.LENGTH_SHORT).show();
     }
 
     private void removeCard() {

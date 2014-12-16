@@ -160,7 +160,8 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
                 dialog.dismiss();
             }
         });
-        builder.create().show();
+        builder.create();
+        Util.changeDialogColor(builder.show(), getActivity());
     }
 
     private void createClassDialog(Action action) {
@@ -277,7 +278,7 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
                             if (action == Action.ADD) {
                                 Class newClass = new Class(newClassName,
                                         Integer.parseInt(newUnitCount),
-                                        Util.createRandomColor(), adapter.getCategoryList());
+                                        Util.createRandomColor(getActivity()), adapter.getCategoryList());
                                 mCurrentTerm.addClass(newClass);
                                 updateNewClassView(action);
                                 String msg = getString(R.string.class_created_msg_1) + " \"" + newClassName +
@@ -293,7 +294,7 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
                                 cur.setUnitCount(Integer.parseInt(newUnitCount));
                                 cur.setAllCategories(adapter.getCategoryList());
                                 CardArrayAdapter c = (CardArrayAdapter) mAllClasses.getAdapter();
-                                getSelectedClass().setAllCategories(adapter.getCategoryList());
+                                cur.setAllCategories(adapter.getCategoryList());
                                 c.notifyDataSetChanged();
                             }
                             d.dismiss();
@@ -312,7 +313,8 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
             public void onClick(Card card, View view) {
                 mSelectedClass = card.getCardHeader().getTitle();
                 Session.getInstance(getActivity()).setCurrentClass(getSelectedClass());
-                Util.changeActionBarTitle(getActivity(), getSelectedClass().getClassName());
+                Util.changeActionBarTitle(getActivity(), getSelectedClass().getClassName() + " "
+                        + getString(R.string.ab_overview));
                 Util.displayFragment(new ViewSingleClassFragment(), ViewSingleClassFragment.TAG,
                         getActivity());
             }
@@ -327,10 +329,11 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 updateCategories(allCategories, adapter);
-                Category newCategory = new Category();
-                adapter.getCategoryList().add(newCategory);
-                adapter.setRemoveOrAdd(true);
+                Category newCategory = new Category(getActivity());
+                List<Category> categoryList = adapter.getCategoryList();
+                categoryList.add(newCategory);
                 adapter.notifyDataSetChanged();
+                allCategories.smoothScrollToPosition(categoryList.size() - 1);
             }
         });
         removeCategory.setOnClickListener(new View.OnClickListener() {
@@ -339,9 +342,10 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
                 List<Category> categories = adapter.getCategoryList();
                 if (categories.size() > 1) {
                     categories.remove(categories.size() - 1);
-                    adapter.setRemoveOrAdd(false);
                     adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetInvalidated();
                     updateCategories(allCategories, adapter);
+                    allCategories.smoothScrollToPosition(categories.size() - 1);
                 } else if (categories.size() == 1) {
                     Toast.makeText(getActivity(), getString(R.string.category_error),
                             Toast.LENGTH_SHORT).show();

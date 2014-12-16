@@ -60,9 +60,9 @@
         android:textStyle="bold"
         android:textSize="25sp"
         android:gravity="center"
-        android:textColor="@color/black"
+        android:textColor="@color/green_medium"
         android:text="@string/category_title"
-        android:padding="15dp"
+        android:padding="20dp"
         android:id="@+id/category_header"
         android:layout_width="match_parent"
         android:layout_below="@+id/unit_count_edit"
@@ -70,7 +70,7 @@
 
     <TextView
         android:gravity="center"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="3dp"
         android:textSize="16sp"
         android:id="@+id/category_msg"
         android:text="@string/category_msg"

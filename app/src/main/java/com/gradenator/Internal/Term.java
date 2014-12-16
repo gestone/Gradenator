@@ -1,5 +1,7 @@
 package com.gradenator.Internal;
 
+import android.app.Activity;
+
 import com.gradenator.Utilities.Util;
 
 import org.json.JSONArray;
@@ -27,9 +29,9 @@ public class Term {
         setFromJSON(j);
     }
 
-    public Term(String termName) {
+    public Term(String termName, int color) {
         this.termName = termName;
-        this.backgroundColor = Util.createRandomColor();
+        this.backgroundColor = color;
         allClasses = new ArrayList<Class>();
         dateCreated = System.currentTimeMillis();
         lastUpdateTime = dateCreated;

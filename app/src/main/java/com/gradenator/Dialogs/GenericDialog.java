@@ -8,12 +8,12 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import com.gradenator.Utilities.Util;
+
 /**
  * Created by Justin on 9/16/2014.
  */
 public class GenericDialog extends DialogFragment {
-
-    public static final String TAG = GenericDialog.class.getSimpleName();
 
     public static GenericDialog newInstance(String title, String message) {
         GenericDialog gen = new GenericDialog();
@@ -24,17 +24,16 @@ public class GenericDialog extends DialogFragment {
         return gen;
     }
 
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getArguments().getString("title"));
-        builder.setMessage(getArguments().getString("message"));
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+    public AlertDialog show(Activity a) {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(a);
+        mBuilder.setTitle(getArguments().getString("title"));
+        mBuilder.setMessage(getArguments().getString("message"));
+        mBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-        return builder.create();
+        return mBuilder.show();
     }
 }

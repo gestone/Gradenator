@@ -30,8 +30,4 @@ public class Constant {
 
     public static final String ALARM_ON = "Alarm_On";
 
-    public static final String[] DEFAULT_COLOR_SCHEME = new String[]{"#78B400", "#588303",
-            "#93AD1E", "#78B400", "#B4961F", "#3E3308", "#354B00", "#3E3608", "#3E1908",
-            "#312A3F", "#29CDFF", "#163607", "#0B2100", "#8C5603", "#F0BD1B"};
-
 }

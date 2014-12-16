@@ -8,6 +8,7 @@
 
     <!--ActionBar Strings-->
     <string name="ab_classes">Classes</string>
+    <string name="ab_overview">Overview</string>
     <string name="ab_all_terms">All Terms</string>
     <string name="ab_assignments">Assignments</string>
     <string name="ab_graph">Graph</string>
@@ -29,6 +30,7 @@
     <string name="create_term">Create Term</string>
     <string name="save_edit">Save Edit</string>
     <string name="term_success_msg">term created!</string>
+    <string name="term_edited_msg">term edited!</string>
     <string name="remove_term_title">Remove Term</string>
     <string name="confirm_msg_1">Are you sure you want to remove the term</string>
     <string name="confirm_msg_2">from your term list?</string>

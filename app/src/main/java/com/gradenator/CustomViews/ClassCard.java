@@ -58,6 +58,12 @@ public class ClassCard extends Card {
         return msg;
     }
 
+    /**
+     * Constructs the RoundedLetterView's text.
+     * @param className The title of the class name.
+     * @return          A String representing what should be displayed to the user in the
+     *                  RoundedCircleView.
+     */
     private String constructImageText(String className) {
         String total = "";
         if (className.contains(" ")) {
@@ -79,15 +85,19 @@ public class ClassCard extends Card {
         } else {
             if (className.length() >= 4) {
                 total = className.substring(0, 4);
+            } else {
+                total = className;
             }
         }
         return total;
     }
 
+    /**
+     * Gets the class associated with this ClassCard.
+     * @return The class associated with this ClassCard.
+     */
     public Class getCorrespondingClass() {
         return mClass;
     }
-
-
 
 }

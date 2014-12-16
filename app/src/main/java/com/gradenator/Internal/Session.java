@@ -57,6 +57,14 @@ public class Session {
         return mAllTerms;
     }
 
+    public List<String> getAllTermNames() {
+        List<String> allTermNames = new ArrayList<String>();
+        for (Term t : mAllTerms) {
+            allTermNames.add(t.getTermName());
+        }
+        return allTermNames;
+    }
+
     public Term getCurrentTerm() {
         if (mCurrentTerm == null && !mAllTerms.isEmpty()) {
             return mAllTerms.get(0);

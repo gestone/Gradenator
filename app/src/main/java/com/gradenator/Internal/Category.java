@@ -23,8 +23,8 @@ public class Category {
     private int color;
     private List<Assignment> allAssignments;
 
-    public Category() {
-        this("", -1);
+    public Category(Activity a) {
+        this("", -1, Util.createRandomColor(a));
     }
 
     public Category(JSONObject j) {
@@ -32,10 +32,10 @@ public class Category {
         setFromJSON(j);
     }
 
-    public Category(String title, int weight) {
+    public Category(String title, int weight, int color) {
         this.title = title;
         this.weight = weight;
-        this.color = Util.createRandomColor();
+        this.color = color;
         allAssignments = new ArrayList<Assignment>();
     }
 
@@ -111,7 +111,12 @@ public class Category {
         if (hasNoAssignments()) {
             return "% N/A";
         } else {
-            return getRawPercentage() + "%";
+            double rawPercentage = getRawPercentage();
+            String withoutDot = (int) rawPercentage + "";
+            if (withoutDot.length() > 3) {
+                return withoutDot + "%";
+            }
+            return rawPercentage + "%";
         }
     }
 

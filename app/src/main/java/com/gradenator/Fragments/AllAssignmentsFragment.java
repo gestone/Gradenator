@@ -215,7 +215,8 @@ public class AllAssignmentsFragment extends Fragment implements View.OnClickList
                                 double parsedMaxPoints = Double.parseDouble(maxPoints);
                                 if (action == Action.ADD) {
                                     Assignment newAssignment = new Assignment(assignmentTitle.trim(),
-                                            parsedEarnedPoints, parsedMaxPoints);
+                                            parsedEarnedPoints, parsedMaxPoints,
+                                            Util.createRandomColor(getActivity()));
                                     c.addAssignment(newAssignment);
                                     Util.makeToast(getActivity(), getString(R.string.assignment_success_msg));
                                     Util.hideViews(mNoAssignmentsImage, mNoAssignmentsMessage);
@@ -283,7 +284,8 @@ public class AllAssignmentsFragment extends Fragment implements View.OnClickList
         String msg = getString(R.string.remove_assignment_1) + " \"" + mSelectedAssignment + "\" " +
                 getString(R.string.remove_assignment_2);
         b.setMessage(msg);
-        b.create().show();
+        b.create();
+        Util.changeDialogColor(b.show(), getActivity());
     }
 
     private void removeAssignmentCard() {

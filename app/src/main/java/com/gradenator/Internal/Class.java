@@ -103,7 +103,12 @@ public class Class {
         if (rawPercentage < 0) {
             return "% N/A";
         } else {
-            return Util.roundToNDigits(actualPercentage, 2) + "%";
+            double roundedPercentage = Util.roundToNDigits(actualPercentage, 2);
+            String wholeNumberPercentage = (int) roundedPercentage + "";
+            if (wholeNumberPercentage.length() > 3) {
+                return (int) roundedPercentage + "%";
+            }
+            return roundedPercentage + "%";
         }
     }
 

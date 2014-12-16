@@ -41,7 +41,8 @@ public class DisplayCategoryAdapter extends BaseAdapter {
         mAllCategories.addAll(categories); // total percentage not an actual category,
                                            // copy references
         int lightBlueColor = activity.getResources().getColor(R.color.card_text);
-        Category totalScore = new Category(activity.getString(R.string.total_percentage), 100);
+        Category totalScore = new Category(activity.getString(R.string.total_percentage), 100,
+                Util.createRandomColor(activity));
         totalScore.setColor(lightBlueColor);
         mAllCategories.add(0, totalScore); // total score
         this.mActivity = activity;

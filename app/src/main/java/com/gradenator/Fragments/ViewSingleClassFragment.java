@@ -33,20 +33,40 @@ public class ViewSingleClassFragment extends Fragment {
         return v;
     }
 
+    /**
+     * Method to determine whether or not the ViewSingleClassFragment should be switched when the
+     * back key is pressed.
+     * @return If the user is currently on the ClassOverviewFragment, then the method will return true
+     *         signaling the ViewSingleClassFragment to be switched out with another Fragment. Otherwise,
+     *         the method will switch the user to the ClassOverViewFragment, return false,
+     *         and not switch out.
+     */
     public boolean shouldSwitch() {
-        if (mViewPager.getCurrentItem() == 0) {
+        if (mViewPager.getCurrentItem() == Constant.OVERVIEW_FRAGMENT) {
             return true;
         } else {
-            mViewPager.setCurrentItem(0);
+            mViewPager.setCurrentItem(Constant.OVERVIEW_FRAGMENT);
             return false;
         }
     }
 
-
+    /**
+     * Finds and sets views from the inflated layout.
+     * @param v The inflated layout containing all the views.
+     */
     private void findAndSetViews(View v) {
         mAdapter = new ClassFragmentAdapter(getChildFragmentManager(), getActivity());
         mViewPager = (ViewPager) v.findViewById(R.id.class_pager);
         mViewPager.setAdapter(mAdapter);
+        setCircleIndicator(v);
+        mAdapter.setCirclePagerIndicator(mIndicator);
+    }
+
+    /**
+     * Sets up the circle indicator at the bottom of the fragment.
+     * @param v The inflated layout containing views, specifically, the circle indicator.
+     */
+    private void setCircleIndicator(View v) {
         mIndicator = (CustomCirclePageIndicator) v.findViewById(R.id.class_pager_indicator);
         mIndicator.setViewPager(mViewPager);
         mIndicator.setFillColor(getResources().getColor(R.color.green_medium));
@@ -68,19 +88,6 @@ public class ViewSingleClassFragment extends Fragment {
                 changeActionBar(newPosition);
             }
 
-            private void changeActionBar(int newPosition) {
-                Class cur = Session.getInstance(getActivity()).getCurrentClass();
-                String newTitle = cur.getClassName().trim() + " ";
-                if (newPosition == Constant.ALL_ASSIGNMENTS_FRAGMENT) {
-                    newTitle += getString(R.string.ab_assignments);
-                } else if (newPosition == Constant.GRAPH_FRAGMENT) {
-                    newTitle += getString(R.string.ab_graph);
-                } else if (newPosition == Constant.CALCULATOR_FRAGMENT) {
-                    newTitle = getString(R.string.ab_grade_calc);
-                }
-                Util.changeActionBarTitle(getActivity(), newTitle);
-            }
-
             @Override
             public void onPageScrollStateChanged(int i) {
 
@@ -88,7 +95,30 @@ public class ViewSingleClassFragment extends Fragment {
         });
         mIndicator.setAllAssignmentsFrag((AllAssignmentsFragment) mAdapter.getItem(Constant
                 .ALL_ASSIGNMENTS_FRAGMENT));
-        mAdapter.setCirclePagerIndicator(mIndicator);
+    }
+
+    /**
+     * Changes the action bar based on the position that
+     * @param newPosition The new position that the ViewPager has been set to.
+     */
+    private void changeActionBar(int newPosition) {
+        Class cur = Session.getInstance(getActivity()).getCurrentClass();
+        String newTitle = cur.getClassName().trim() + " ";
+        switch (newPosition) {
+            case Constant.OVERVIEW_FRAGMENT:
+                newTitle += getString(R.string.ab_overview);
+                break;
+            case Constant.ALL_ASSIGNMENTS_FRAGMENT:
+                newTitle += getString(R.string.ab_assignments);
+                break;
+            case Constant.GRAPH_FRAGMENT:
+                newTitle += getString(R.string.ab_graph);
+                break;
+            case Constant.CALCULATOR_FRAGMENT:
+                newTitle += getString(R.string.ab_grade_calc);
+                break;
+        }
+        Util.changeActionBarTitle(getActivity(), newTitle);
     }
 
 }

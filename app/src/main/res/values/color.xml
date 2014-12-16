@@ -10,4 +10,25 @@
     <color name="light_grey">#f2f2f2</color>
     <color name="green">#99CC00</color>
 
+    <!--Color Palette-->
+    <color name="yellow">#D9B602</color>
+    <color name="orange">#c34c00</color>
+    <color name="palette_green">#616f00</color>
+    <color name="light_brown">#d6a034</color>
+    <color name="light_brown_green">#816d17</color>
+    <color name="brown_green">#66570d</color>
+    <color name="dark_palette_green">#3a3d00</color>
+    <color name="maroon">#4e1e00</color>
+
+    <array name="color_palette">
+        <item>@color/yellow</item>
+        <item>@color/orange</item>
+        <item>@color/palette_green</item>
+        <item>@color/light_brown</item>
+        <item>@color/light_brown_green</item>
+        <item>@color/brown_green</item>
+        <item>@color/dark_palette_green</item>
+        <item>@color/maroon</item>
+    </array>
+
 </resources>

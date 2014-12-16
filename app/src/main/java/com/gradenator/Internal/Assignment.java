@@ -23,12 +23,12 @@ public class Assignment implements Comparable<Assignment> {
         setFromJSON(j);
     }
 
-    public Assignment(String title, double earnedScore, double maxScore) {
+    public Assignment(String title, double earnedScore, double maxScore, int color) {
         this.title = title;
         this.earnedScore = earnedScore;
         this.maxScore = maxScore;
         this.timeCreated = System.currentTimeMillis();
-        this.assignmentColor = Util.createRandomColor();
+        this.assignmentColor = color;
     }
 
     public String getTitle() {
