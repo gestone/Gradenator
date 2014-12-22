@@ -2,32 +2,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity$PlaceholderFragment">
+    tools:context=".MainActivity$PlaceholderFragment"
+    >
 
     <TextView
         android:text="@string/intro_header"
-        android:layout_centerHorizontal="true"
         android:textSize="32sp"
         android:gravity="center"
         android:id="@+id/intro_header"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <at.markushi.ui.CircleButton
+        android:src="@drawable/gradenatorintroicon"
+        android:layout_width="250dp"
+        android:id="@+id/add_new_term"
+        android:layout_height="250dp"
+        android:layout_centerInParent="true"
+        />
 
     <TextView
-        android:id="@+id/intro_msg"
         android:textSize="24sp"
         android:gravity="center"
-        android:layout_centerInParent="true"
         android:text="@string/intro_msg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/add_new_term"
+        android:id="@+id/intro_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/intro_new_term"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/add_new_term"/>
+
 
 </RelativeLayout>

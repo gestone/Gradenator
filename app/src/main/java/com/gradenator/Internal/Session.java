@@ -129,7 +129,7 @@ public class Session {
         }
     }
 
-    public void saveTerms(Activity a) {
+    public void saveTerms(Context c) {
             deleteBlankCategories();
         try {
             JSONObject allData = new JSONObject();
@@ -139,7 +139,7 @@ public class Session {
                 allTerm.put(t.getJSON());
             }
             if (!mAllTerms.isEmpty()) {
-                File session = new File(a.getFilesDir() + "/" + Util.deviceUDID(a));
+                File session = new File(c.getFilesDir() + "/" + Util.deviceUDID(c));
                 PrintStream p = new PrintStream(session);
                 p.println(allData);
                 p.flush();

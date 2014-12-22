@@ -16,7 +16,7 @@
 
     <at.markushi.ui.CircleButton
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:cb_color="#99CC00"
+        app:cb_color="@color/green_medium"
         app:cb_pressedRingWidth="8dip"
         android:id="@+id/add_term_button"
         android:layout_centerInParent="true"

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Gradenator.iml" filepath="$PROJECT_DIR$/Gradenator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GraphView-master/GraphView-master.iml" filepath="$PROJECT_DIR$/GraphView-master/GraphView-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-support-v4-preferencefragment-master/android-support-v4-preferencefragment-master.iml" filepath="$PROJECT_DIR$/android-support-v4-preferencefragment-master/android-support-v4-preferencefragment-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-2.4.1/library-2.4.1.iml" filepath="$PROJECT_DIR$/library-2.4.1/library-2.4.1.iml" />
+    </modules>
+  </component>
+</project>
+

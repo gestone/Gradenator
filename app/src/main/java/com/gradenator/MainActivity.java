@@ -59,6 +59,7 @@ public class MainActivity extends FragmentActivity {
     private void checkAlarm() {
         boolean alarmUp = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constant
                 .ALARM_ON, false);
+//        boolean alarmUp = false;
         if (!alarmUp) { // check if an alarm has already been set, if not, set it up
             Intent alarmIntent = new Intent(this, GradeUpdateReceiver.class);
             mRecordGradeIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);

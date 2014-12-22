@@ -49,6 +49,7 @@ public class GradeUpdateReceiver extends BroadcastReceiver {
                 }
             }
             if (updated) {
+                Session.getInstance(c).saveTerms(c); // save to JSON file
                 Resources r = c.getResources();
                 NotificationManager notifyGradesUpdated = (NotificationManager) c
                         .getSystemService(Context.NOTIFICATION_SERVICE);

@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"/>
 
     <at.markushi.ui.CircleButton
-        app:cb_color="@color/green"
+        app:cb_color="@color/green_medium"
         app:cb_pressedRingWidth="8dip"
         android:id="@+id/add_class_btn"
         android:src="@drawable/ic_action_add"

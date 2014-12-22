@@ -10,21 +10,24 @@ import android.widget.Button;
 import com.gradenator.R;
 import com.gradenator.Utilities.Util;
 
+import at.markushi.ui.CircleButton;
+
 public class IntroFragment extends Fragment {
 
     public static final String TAG = IntroFragment.class.getSimpleName();
 
-    private Button mAddNewTerm;
+    private CircleButton mAddNewTerm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.intro_frag, container, false);
         findAndSetViews(v);
+        Util.changeActionBarTitle(getActivity(), getString(R.string.app_name));
         return v;
     }
 
     private void findAndSetViews(View v) {
-        mAddNewTerm = (Button) v.findViewById(R.id.add_new_term);
+        mAddNewTerm = (CircleButton) v.findViewById(R.id.add_new_term);
         mAddNewTerm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -5,7 +5,6 @@
     <style name="AppTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:typeface">sans</item>
         <item name="android:actionBarItemBackground">@drawable/selectable_background_gradenator</item>
-        <!--<item name="android:popupMenuStyle">@style/PopupMenu.Gradenator</item>-->
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Gradenator</item>
         <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Gradenator</item>
         <item name="android:actionDropDownStyle">@style/DropDownNav.Gradenator</item>

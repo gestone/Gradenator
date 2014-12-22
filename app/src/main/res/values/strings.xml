@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Gradenator</string>
-    <string name="grade_service_update_name">Grade Update</string>
+        <string name="app_name">Gradenator</string>
+        <string name="grade_service_update_name">Grade Update</string>
     <string name="crash_toast_text">Gradenator has crashed. An email has been sent to the
         developer.</string>
 
@@ -16,8 +16,7 @@
 
     <!--Intro Fragment Strings-->
     <string name="intro_header">Welcome to Gradenator!</string>
-    <string name="intro_msg">Tap the button below to add a new term to start tracking your
-        grades!</string>
+    <string name="intro_msg">Press the button above to start tracking your grades!</string>
     <string name="intro_new_term">Start!</string>
 
     <!--View Term Fragment Strings-->

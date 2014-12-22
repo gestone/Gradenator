@@ -27,7 +27,7 @@ import java.util.Random;
 import java.util.UUID;
 
 /**
- * Util class to be used throughout the application.
+ * Util class to be used throughout the application to avoid code redundancy.
  */
 public class Util {
 
@@ -38,6 +38,12 @@ public class Util {
 
     }
 
+    /**
+     * Displays a Fragment.
+     * @param f     The Fragment to be displayed
+     * @param tag
+     * @param a
+     */
     public static void displayFragment(Fragment f, String tag, FragmentActivity a) {
         FragmentTransaction ft = a.getSupportFragmentManager().beginTransaction()
                 .addToBackStack(tag);
@@ -64,12 +70,23 @@ public class Util {
         return date;
     }
 
+    /**
+     * Creates a random color from the defined colors.xml palette.
+     * @param a The activity to be passed in to be able to reference the color palette.
+     * @return  An integer representing the random color generated from the predefined color
+     *          palette.
+     */
     public static int createRandomColor(Activity a) {
         Random r = new Random();
         int[] colorPalette = a.getResources().getIntArray(R.array.color_palette);
         return colorPalette[r.nextInt(colorPalette.length)];
     }
 
+    /**
+     * Makes a toast
+ to     * @param c
+     * @param text
+     */
     public static void makeToast(Context c, String text) {
         Toast.makeText(c, text, Toast.LENGTH_SHORT).show();
     }
