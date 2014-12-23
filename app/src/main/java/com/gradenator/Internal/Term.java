@@ -50,31 +50,8 @@ public class Term {
         return backgroundColor;
     }
 
-    public boolean removeClass(String title) {
-        for (int i = 0; i < allClasses.size(); i++) {
-            if (allClasses.get(i).getClassName().equals(title)) {
-                allClasses.remove(i);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean classExists(String title) {
-        for (Class c : allClasses) {
-            if (c.getClassName().equals(title)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public String getTermName() {
         return termName;
-    }
-
-    public String getDateCreated() {
-        return Util.createDate(dateCreated);
     }
 
     public long getLastUpdateTime() {

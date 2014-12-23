@@ -11,7 +11,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Justin on 8/25/2014.
+ * A Class in the context of Gradenator is an object that keeps track how many units the class
+ * is, the class name along with a list of all of the categories that make up the grading scheme
+ * of the class. The class also keeps track of a color that is completely randomized and defined
+ * from the pre-defined palette of the colors.xml as well as DataPoints that are used in graphing
+ * the
  */
 public class Class {
 
@@ -21,16 +25,30 @@ public class Class {
     private List<Category> allCategories;
     private List<DataPoint> allDataPoints;
 
+    /**
+     * Creates an empty class.
+     */
     public Class() {
         allCategories = new ArrayList<Category>();
         allDataPoints = new ArrayList<DataPoint>();
     }
 
+    /**
+     * Constructor for creating a class from a JSONObject.
+     * @param j The JSONObject to set the Class from.
+     */
     public Class(JSONObject j) {
         this();
         setFromJSON(j);
     }
 
+    /**
+     * Constructor for creating a brand new class.
+     * @param className     The name of the new Class.
+     * @param unitCount     The amount of units the Class is.
+     * @param color         The color associated with the Class.
+     * @param allCategories A List of all of the Categories pertaining to the Class.
+     */
     public Class(String className, int unitCount, int color, List<Category> allCategories) {
         this();
         this.className = className;
@@ -40,24 +58,9 @@ public class Class {
     }
 
 
-    private boolean canAddCategory() {
-        double totalPercent = 0;
-        for (Category c : allCategories) {
-            totalPercent += c.getWeight();
-        }
-        return totalPercent < 100;
-    }
-
-    public boolean removeCategory(String title) {
-        for (int i = 0; i < allCategories.size(); i++) {
-            if (allCategories.get(i).getTitle().equals(title)) {
-                allCategories.remove(i);
-                return true;
-            }
-        }
-        return false;
-    }
-
+    /*******************
+     * GETTERS/SETTERS *
+     *******************/
     public String getClassName() {
         return className;
     }
@@ -72,6 +75,18 @@ public class Class {
 
     public int getBackgroundColor() {
         return color;
+    }
+
+    public List<Category> getAllCategories() {
+        return allCategories;
+    }
+
+    public List<DataPoint> getDataPoints() {
+        return allDataPoints;
+    }
+
+    public void setUnitCount(int unitCount) {
+        this.unitCount = unitCount;
     }
 
     public double getCurrentPercentage() {
@@ -130,50 +145,6 @@ public class Class {
         return null;
     }
 
-    public List<Category> getAllCategories() {
-        return allCategories;
-    }
-
-    public List<DataPoint> getDataPoints() {
-        return allDataPoints;
-    }
-
-    public void setAllCategories(List<Category> updatedCategories) {
-        allCategories = updatedCategories;
-    }
-
-    public void setUnitCount(int unitCount) {
-        this.unitCount = unitCount;
-    }
-
-    public List<Assignment> getAllAssignments() {
-        List<Assignment> allAssignments = new ArrayList<Assignment>();
-        for (Category c : allCategories) {
-            List<Assignment> assignments = c.getAllAssignments();
-            if (assignments != null) {
-                allAssignments.addAll(assignments);
-            }
-        }
-        Collections.sort(allAssignments); // sorts all assignments by date created,
-                                          // most recent first
-        return allAssignments;
-    }
-
-    public Assignment findAssignment(String assignmentTitle) {
-        List<Assignment> allAssignments = getAllAssignments();
-        for (Assignment a : allAssignments) {
-            if (a.getTitle().equals(assignmentTitle)) {
-                return a;
-            }
-        }
-        return null;
-    }
-
-    public void recordData() {
-        DataPoint d = new DataPoint(getCurrentPercentage(), System.currentTimeMillis());
-        allDataPoints.add(d);
-    }
-
     public JSONObject getJSON() {
         try {
             JSONObject singleClass = new JSONObject();
@@ -220,6 +191,55 @@ public class Class {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Sets all the categories from a list of updated Categories.
+     * @param updatedCategories The new list of updated Categories.
+     */
+    public void setAllCategories(List<Category> updatedCategories) {
+        allCategories = updatedCategories;
+    }
+
+    /**
+     * Gets all of the assignments associated with this class.
+     * @return A list of Assignments contained in the class.
+     */
+    public List<Assignment> getAllAssignments() {
+        List<Assignment> allAssignments = new ArrayList<Assignment>();
+        for (Category c : allCategories) {
+            List<Assignment> assignments = c.getAllAssignments();
+            if (assignments != null) {
+                allAssignments.addAll(assignments);
+            }
+        }
+        Collections.sort(allAssignments); // sorts all assignments by date created,
+                                          // most recent first
+        return allAssignments;
+    }
+
+    /**
+     * Finds an Assignment in a class given an assignment title.
+     * @param assignmentTitle The title of the Assignment.
+     * @return                If the Assignment is in the class, it will return that Assignment,
+     *                        otherwise it will return null.
+     */
+    public Assignment findAssignment(String assignmentTitle) {
+        List<Assignment> allAssignments = getAllAssignments();
+        for (Assignment a : allAssignments) {
+            if (a.getTitle().equals(assignmentTitle)) {
+                return a;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Records the current grade of a certain Class.
+     */
+    public void recordData() {
+        DataPoint d = new DataPoint(getCurrentPercentage(), System.currentTimeMillis());
+        allDataPoints.add(d);
     }
 
 }

@@ -40,9 +40,9 @@ public class Util {
 
     /**
      * Displays a Fragment.
-     * @param f     The Fragment to be displayed
-     * @param tag
-     * @param a
+     * @param f     The Fragment to be displayed.
+     * @param tag   The associated tag that is with the Fragment, usually the class name.
+     * @param a     The FragmentActivity to have the Fragment switched out of.
      */
     public static void displayFragment(Fragment f, String tag, FragmentActivity a) {
         FragmentTransaction ft = a.getSupportFragmentManager().beginTransaction()
@@ -52,10 +52,8 @@ public class Util {
         ft.replace(R.id.container, f, tag).commit();
     }
 
-
     /**
      * Creates a String representing the current date in MM/dd/yyyy format.
-     *
      * @param epochTime The current epoch time.
      * @return A String representing the date in MM/dd/yyyy format.
      */
@@ -66,7 +64,6 @@ public class Util {
         if (date.startsWith("0")) {
             date = date.substring(1);
         }
-
         return date;
     }
 
@@ -83,31 +80,41 @@ public class Util {
     }
 
     /**
-     * Makes a toast
- to     * @param c
-     * @param text
+     * Makes a toast to be displayed to the user.
+     * @param c     The Context of the application.
+     * @param text  The text to be displayed to the user.
      */
     public static void makeToast(Context c, String text) {
         Toast.makeText(c, text, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Returns a double to round to the nth digit place.
+     * @param value The double to be rounded.
+     * @param n     The digit to be rounded to.
+     * @return      A rounded double.
+     */
     public static double roundToNDigits(double value, int n) {
         int roundTo = (int) Math.pow(10, n);
         return (double) Math.round(value * roundTo) / roundTo;
     }
 
+    /**
+     * Creates a generic error dialog to be displayed to the user.
+     * @param title The title of the error dialog.
+     * @param msg   The message of the error dialog to be displayed.
+     * @param a     The activity where the error dialog should be displayed.
+     */
     public static void createErrorDialog(String title, String msg, Activity a) {
         GenericDialog g = GenericDialog.newInstance(title, msg);
         Util.changeDialogColor(g.show(a), a);
     }
 
-    public static void setFocus(View v, Activity a) {
-        v.requestFocus();
-        InputMethodManager input = (InputMethodManager) a.getSystemService(Context
-                .INPUT_METHOD_SERVICE);
-        input.showSoftInput(v, InputMethodManager.SHOW_FORCED);
-    }
-
+    /**
+     * Generates the UUID associated with the device.
+     * @param ctx The context of the application.
+     * @return    The UUID associated with the device as a String.
+     */
     public static String deviceUDID(Context ctx) {
         final TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
 
@@ -123,7 +130,8 @@ public class Util {
     }
 
     /**
-     * Hides the soft keyboard
+     * Hides the soft keyboard from the user.
+     * @param a The activity where the soft keyboard is.
      */
     public static void hideSoftKeyboard(Activity a) {
         if (a.getCurrentFocus() != null) {
@@ -132,31 +140,41 @@ public class Util {
         }
     }
 
+    /**
+     * Changes the Action Bar's Title.
+     * @param a        The activity where the action bar is.
+     * @param newTitle The new title to change the action bar to.
+     */
     public static void changeActionBarTitle(Activity a, String newTitle) {
         MainActivity m = (MainActivity) a;
         m.changeActionBar(newTitle);
     }
 
-
-    public static void deleteAllInternalFiles(Activity a) {
-        File[] files = a.getFilesDir().listFiles();
-        for (File f : files) {
-            f.delete();
-        }
-    }
-
+    /**
+     * Hides all views passed in.
+     * @param v The views to be hidden from the user.
+     */
     public static void hideViews(View... v) {
         for (View view : v) {
             view.setVisibility(View.INVISIBLE);
         }
     }
 
+    /**
+     * Displays all the views passed in.
+     * @param v The views to be shown to the user.
+     */
     public static void showViews(View... v) {
         for (View view : v) {
             view.setVisibility(View.VISIBLE);
         }
     }
 
+    /**
+     * Changes the dialog color to match the green theme.
+     * @param d The dialog to be changed to the green theme.
+     * @param c The Context of the application.
+     */
     public static void changeDialogColor(Dialog d, Context c) {
         int dividerId = d.getContext().getResources().getIdentifier("android:id/titleDivider", null, null);
         View divider = d.findViewById(dividerId);

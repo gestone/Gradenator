@@ -5,12 +5,12 @@ package com.gradenator.Internal;
  */
 public class Constant {
 
-    /* Restricts access */
+    /**
+     * Restricts access
+     */
     private Constant() {
 
     }
-
-    public static final double NO_ASSIGNMENTS = -1.0;
 
     public static final int OVERVIEW_FRAGMENT = 0;
 
@@ -29,5 +29,7 @@ public class Constant {
     public static final String DEFAULT_FONT = "quicksandregular.ttf";
 
     public static final String ALARM_ON = "Alarm_On";
+
+    public static final double NO_ASSIGNMENTS = -1.0;
 
 }

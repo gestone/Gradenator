@@ -102,7 +102,7 @@ public class CreateCategoryAdapter extends BaseAdapter {
             categoryWeight = vHolder.mCategoryWeight;
         }
         String title = mAllCategories.get(position).getTitle();
-        int weight = mAllCategories.get(position).getWeight();
+        double weight = mAllCategories.get(position).getWeight();
         categoryTitle.setText(title);
         if (weight == -1) {
             categoryWeight.setText("");

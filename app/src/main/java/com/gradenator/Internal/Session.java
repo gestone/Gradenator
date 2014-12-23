@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Created by Justin on 8/26/2014.
+ * Singleton class used to keep track of the user's Session. s
  */
 public class Session {
 
@@ -91,16 +91,6 @@ public class Session {
             }
         }
         return null;
-    }
-
-    public void checkToRecordData() {
-        if (mAllTerms != null) {
-            Term t = mAllTerms.get(0); // most recent term
-            long difference = System.currentTimeMillis() - t.getLastUpdateTime();
-            if (difference > t.getUpdateInterval()) {
-                t.recordClassPercentages();
-            }
-        }
     }
 
     private String readJSONFile(File f) {

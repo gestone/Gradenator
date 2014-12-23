@@ -9,7 +9,7 @@ import org.acra.ACRA;
 import org.acra.annotation.*;
 
 /**
- * Created by Justin on 11/9/2014.
+ * Used for debugging to track errors.
  */
 @ReportsCrashes(formKey = "", // will not be used
         mailTo = "justinharjanto@hotmail.com",
