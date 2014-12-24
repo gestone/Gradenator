@@ -1,11 +1,6 @@
 package com.gradenator.CustomViews;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -16,7 +11,7 @@ import com.gradenator.R;
 import it.gmariotti.cardslib.library.internal.Card;
 
 /**
- * Created by Justin on 9/18/2014.
+ * Card used for displaying each individual Assignment.
  */
 public class AssignmentCard extends Card {
 
@@ -26,7 +21,6 @@ public class AssignmentCard extends Card {
     private TextView mCardText;
     private TextView mAssignmentPercentage;
     private RoundedLetterView mDateBackground;
-
 
     public AssignmentCard(Assignment a, Activity activity, int innerLayout) {
         super(activity, innerLayout);

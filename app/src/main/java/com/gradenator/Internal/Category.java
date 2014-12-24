@@ -43,6 +43,15 @@ public class Category {
     }
 
     /**
+     * Constructor without a color for comparison purposes.
+     * @param title  The title of the category.
+     * @param weight The weight of the category.
+     */
+    public Category(String title, double weight) {
+        this(title, weight, 0);
+    }
+
+    /**
      * Creates a brand new category initiated by the user.
      * @param title  The title of the category.
      * @param weight The weight of the category.
@@ -126,7 +135,7 @@ public class Category {
     }
 
     /**
-     * Gets the raw percentage fo the entire category without factoring in the weight of the
+     * Gets the raw percentage of the entire category without factoring in the weight of the
      * Category.
      * @return  A double represented the unweighted percentage of the category.
      */
@@ -225,7 +234,7 @@ public class Category {
     private void setFromJSON(JSONObject j) {
         try {
             title = j.getString("title");
-            weight = j.getInt("weight");
+            weight = j.getDouble("weight");
             color = j.getInt("background_color");
             JSONArray allAssignments = j.getJSONArray("all_assignments");
             for (int i = 0; i < allAssignments.length(); i++) {

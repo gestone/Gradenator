@@ -1,7 +1,6 @@
 package com.gradenator.Fragments;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,7 +15,7 @@ import com.gradenator.Internal.Class;
 import com.gradenator.R;
 
 /**
- * Created by Justin on 9/17/2014.
+ * Displays a class overview of a single instance of a Class.
  */
 public class ClassOverviewFragment extends Fragment {
 

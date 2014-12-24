@@ -23,9 +23,9 @@
         android:layout_weight="1"
         android:layout_marginLeft="10dp"
         android:id="@+id/category_weight"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:layout_width="0dp"
-        android:maxLength="3"
+        android:maxLength="5"
         android:gravity="right"
         android:layout_height="wrap_content"/>
 

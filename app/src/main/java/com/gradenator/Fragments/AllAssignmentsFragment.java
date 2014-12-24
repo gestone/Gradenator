@@ -1,6 +1,5 @@
 package com.gradenator.Fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,22 +9,19 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.gradenator.Action;
 import com.gradenator.CustomViews.AssignmentCard;
-import com.gradenator.CustomViews.CustomCardHeader;
+import com.gradenator.CustomViews.GradenatorCardHeader;
 import com.gradenator.Internal.Assignment;
 import com.gradenator.Internal.Category;
 import com.gradenator.Internal.Class;
@@ -368,9 +364,6 @@ public class AllAssignmentsFragment extends Fragment implements View.OnClickList
 
     /**
      * Checks to make sure there are no duplicate assignments.
-     *
-     * @param assignmentTitle
-     * @return
      */
     private boolean duplicateTitles(String assignmentTitle) {
         List<Assignment> allAssignments = mClass.getAllAssignments();
@@ -382,27 +375,15 @@ public class AllAssignmentsFragment extends Fragment implements View.OnClickList
         return false;
     }
 
-    /**
-     * Sets the filter to the view that the user clicked from the categories.
-     *
-//     * @param selected The category title of the selected view.
-     */
-//    private void setSpinner(String selected, Activity a) {
-//        if (mClass == null) {
-//            mClass = Session.getInstance(a).getCurrentClass();
-//        }
-//        mFilter.setSelection(getCategoryTitles().indexOf(selected) + 1);
-//    }
-
     private AssignmentCard createNewCard(Assignment a) {
         AssignmentCard assignmentView = new AssignmentCard(a, getActivity(), R.layout.custom_assignment_card);
-        CustomCardHeader classHeader = createCardHeader(a);
+        GradenatorCardHeader classHeader = createCardHeader(a);
         assignmentView.addCardHeader(classHeader);
         return assignmentView;
     }
 
-    private CustomCardHeader createCardHeader(Assignment a) {
-        CustomCardHeader assignmentHeader = new CustomCardHeader(getActivity(),
+    private GradenatorCardHeader createCardHeader(Assignment a) {
+        GradenatorCardHeader assignmentHeader = new GradenatorCardHeader(getActivity(),
               a.getTitle());
         assignmentHeader.setButtonOverflowVisible(true);
         assignmentHeader.setOtherButtonClickListener(null);

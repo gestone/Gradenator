@@ -21,7 +21,8 @@ import java.util.List;
 
 
 /**
- * Created by Justin on 11/5/2014.
+ * Calculates the minimum grade required to attain a goal percentage in the context of a single
+ * class.
  */
 public class CalculateMinGradeFragment extends Fragment {
 
@@ -125,5 +126,4 @@ public class CalculateMinGradeFragment extends Fragment {
         mResult.setVisibility(View.VISIBLE);
         mResult.setText(msg);
     }
-
 }

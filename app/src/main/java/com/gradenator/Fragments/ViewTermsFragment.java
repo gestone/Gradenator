@@ -20,8 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gradenator.Action;
-import com.gradenator.CustomViews.CustomCardHeader;
-import com.gradenator.CustomViews.FloatingAction;
+import com.gradenator.CustomViews.GradenatorCardHeader;
 import com.gradenator.CustomViews.TermCard;
 import com.gradenator.Internal.Session;
 import com.gradenator.Internal.Term;
@@ -57,11 +56,6 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.view_terms_frag, container, false);
         Util.changeActionBarTitle(getActivity(), getString(R.string.ab_all_terms));
-        findAndSetViews(v);
-        return v;
-    }
-
-    private void findAndSetViews(View v) {
         mRes = getActivity().getResources();
         mImage = (ImageView) v.findViewById(R.id.info_image);
         mMessage = (TextView) v.findViewById(R.id.no_terms_msg);
@@ -69,6 +63,7 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
         mAddButton.setOnClickListener(this);
         initListCardView(v);
         hideOrShowNoTermsMsg();
+        return v;
     }
 
     private void hideOrShowNoTermsMsg() {
@@ -80,86 +75,78 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
     }
 
     /**
-     * Creates a new term dialog
+     * Creates a new term dialog.
      */
     private void createNewTermDialog(final Action action) {
-        final EditText termName = (EditText) getActivity().getLayoutInflater().inflate(R.layout
-                .custom_edit_text, null);
-        termName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_CLASS_TEXT);
-        termName.setHint(mRes.getString(R.string.term_title_hint));
+        final EditText termName = setupEditText();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        termName.setBackgroundColor(Color.parseColor("#00000000"));
+        AlertDialog d;
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
+                dialog.dismiss();}
         });
-        switch (action) {
-            case ADD: {
-                builder.setView(termName);
-                builder.setTitle(mRes.getString(R.string.create_term_title));
-                builder.setPositiveButton(mRes.getString(R.string.create_term),
-                        new DialogInterface.OnClickListener() { // placeholder to be overriden
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {}
-                        }
-                );
-                setupDialog(builder.create(), termName, action);
-                break;
-            }
-            case EDIT: {
-                builder.setView(termName);
-                termName.setText(mSelectedTerm);
-                termName.setSelection(mSelectedTerm.length());
-                builder.setTitle(mRes.getString(R.string.edit_term_title));
-                builder.setPositiveButton(mRes.getString(R.string
-                        .save_edit), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {}
-                });
-                setupDialog(builder.create(), termName, action);
-                break;
-            }
-            case REMOVE: {
-                String totalMsg = mRes.getString(R.string.confirm_msg_1) + " \"" +
-                        mSelectedTerm.trim() + "\" " + mRes.getString(R.string.confirm_msg_2);
-                builder.setTitle(mRes.getString(R.string.remove_term_title));
-                builder.setMessage(totalMsg);
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        removeCard();
-                        hideOrShowNoTermsMsg();
-                        Toast.makeText(getActivity(), mSelectedTerm + " " + mRes.getString(R.string
-                                .successfully_deleted), Toast.LENGTH_SHORT).show();
-                        mSelectedTerm = "";
-                    }
-                });
-                builder.create();
-                Util.changeDialogColor(builder.show(), getActivity());
-            }
+        if (action == Action.ADD || action == Action.EDIT) {
+            builder.setView(termName);
+            d = setupAddOrEdit(action, builder, termName);
+            setDialogListeners(d, termName, action);
+        } else { // action == Action.REMOVE
+            setupRemoveDialog(builder);
+            d = builder.create();
         }
-    }
-
-    /**
-     *
-     * @param d
-     * @param termName
-     * @param action
-     */
-    private void setupDialog(AlertDialog d, EditText termName, Action action) {
-        setDialogListeners(d, termName, action);
         d.show();
         Util.changeDialogColor(d, getActivity());
     }
 
-    /**
-     *
-     * @param d
-     * @param termName
-     * @param action
-     */
+    // Sets up the static edit text that will be used for inputting a term name.
+    private EditText setupEditText() {
+        EditText termName = (EditText) getActivity().getLayoutInflater().inflate(R.layout
+                .custom_edit_text, null);
+        termName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_CLASS_TEXT);
+        termName.setHint(mRes.getString(R.string.term_title_hint));
+        termName.setBackgroundColor(Color.parseColor("#00000000"));
+        return termName;
+    }
+
+
+    // Sets up the add or edit action dialogs. A finished AlertDialog is returned to be displayed to
+    // the user.
+    private AlertDialog setupAddOrEdit(Action action, AlertDialog.Builder builder, EditText termName) {
+        String title, positiveButton;
+        if (action == Action.ADD) {
+            title = mRes.getString(R.string.create_term_title);
+            positiveButton = mRes.getString(R.string.create_term);
+        } else {
+            title = mRes.getString(R.string.edit_term_title);
+            positiveButton = mRes.getString(R.string.save_edit);
+            termName.setText(mSelectedTerm);
+            termName.setSelection(mSelectedTerm.length());
+        }
+        builder.setTitle(title);
+        builder.setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
+            @Override // to be overriden
+            public void onClick(DialogInterface dialog, int which) {}});
+        return builder.create();
+    }
+
+    // Sets up the remove dialog.
+    private void setupRemoveDialog(AlertDialog.Builder builder) {
+        String totalMsg = mRes.getString(R.string.confirm_msg_1) + " \"" +
+                mSelectedTerm.trim() + "\" " + mRes.getString(R.string.confirm_msg_2);
+        builder.setTitle(mRes.getString(R.string.remove_term_title));
+        builder.setMessage(totalMsg);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                removeCard();
+                hideOrShowNoTermsMsg();
+                Toast.makeText(getActivity(), mSelectedTerm + " " + mRes.getString(R.string
+                        .successfully_deleted), Toast.LENGTH_SHORT).show();
+                mSelectedTerm = "";
+            }
+        });
+    }
+
     private void setDialogListeners(final AlertDialog d, final EditText termName,
                                     final Action action) {
         d.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -309,7 +296,7 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
 
     private Card createNewCard(Term t) {
         Card termView = new TermCard(t, getActivity(), R.layout.custom_term_card);
-        CustomCardHeader termHeader = createCardHeader(t);
+        GradenatorCardHeader termHeader = createCardHeader(t);
         termView.addCardHeader(termHeader);
         setCardOnClickListeners(termView);
         return termView;
@@ -331,18 +318,8 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    private CustomCardHeader createCardHeader(Term t) {
-        CustomCardHeader termHeader = new CustomCardHeader(getActivity(), t.getTermName());
+    private GradenatorCardHeader createCardHeader(Term t) {
+        GradenatorCardHeader termHeader = new GradenatorCardHeader(getActivity(), t.getTermName());
         termHeader.setButtonOverflowVisible(true);
         termHeader.setOtherButtonClickListener(null);
         termHeader.setPopupMenuListener(new CardHeader.OnClickCardHeaderPopupMenuListener() {

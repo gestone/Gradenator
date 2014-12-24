@@ -2,10 +2,7 @@ package com.gradenator;
 
 import android.app.Application;
 
-import com.gradenator.R;
-
 import org.acra.*;
-import org.acra.ACRA;
 import org.acra.annotation.*;
 
 /**
@@ -22,6 +19,6 @@ public class ErrorReportingApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ACRA.init(this);
+//        ACRA.init(this);
     }
 }

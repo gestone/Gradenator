@@ -1,21 +1,22 @@
 package com.gradenator.CustomViews;
 
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Typeface;
+import android.text.TextPaint;
+import android.util.AttributeSet;
+import android.view.View;
 
-        import android.content.Context;
-        import android.content.res.TypedArray;
-        import android.graphics.Canvas;
-        import android.graphics.Color;
-        import android.graphics.Paint;
-        import android.graphics.RectF;
-        import android.graphics.Typeface;
-        import android.text.TextPaint;
-        import android.util.AttributeSet;
-        import android.view.View;
+import com.gradenator.Internal.Constant;
+import com.gradenator.R;
 
-        import com.gradenator.Internal.Constant;
-        import com.gradenator.R;
-
-
+/**
+ * Used in displaying text encapsulated in a perfect circle.
+ */
 public class RoundedLetterView extends View {
 
     private static int DEFAULT_TITLE_COLOR = Color.WHITE;

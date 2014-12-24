@@ -2,11 +2,6 @@ package com.gradenator.CustomViews;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -16,7 +11,7 @@ import com.gradenator.Internal.Class;
 import it.gmariotti.cardslib.library.internal.Card;
 
 /**
- * Created by Justin on 9/17/2014.
+ * Card used for displaying all the classes.
  */
 public class ClassCard extends Card {
 
@@ -65,7 +60,7 @@ public class ClassCard extends Card {
      *                  RoundedCircleView.
      */
     private String constructImageText(String className) {
-        String total = "";
+        String total;
         if (className.contains(" ")) {
             String[] split = className.split(" ");
             int leastLength = split[0].length();

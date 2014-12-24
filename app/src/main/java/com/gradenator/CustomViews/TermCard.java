@@ -2,29 +2,17 @@ package com.gradenator.CustomViews;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gradenator.Internal.Term;
 import com.gradenator.R;
 
-import java.util.Random;
-
 import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardHeader;
 
 /**
- * Custom card view that allows for the viewing of terms.
+ * Custom card view that allows for the viewing of terms in the ViewTermsFragment.
  */
 public class TermCard extends Card {
 
@@ -44,7 +32,6 @@ public class TermCard extends Card {
 
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-        // setup views
         mUnitCount = (TextView) parent.findViewById(R.id.unit_count);
         mClassCount = (TextView) parent.findViewById(R.id.class_header);
         mTermImage = (RoundedLetterView) parent.findViewById(R.id.card_image);
@@ -55,8 +42,6 @@ public class TermCard extends Card {
         mTermImage.setTitleSize(150f);
         mTermImage.setTitleText(termName.substring(0, 1)); // first letter for text
     }
-
-
 
     private String constructClassHeader() {
         Resources r = mActivity.getResources();
@@ -80,5 +65,4 @@ public class TermCard extends Card {
         }
         return msg;
     }
-
 }

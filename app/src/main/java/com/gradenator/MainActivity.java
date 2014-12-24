@@ -11,7 +11,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -29,7 +28,10 @@ import com.gradenator.Utilities.Util;
 
 import java.util.Calendar;
 
-
+/**
+ * Main and only Activity of Gradenator. Initializes important services on start up such as
+ * setting up an alarm, choosing which Fragment will be displayed, and overriding the back button.
+ */
 public class MainActivity extends FragmentActivity {
 
     private PendingIntent mRecordGradeIntent;
@@ -104,6 +106,15 @@ public class MainActivity extends FragmentActivity {
     }
 
 
+    /**
+     * Overriding of when the user presses the back button. If the user is viewing all their
+     * terms and a term has been defined, the user will exit the application. However,
+     * if the user has no terms defined, the user will go back to the introductory message. If a
+     * user is viewing a single class and is not on the overview class screen,
+     * the back button will redirect the user to the overview class screen,
+     * otherwise it will function as a normal back button to go back to the last fragment on the
+     * backstack.
+     */
     @Override
     public void onBackPressed() {
         Fragment fragment = getFragmentOnBackStack();

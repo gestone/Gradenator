@@ -1,9 +1,5 @@
 package com.gradenator.Internal;
 
-import android.app.Activity;
-
-import com.gradenator.Utilities.Util;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,22 +17,33 @@ public class Term {
     private List<Class> allClasses;
     private long dateCreated;
     private int backgroundColor;
-    private long lastUpdateTime;
     private long updateInterval;
 
+    /**
+     * Sets the term from a JSONObject.
+     * @param j The JSONObject that has the Terms.
+     */
     public Term(JSONObject j) {
         allClasses = new ArrayList<Class>();
         setFromJSON(j);
     }
 
+    /**
+     * Constructor for creating a brand new Term.
+     * @param termName The new term name.
+     * @param color    The randomized color chosen from the pre-defined palette.
+     */
     public Term(String termName, int color) {
         this.termName = termName;
         this.backgroundColor = color;
         allClasses = new ArrayList<Class>();
         dateCreated = System.currentTimeMillis();
-        lastUpdateTime = dateCreated;
         updateInterval = Constant.ONE_MINUTE; // one week before collecting data for graph again
     }
+
+    /******************
+     * GETTER/SETTERS *
+     ******************/
 
     public List<Class> getAllClasses() {
         return allClasses;
@@ -52,20 +59,6 @@ public class Term {
 
     public String getTermName() {
         return termName;
-    }
-
-    public long getLastUpdateTime() {
-        return lastUpdateTime;
-    }
-
-    public long getUpdateInterval() {
-        return updateInterval;
-    }
-
-    public void recordClassPercentages() {
-        for (Class c : allClasses) {
-            c.recordData();
-        }
     }
 
     public void setTermName(String termName) {
@@ -115,6 +108,9 @@ public class Term {
         }
     }
 
+    /**
+     * Deletes all the blank category each class might have.
+     */
     public void deleteAllBlankCategories() {
         for (Class c : allClasses) {
             List<Category> allCategories = c.getAllCategories();

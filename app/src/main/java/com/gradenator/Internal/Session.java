@@ -1,6 +1,5 @@
 package com.gradenator.Internal;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.gradenator.Utilities.Util;
@@ -18,7 +17,9 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Singleton class used to keep track of the user's Session. s
+ * Singleton class used to keep track of the user's Session. In particular,
+ * a Session keeps track of the user's current term along with which class the user currently has
+ * selected. It is often used to be able to search for a particular term.
  */
 public class Session {
 
@@ -27,15 +28,98 @@ public class Session {
     private Term mCurrentTerm;
     private Class mCurrentClass;
 
-
+    /**
+     * Constructor used if no file exists.
+     */
     private Session() {
         mAllTerms = new ArrayList<Term>();
     }
 
+    /**
+     * Constructor used if a file does exist.
+     * @param f The File containing all of user's Terms.
+     */
     private Session(File f) {
         this();
-        processJSONFile(f);
+        setFromJSON(f);
     }
+
+    /**
+     * Reads in a file and returns a String.
+     * @param f The file from internal storage.
+     * @return  A String representing the entire file.
+     */
+    private String readJSONFile(File f) {
+        String total = "";
+        try {
+            Scanner s = new Scanner(f);
+            while (s.hasNextLine()) {
+                total += s.nextLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+
+    /**
+     * Sets the Session from the JSON saved in internal storage.
+     * @param f The file from internal storage.
+     */
+    private void setFromJSON(File f) {
+        try {
+            JSONObject file = new JSONObject(readJSONFile(f));
+            JSONArray allTerms = file.getJSONArray("all_terms");
+            for (int i = 0; i < allTerms.length(); i++) {
+                Term t = new Term(allTerms.getJSONObject(i));
+                mAllTerms.add(t);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Saves the terms to the Session if the terms exists.
+     * @param c The context of the application.
+     */
+    public void saveTerms(Context c) {
+        deleteBlankCategories();
+        try {
+            JSONObject allData = new JSONObject();
+            JSONArray allTerm = new JSONArray();
+            allData.put("all_terms", allTerm);
+            for (Term t : mAllTerms) {
+                allTerm.put(t.getJSON());
+            }
+            if (!mAllTerms.isEmpty()) {
+                File session = new File(c.getFilesDir() + "/" + Util.deviceUDID(c));
+                PrintStream p = new PrintStream(session);
+                p.println(allData);
+                p.flush();
+                p.close();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Deletes all the blank categories that the user may have in creating a class.
+     */
+    private void deleteBlankCategories() {
+        if (mAllTerms != null && !mAllTerms.isEmpty()) {
+            for (Term t : mAllTerms) {
+                t.deleteAllBlankCategories();
+            }
+        }
+    }
+
+    /*******************
+     * GETTERS/SETTERS *
+     *******************/
 
     public static Session getInstance(Context c) {
         if (mUserSession == null) {
@@ -92,68 +176,4 @@ public class Session {
         }
         return null;
     }
-
-    private String readJSONFile(File f) {
-        String total = "";
-        try {
-            Scanner s = new Scanner(f);
-            while (s.hasNextLine()) {
-                total += s.nextLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return total;
-    }
-
-    private void processJSONFile(File f) {
-        try {
-            JSONObject file = new JSONObject(readJSONFile(f));
-            JSONArray allTerms = file.getJSONArray("all_terms");
-            for (int i = 0; i < allTerms.length(); i++) {
-                Term t = new Term(allTerms.getJSONObject(i));
-                mAllTerms.add(t);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void saveTerms(Context c) {
-            deleteBlankCategories();
-        try {
-            JSONObject allData = new JSONObject();
-            JSONArray allTerm = new JSONArray();
-            allData.put("all_terms", allTerm);
-            for (Term t : mAllTerms) {
-                allTerm.put(t.getJSON());
-            }
-            if (!mAllTerms.isEmpty()) {
-                File session = new File(c.getFilesDir() + "/" + Util.deviceUDID(c));
-                PrintStream p = new PrintStream(session);
-                p.println(allData);
-                p.flush();
-                p.close();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void deleteBlankCategories() {
-        if (mAllTerms != null && !mAllTerms.isEmpty()) {
-            for (Term t : mAllTerms) {
-                t.deleteAllBlankCategories();
-            }
-        }
-    }
-
-
-    public void deleteAllTerms(Activity a) {
-        File f = new File(a.getFilesDir() + "/" + Util.deviceUDID(a));
-        f.delete();
-    }
-
 }

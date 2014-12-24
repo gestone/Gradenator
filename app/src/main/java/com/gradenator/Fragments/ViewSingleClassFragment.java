@@ -8,12 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.gradenator.CustomViews.ClassFragmentAdapter;
-import com.gradenator.CustomViews.CustomCirclePageIndicator;
 import com.gradenator.Internal.Class;
 import com.gradenator.Internal.Constant;
 import com.gradenator.Internal.Session;
 import com.gradenator.R;
 import com.gradenator.Utilities.Util;
+import com.viewpagerindicator.CirclePageIndicator;
 
 /**
  * Displays information about a single class that the user has selected.
@@ -24,7 +24,7 @@ public class ViewSingleClassFragment extends Fragment {
 
     private ClassFragmentAdapter mAdapter;
     private ViewPager mViewPager;
-    private CustomCirclePageIndicator mIndicator;
+    private CirclePageIndicator mIndicator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,11 +55,10 @@ public class ViewSingleClassFragment extends Fragment {
      * @param v The inflated layout containing all the views.
      */
     private void findAndSetViews(View v) {
-        mAdapter = new ClassFragmentAdapter(getChildFragmentManager(), getActivity());
+        mAdapter = new ClassFragmentAdapter(getChildFragmentManager());
         mViewPager = (ViewPager) v.findViewById(R.id.class_pager);
         mViewPager.setAdapter(mAdapter);
         setCircleIndicator(v);
-        mAdapter.setCirclePagerIndicator(mIndicator);
     }
 
     /**
@@ -67,7 +66,7 @@ public class ViewSingleClassFragment extends Fragment {
      * @param v The inflated layout containing views, specifically, the circle indicator.
      */
     private void setCircleIndicator(View v) {
-        mIndicator = (CustomCirclePageIndicator) v.findViewById(R.id.class_pager_indicator);
+        mIndicator = (CirclePageIndicator) v.findViewById(R.id.class_pager_indicator);
         mIndicator.setViewPager(mViewPager);
         mIndicator.setFillColor(getResources().getColor(R.color.green_medium));
         mIndicator.setRadius(20);
@@ -93,8 +92,6 @@ public class ViewSingleClassFragment extends Fragment {
 
             }
         });
-        mIndicator.setAllAssignmentsFrag((AllAssignmentsFragment) mAdapter.getItem(Constant
-                .ALL_ASSIGNMENTS_FRAGMENT));
     }
 
     /**

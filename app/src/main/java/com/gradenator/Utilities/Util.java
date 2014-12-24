@@ -3,7 +3,6 @@ package com.gradenator.Utilities;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -15,11 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gradenator.Dialogs.GenericDialog;
-import com.gradenator.Internal.Constant;
 import com.gradenator.MainActivity;
 import com.gradenator.R;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -130,7 +127,7 @@ public class Util {
     }
 
     /**
-     * Hides the soft keyboard from the user.
+     * Hides the soft keyboard from the user if it's open.
      * @param a The activity where the soft keyboard is.
      */
     public static void hideSoftKeyboard(Activity a) {

@@ -3,15 +3,12 @@ package com.gradenator.Dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import com.gradenator.Utilities.Util;
-
 /**
- * Created by Justin on 9/16/2014.
+ * Generic Dialog used in displaying a simple message to the user.
  */
 public class GenericDialog extends DialogFragment {
 

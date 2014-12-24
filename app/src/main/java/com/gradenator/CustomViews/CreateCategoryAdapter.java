@@ -1,29 +1,19 @@
 package com.gradenator.CustomViews;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gradenator.Internal.Category;
 import com.gradenator.R;
-import com.gradenator.Utilities.Util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,14 +23,14 @@ public class CreateCategoryAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;
     private List<Category> mAllCategories;
-    private Activity mActivity;
 
     public CreateCategoryAdapter(Activity a, List<Category> allCategories) {
         mAllCategories = allCategories;
         if (mAllCategories.isEmpty()) {
             mAllCategories.add(new Category(a)); // prompt for user to fill out first category
         }
-        mActivity = a;
+        mInflater = (LayoutInflater) a.getSystemService(Context
+                .LAYOUT_INFLATER_SERVICE);
     }
 
     /**
@@ -79,10 +69,6 @@ public class CreateCategoryAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (mInflater == null) { // Layout inflater has not be initialized.
-            mInflater = (LayoutInflater) mActivity.getSystemService(Context
-                    .LAYOUT_INFLATER_SERVICE);
-        }
         EditText categoryTitle;
         EditText categoryWeight;
         if (convertView == null) { // ViewHolder pattern, view has not been inflated.
@@ -101,15 +87,26 @@ public class CreateCategoryAdapter extends BaseAdapter {
             categoryTitle = vHolder.mCategoryTitle;
             categoryWeight = vHolder.mCategoryWeight;
         }
-        String title = mAllCategories.get(position).getTitle();
-        double weight = mAllCategories.get(position).getWeight();
+        setViews(categoryTitle, categoryWeight, mAllCategories.get(position));
+        return convertView;
+    }
+
+    /**
+     * Sets the category title and weight based on the values stored in the current category.
+     */
+    private void setViews(EditText categoryTitle, EditText categoryWeight, Category curCategory) {
+        String title = curCategory.getTitle();
+        double weight = curCategory.getWeight();
         categoryTitle.setText(title);
         if (weight == -1) {
             categoryWeight.setText("");
         } else {
-            categoryWeight.setText("" + weight);
+            if (weight % 1 != 0) {
+                categoryWeight.setText("" + weight);
+            } else {
+                categoryWeight.setText("" + (int) weight);
+            }
         }
-        return convertView;
     }
 
     /**
@@ -130,4 +127,5 @@ public class CreateCategoryAdapter extends BaseAdapter {
             return listView.getChildAt(childIndex);
         }
     }
+
 }

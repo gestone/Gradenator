@@ -1,7 +1,5 @@
 package com.gradenator.CustomViews;
 
-import android.app.Activity;
-import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -9,28 +7,22 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.gradenator.Fragments.AllAssignmentsFragment;
 import com.gradenator.Fragments.CalculateMinGradeFragment;
 import com.gradenator.Fragments.ClassOverviewFragment;
-import com.gradenator.Fragments.IntroFragment;
 import com.gradenator.Fragments.ViewGraphFragment;
-import com.gradenator.Internal.Class;
 import com.gradenator.Internal.Constant;
-import com.gradenator.Internal.Session;
-import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Justin on 9/17/2014.
+ * Adapter used to display statistics of a single class.
  */
 public class ClassFragmentAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> mAllFragments;
-    private Activity mActivity;
 
-    public ClassFragmentAdapter(FragmentManager fm, Activity a) {
+    public ClassFragmentAdapter(FragmentManager fm) {
         super(fm);
         mAllFragments = new ArrayList<Fragment>();
-        mActivity = a;
         initializeClassFrags();
     }
 
@@ -51,13 +43,7 @@ public class ClassFragmentAdapter extends FragmentStatePagerAdapter {
         mAllFragments.add(new CalculateMinGradeFragment());
     }
 
-    public void setCirclePagerIndicator(CustomCirclePageIndicator c) {
-        getClassOverViewFrag().getDisplayCategoryAdapter(mActivity).setCirclePageIndicator(c);
-    }
-
     public ClassOverviewFragment getClassOverViewFrag() {
         return (ClassOverviewFragment) mAllFragments.get(Constant.OVERVIEW_FRAGMENT);
     }
-
-
 }

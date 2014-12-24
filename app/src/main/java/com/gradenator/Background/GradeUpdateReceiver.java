@@ -6,20 +6,18 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.widget.Toast;
 
 import com.gradenator.Internal.DataPoint;
 import com.gradenator.Internal.Session;
 import com.gradenator.Internal.Term;
 import com.gradenator.Internal.Class;
 import com.gradenator.R;
-import com.gradenator.Utilities.Util;
 
 import java.io.File;
 import java.util.List;
 
 /**
- * Used to update grades on a weekly basis.
+ * Used to update and store grades on a weekly basis for graphing purposes.
  */
 public class GradeUpdateReceiver extends BroadcastReceiver {
 

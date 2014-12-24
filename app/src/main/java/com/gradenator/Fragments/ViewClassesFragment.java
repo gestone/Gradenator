@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.gradenator.Action;
 import com.gradenator.CustomViews.CreateCategoryAdapter;
 import com.gradenator.CustomViews.ClassCard;
-import com.gradenator.CustomViews.CustomCardHeader;
+import com.gradenator.CustomViews.GradenatorCardHeader;
 import com.gradenator.Internal.*;
 import com.gradenator.Internal.Class;
 import com.gradenator.R;
@@ -89,14 +89,14 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
 
     private Card createNewCard(Class curClass) {
         Card classView = new ClassCard(curClass, getActivity(), R.layout.custom_class_card);
-        CustomCardHeader classHeader = createCardHeader(curClass);
+        GradenatorCardHeader classHeader = createCardHeader(curClass);
         classView.addCardHeader(classHeader);
         setCardOnClickListeners(classView);
         return classView;
     }
 
-    private CustomCardHeader createCardHeader(Class curClass) {
-        CustomCardHeader termHeader = new CustomCardHeader(getActivity(),
+    private GradenatorCardHeader createCardHeader(Class curClass) {
+        GradenatorCardHeader termHeader = new GradenatorCardHeader(getActivity(),
                 curClass.getClassName());
         termHeader.setButtonOverflowVisible(true);
         termHeader.setOtherButtonClickListener(null);
@@ -121,7 +121,6 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
                 return true;
             }
         });
-
         return termHeader;
     }
 
@@ -246,24 +245,24 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
                 createClassButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        updateCategories(allCategories, adapter);
                         String newClassName = className.getText().toString().trim();
                         String newUnitCount = unitCount.getText().toString();
+                        List<Category> updatedCategories = updatedCategoriesInQuestion(allCategories, adapter);
                         if (newClassName.isEmpty()) { // user did not specify a class name
                             Util.createErrorDialog(getString(R.string.empty_field_title),
                                     getString(R.string.no_class_name), getActivity());
                         } else if (newUnitCount.isEmpty()) { // user did not specify a new unit count
                             Util.createErrorDialog(getString(R.string.empty_field_title),
                                     getString(R.string.no_unit_count), getActivity());
-                        } else if (!checkFieldsCompleted(adapter)) { // all category fields are not complete
+                        } else if (!checkFieldsCompleted(updatedCategories)) { // cat fields inc
                             Util.createErrorDialog(getString(R.string.empty_field_title),
                                     getString(R.string.no_category_field),
                                     getActivity());
-                        } else if (!checkWeights(adapter)) { // weights don't equal to 100
+                        } else if (!checkWeights(updatedCategories)) { // weights don't equal to 100
                             Util.createErrorDialog(getString(R.string.no_total_one_hundred_title),
                                     getString(R.string.no_total_one_hundred),
                                     getActivity());
-                        } else if (checkDupCategories(adapter)) { // duplicate categories exist
+                        } else if (checkDupCategories(updatedCategories)) { // duplicate categories exist
                             Util.createErrorDialog(getString(R.string.duplicate_class_title),
                                     getString(R.string.duplicate_category_msg),
                                     getActivity());
@@ -275,6 +274,7 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
                             Util.createErrorDialog(getString(R.string.class_title_too_long_title),
                                     getString(R.string.class_title_too_long_msg), getActivity());
                         } else {
+                            updateCategories(allCategories, adapter);
                             if (action == Action.ADD) {
                                 Class newClass = new Class(newClassName,
                                         Integer.parseInt(newUnitCount),
@@ -354,22 +354,35 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
         });
     }
 
-    private void updateCategories(final ListView allCategories, final CreateCategoryAdapter adapter) {
+    private void updateCategories(ListView allCategories, CreateCategoryAdapter adapter) {
         for (int i = 0; i < adapter.getCount(); i++) {
             View row = adapter.getViewByPosition(i, allCategories);
             EditText title = (EditText) row.findViewById(R.id.category_name);
             EditText weight = (EditText) row.findViewById(R.id.category_weight);
             String categoryWeight = weight.getText().toString();
             if (!categoryWeight.isEmpty()) {
-                adapter.getCategoryList().get(i).setWeight(Integer
-                        .parseInt(categoryWeight));
+                adapter.getCategoryList().get(i).setWeight(Double
+                        .parseDouble(categoryWeight));
             }
             adapter.getCategoryList().get(i).setTitle(title.getText().toString());
         }
     }
 
-    private boolean checkFieldsCompleted(CreateCategoryAdapter adapter) {
-        List<Category> allCategories = adapter.getCategoryList();
+    private List<Category> updatedCategoriesInQuestion(ListView allCategories,
+                                                       CreateCategoryAdapter adapter) {
+        List<Category> updatedCategories = new ArrayList<Category>();
+        for (int i = 0; i < adapter.getCount(); i++) {
+            View row = adapter.getViewByPosition(i, allCategories);
+            EditText title = (EditText) row.findViewById(R.id.category_name);
+            EditText weight = (EditText) row.findViewById(R.id.category_weight);
+            String categoryTitle = title.getText().toString();
+            String categoryWeight = weight.getText().toString();
+            updatedCategories.add(new Category(categoryTitle, Double.parseDouble(categoryWeight)));
+        }
+        return updatedCategories;
+    }
+
+    private boolean checkFieldsCompleted(List<Category> allCategories) {
         for (Category c : allCategories) { // check if all fields are filled out
             if (c.getTitle().isEmpty() || c.getWeight() == 0) {
                 return false;
@@ -383,17 +396,15 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
      *
      * @return A boolean stating whether the weights equal 100 or not.
      */
-    private boolean checkWeights(CreateCategoryAdapter adapter) {
-        List<Category> allCategories = adapter.getCategoryList();
-        int total = 0;
+    private boolean checkWeights(List<Category> allCategories) {
+        double total = 0;
         for (Category c : allCategories) {
             total += c.getWeight();
         }
-        return total == 100;
+        return total == 100.0;
     }
 
-    private boolean checkDupCategories(CreateCategoryAdapter adapter) {
-        List<Category> allCategories = adapter.getCategoryList();
+    private boolean checkDupCategories(List<Category> allCategories) {
         for (int i = 0; i < allCategories.size(); i++) {
             Category cur = allCategories.get(i);
             for (int j = 0; j < allCategories.size(); j++) {
@@ -442,7 +453,7 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
         List<Class> allClasses = mCurrentTerm.getAllClasses();
         for (int i = 0; i < allClasses.size(); i++) {
             CardHeader h = mAllCards.get(i).getCardHeader();
-            CustomCardHeader custom = (CustomCardHeader) h;
+            GradenatorCardHeader custom = (GradenatorCardHeader) h;
             if (custom.getTitle().equals(mSelectedClass)) {
                 return (ClassCard) mAllCards.get(i);
             }
