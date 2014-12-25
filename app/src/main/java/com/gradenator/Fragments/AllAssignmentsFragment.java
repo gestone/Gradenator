@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.gradenator.Action;
 import com.gradenator.CustomViews.AssignmentCard;
-import com.gradenator.CustomViews.GradenatorCardHeader;
+import com.gradenator.CustomViews.GradeClassHeader;
 import com.gradenator.Internal.Assignment;
 import com.gradenator.Internal.Category;
 import com.gradenator.Internal.Class;
@@ -83,30 +83,31 @@ public class AllAssignmentsFragment extends Fragment implements View.OnClickList
         mFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String category = (String) mFilter.getItemAtPosition(position);
-                List<Assignment> allCategoryAssignments;
-                if (!category.equals(getString(R.string.select_prompt))) {
-                    allCategoryAssignments = mClass.getCategory(category).getAllAssignments();
-                } else {
-                    allCategoryAssignments = mClass.getAllAssignments();
-                }
-                List<Assignment> allAssignments = mClass.getAllAssignments();
-                mAllCards.clear();
-                for (int i = 0; i < allAssignments.size(); i++) {
-                    Assignment a = allAssignments.get(i);
-                    if (allCategoryAssignments.contains(a)) {
-                        mAllCards.add(createNewCard(a));
-                    }
-                }
-                mAssignmentAdapter.notifyDataSetChanged();
+                setOnItemSelected(position);
             }
-
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
         initCardView(v);
+    }
+
+    private void setOnItemSelected(int position) {
+        String category = (String) mFilter.getItemAtPosition(position);
+        List<Assignment> allCategoryAssignments;
+        if (!category.equals(getString(R.string.select_prompt))) {
+            allCategoryAssignments = mClass.getCategory(category).getAllAssignments();
+        } else {
+            allCategoryAssignments = mClass.getAllAssignments();
+        }
+        List<Assignment> allAssignments = mClass.getAllAssignments();
+        mAllCards.clear();
+        for (int i = 0; i < allAssignments.size(); i++) {
+            Assignment a = allAssignments.get(i);
+            if (allCategoryAssignments.contains(a)) {
+                mAllCards.add(createNewCard(a));
+            }
+        }
+        mAssignmentAdapter.notifyDataSetChanged();
     }
 
     private void initCardView(View v) {
@@ -121,11 +122,6 @@ public class AllAssignmentsFragment extends Fragment implements View.OnClickList
         }
         mAssignmentAdapter = new CardArrayAdapter(getActivity(), mAllCards);
         mAllAssignments.setAdapter(mAssignmentAdapter);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     private List<String> getCategoryTitles() {
@@ -147,6 +143,27 @@ public class AllAssignmentsFragment extends Fragment implements View.OnClickList
 
     private void createAssignmentDialog(final Action action) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        setupDialogBody(builder, action);
+        setupDialogOnClickListeners(builder, action);
+        final AlertDialog d = builder.create();
+        setConfirmButtonListener(d, action); // override the positive button
+        promptEditText(d);
+        d.show();
+        Util.changeDialogColor(d, getActivity());
+    }
+
+    /**
+     * Sets up the Dialog body to the custom layout.
+     */
+    private void setupDialogBody(AlertDialog.Builder builder, Action action) {
+        LayoutInflater l = (LayoutInflater) getActivity().getSystemService(Context
+                .LAYOUT_INFLATER_SERVICE);
+        View v = l.inflate(R.layout.create_assignment, null);
+        builder.setView(v);
+        setupInflatedViews(v, action);
+    }
+
+    private void setupDialogOnClickListeners(AlertDialog.Builder builder, Action action) {
         String msg = "";
         if (action == Action.ADD) {
             builder.setTitle(getString(R.string.create_assignment_header));
@@ -155,11 +172,6 @@ public class AllAssignmentsFragment extends Fragment implements View.OnClickList
             builder.setTitle(getString(R.string.edit_assignment_header));
             msg = getString(R.string.confirm_edit_msg);
         }
-        LayoutInflater l = (LayoutInflater) getActivity().getSystemService(Context
-                .LAYOUT_INFLATER_SERVICE);
-        View v = l.inflate(R.layout.create_assignment, null);
-        builder.setView(v);
-        setupInflatedViews(v, action);
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -170,16 +182,13 @@ public class AllAssignmentsFragment extends Fragment implements View.OnClickList
         builder.setPositiveButton(msg, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
         });
-        final AlertDialog d = builder.create();
-        setPositiveButtonListener(d, action);
-        promptEditText(d);
-        d.show();
-        Util.changeDialogColor(d, getActivity());
     }
 
+    /**
+     * Makes it so that when the Dialog is opened up, soft keyboard opens up.
+     */
     private void promptEditText(final AlertDialog d) {
         mAssignmentTitleET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -192,7 +201,7 @@ public class AllAssignmentsFragment extends Fragment implements View.OnClickList
         });
     }
 
-    private void setPositiveButtonListener(final AlertDialog d, final Action action) {
+    private void setConfirmButtonListener(final AlertDialog d, final Action action) {
         d.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
@@ -205,49 +214,69 @@ public class AllAssignmentsFragment extends Fragment implements View.OnClickList
                         String maxPoints = mMaxPointsET.getText().toString();
                         String selectedCategory = mAssignmentCategory.getSelectedItem().toString();
                         if (fieldsAreValid(assignmentTitle, earnedPoints, maxPoints)) {
-                            try {
-                                Category c = mClass.getCategory(selectedCategory);
-                                double parsedEarnedPoints = Double.parseDouble(earnedPoints);
-                                double parsedMaxPoints = Double.parseDouble(maxPoints);
-                                if (action == Action.ADD) {
-                                    Assignment newAssignment = new Assignment(assignmentTitle.trim(),
-                                            parsedEarnedPoints, parsedMaxPoints,
-                                            Util.createRandomColor(getActivity()));
-                                    c.addAssignment(newAssignment);
-                                    Util.makeToast(getActivity(), getString(R.string.assignment_success_msg));
-                                    Util.hideViews(mNoAssignmentsImage, mNoAssignmentsMessage);
-                                    mAllCards.add(0, createNewCard(newAssignment));
-                                    if (!mFilter.getSelectedItem().equals(getString(R.string
-                                            .select_prompt)) && !mFilter.getSelectedItem()
-                                            .equals(selectedCategory)) {
-                                        mFilter.setSelection(getCategoryTitles().indexOf
-                                                (selectedCategory) + 1);
-                                    }
-                                } else if (action == Action.EDIT) {
-                                    Assignment toModify = mClass.findAssignment(mSelectedAssignment);
-                                    Category oldCategory = mClass.getCategory(toModify);
-                                    oldCategory.removeAssignment(toModify.getTitle()); // move category
-                                    updateAssignmentCard(assignmentTitle);
-                                    toModify.setTitle(assignmentTitle);
-                                    toModify.setEarnedScore(parsedEarnedPoints);
-                                    toModify.setMaxScore(parsedMaxPoints);
-                                    Category newCategory = mClass.getCategory(selectedCategory);
-                                    newCategory.addAssignment(toModify);
-                                    Util.makeToast(getActivity(), getString(R.string.assignment_success_edit_msg));
-                                    mSelectedAssignment = null;
-                                }
-                                mAssignmentAdapter.notifyDataSetChanged();
-                                d.dismiss();
-                            } catch (NumberFormatException e) {
-                                Util.createErrorDialog(getString(R.string.points_invalid_format_title),
-                                        getString(R.string.points_invalid_format_msg), getActivity());
-                            }
+                            addOrEditAssignment(action, selectedCategory, earnedPoints,
+                                    maxPoints, assignmentTitle, d);
                         }
                     }
 
                 });
             }
         });
+    }
+
+    /**
+     * Adds or edits an Assignment as the fields are valid.
+     */
+    private void addOrEditAssignment(Action action, String selectedCategory,
+                                     String earnedPoints, String maxPoints,
+                                     String assignmentTitle, AlertDialog d) {
+        try {
+            Category c = mClass.getCategory(selectedCategory);
+            double parsedEarnedPoints = Double.parseDouble(earnedPoints);
+            double parsedMaxPoints = Double.parseDouble(maxPoints);
+            if (action == Action.ADD) {
+                Assignment newAssignment = new Assignment(assignmentTitle.trim(),
+                        parsedEarnedPoints, parsedMaxPoints,
+                        Util.createRandomColor(getActivity()));
+                addNewAssignment(c, newAssignment, selectedCategory);
+            } else if (action == Action.EDIT) {
+                modifyExistingAssignment(selectedCategory, assignmentTitle,
+                        parsedEarnedPoints, parsedMaxPoints);
+            }
+            mAssignmentAdapter.notifyDataSetChanged();
+            d.dismiss();
+        } catch (NumberFormatException e) {
+            Util.createErrorDialog(getString(R.string.points_invalid_format_title),
+                    getString(R.string.points_invalid_format_msg), getActivity());
+        }
+    }
+    
+    private void addNewAssignment(Category toAddTo, Assignment newAssignment, String selectedCategory) {
+        toAddTo.addAssignment(newAssignment);
+        Util.makeToast(getActivity(), getString(R.string.assignment_success_msg));
+        Util.hideViews(mNoAssignmentsImage, mNoAssignmentsMessage);
+        mAllCards.add(0, createNewCard(newAssignment));
+        if (!mFilter.getSelectedItem().equals(getString(R.string
+                .select_prompt)) && !mFilter.getSelectedItem()
+                .equals(selectedCategory)) {
+            mFilter.setSelection(getCategoryTitles().indexOf
+                    (selectedCategory) + 1);
+        }
+    }
+    
+    private void modifyExistingAssignment(String selectedCategory, String assignmentTitle,
+                                          double parsedEarnedPoints, double parsedMaxPoints) {
+        Assignment toModify = mClass.findAssignment(mSelectedAssignment);
+        Category oldCategory = mClass.getCategory(toModify);
+        oldCategory.removeAssignment(toModify.getTitle()); // move category
+        updateAssignmentCard(assignmentTitle);
+        toModify.setTitle(assignmentTitle);
+        toModify.setEarnedScore(parsedEarnedPoints);
+        toModify.setMaxScore(parsedMaxPoints);
+        Category newCategory = mClass.getCategory(selectedCategory);
+        newCategory.addAssignment(toModify);
+        Util.makeToast(getActivity(), getString(R.string.assignment_success_edit_msg));
+        mSelectedAssignment = null;
     }
 
 
@@ -377,13 +406,13 @@ public class AllAssignmentsFragment extends Fragment implements View.OnClickList
 
     private AssignmentCard createNewCard(Assignment a) {
         AssignmentCard assignmentView = new AssignmentCard(a, getActivity(), R.layout.custom_assignment_card);
-        GradenatorCardHeader classHeader = createCardHeader(a);
+        GradeClassHeader classHeader = createCardHeader(a);
         assignmentView.addCardHeader(classHeader);
         return assignmentView;
     }
 
-    private GradenatorCardHeader createCardHeader(Assignment a) {
-        GradenatorCardHeader assignmentHeader = new GradenatorCardHeader(getActivity(),
+    private GradeClassHeader createCardHeader(Assignment a) {
+        GradeClassHeader assignmentHeader = new GradeClassHeader(getActivity(),
               a.getTitle());
         assignmentHeader.setButtonOverflowVisible(true);
         assignmentHeader.setOtherButtonClickListener(null);

@@ -12,12 +12,12 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
 /**
  * Custom card header applied to all of the Cards in the Gradenator application.
  */
-public class GradenatorCardHeader extends CardHeader {
+public class GradeClassHeader extends CardHeader {
 
     private String mTitle;
     private TextView mHeader;
 
-    public GradenatorCardHeader(Context context, String title) {
+    public GradeClassHeader(Context context, String title) {
         super(context, R.layout.card_header);
         mTitle = title;
     }

@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gradenator.Action;
-import com.gradenator.CustomViews.GradenatorCardHeader;
+import com.gradenator.CustomViews.GradeClassHeader;
 import com.gradenator.CustomViews.TermCard;
 import com.gradenator.Internal.Session;
 import com.gradenator.Internal.Term;
@@ -296,7 +296,7 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
 
     private Card createNewCard(Term t) {
         Card termView = new TermCard(t, getActivity(), R.layout.custom_term_card);
-        GradenatorCardHeader termHeader = createCardHeader(t);
+        GradeClassHeader termHeader = createCardHeader(t);
         termView.addCardHeader(termHeader);
         setCardOnClickListeners(termView);
         return termView;
@@ -318,8 +318,8 @@ public class ViewTermsFragment extends Fragment implements View.OnClickListener 
         });
     }
 
-    private GradenatorCardHeader createCardHeader(Term t) {
-        GradenatorCardHeader termHeader = new GradenatorCardHeader(getActivity(), t.getTermName());
+    private GradeClassHeader createCardHeader(Term t) {
+        GradeClassHeader termHeader = new GradeClassHeader(getActivity(), t.getTermName());
         termHeader.setButtonOverflowVisible(true);
         termHeader.setOtherButtonClickListener(null);
         termHeader.setPopupMenuListener(new CardHeader.OnClickCardHeaderPopupMenuListener() {

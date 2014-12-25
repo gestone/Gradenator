@@ -50,6 +50,10 @@
 
     <!--View Class Fragment Strings-->
     <string name="class_header">All Classes</string>
+    <string name="class_name">className</string>
+    <string name="unit_count">unitCount</string>
+    <string name="all_categories">allCategories</string>
+    <string name="adapter">adapter</string>
 
     <!--Class Overview Fragment Strings-->
     <string name="no_assignments">No Assignments</string>

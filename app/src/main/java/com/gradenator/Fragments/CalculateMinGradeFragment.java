@@ -84,6 +84,10 @@ public class CalculateMinGradeFragment extends Fragment {
         Util.createErrorDialog(title, msg, getActivity());
     }
 
+    /**
+     * Calculates the and displays the points needs for the user to get the desired grade.
+     * @param category  The category the new assignment is going in.
+     */
     private void calculatePoints(String category) {
         double maxPoints = Double.parseDouble(mMaxPoints.getText().toString());
         double maintain = Double.parseDouble(mMaintain.getText().toString());

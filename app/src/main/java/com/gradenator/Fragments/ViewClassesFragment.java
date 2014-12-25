@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,7 +20,7 @@ import android.widget.Toast;
 import com.gradenator.Action;
 import com.gradenator.CustomViews.CreateCategoryAdapter;
 import com.gradenator.CustomViews.ClassCard;
-import com.gradenator.CustomViews.GradenatorCardHeader;
+import com.gradenator.CustomViews.GradeClassHeader;
 import com.gradenator.Internal.*;
 import com.gradenator.Internal.Class;
 import com.gradenator.R;
@@ -61,9 +60,6 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
         return v;
     }
 
-    /**
-     * @param v The inflated view.
-     */
     private void findAndSetViews(View v) {
         mRes = getActivity().getResources();
         mAllClasses = (CardListView) v.findViewById(R.id.all_entries);
@@ -72,6 +68,11 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
         mAddClassButton = (CircleButton) v.findViewById(R.id.add_class_btn);
         mAddClassButton.setOnClickListener(this);
         initListCardView();
+    }
+
+    @Override
+    public void onClick(View v) {
+        createClassDialog(Action.ADD);
     }
 
     private void initListCardView() {
@@ -89,14 +90,14 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
 
     private Card createNewCard(Class curClass) {
         Card classView = new ClassCard(curClass, getActivity(), R.layout.custom_class_card);
-        GradenatorCardHeader classHeader = createCardHeader(curClass);
+        GradeClassHeader classHeader = createCardHeader(curClass);
         classView.addCardHeader(classHeader);
         setCardOnClickListeners(classView);
         return classView;
     }
 
-    private GradenatorCardHeader createCardHeader(Class curClass) {
-        GradenatorCardHeader termHeader = new GradenatorCardHeader(getActivity(),
+    private GradeClassHeader createCardHeader(Class curClass) {
+        GradeClassHeader termHeader = new GradeClassHeader(getActivity(),
                 curClass.getClassName());
         termHeader.setButtonOverflowVisible(true);
         termHeader.setOtherButtonClickListener(null);
@@ -112,7 +113,6 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
                 }
             }
         });
-
         termHeader.setPopupMenuPrepareListener(new CardHeader.OnPrepareCardHeaderPopupMenuListener() {
             @Override
             public boolean onPreparePopupMenu(BaseCard baseCard, PopupMenu popupMenu) {
@@ -165,74 +165,65 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
 
     private void createClassDialog(Action action) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View v = inflater.inflate(R.layout.create_class, null, false);
-        final EditText className = (EditText) v.findViewById(R.id.class_title_edit);
-        final EditText unitCount = (EditText) v.findViewById(R.id.unit_count_edit);
-        final ListView allCategories = (ListView) v.findViewById(R.id.all_categories);
-
-        List<Category> listOfCategories = new ArrayList<Category>();
-        if (action == Action.EDIT) {
-            List<Category> copyCategories = getSelectedClass().getAllCategories();
-            for (Category c : copyCategories) {
-                listOfCategories.add(c);
-            }
-        }
-        final CreateCategoryAdapter adapter = new CreateCategoryAdapter(getActivity(),
-                listOfCategories);
-        if (action == Action.EDIT) { // user wants to edit, populate the fields
-            builder.setTitle(getString(R.string.edit_class_title));
-            Class selectedClass = getSelectedClass();
-            className.setText(selectedClass.getClassName());
-            unitCount.setText(selectedClass.getUnitCount() + "");
-        } else if (action == Action.ADD) {
-            builder.setTitle(getString(R.string.create_class_header));
-        }
-
-        setCategoryButtonListeners(v, adapter, allCategories);
-        allCategories.setAdapter(adapter);
-        builder.setView(v);
+        View layout = setupClassDialogLayout(action, builder);
+        builder.setView(layout);
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-        String createClass = "";
-        if (action == Action.ADD) {
-            createClass = getString(R.string.create_class_btn);
-        } else if (action == Action.EDIT) {
-            createClass = getString(R.string.update_class_btn);
-        }
+        String createClass = (action == Action.ADD) ? getString(R.string.create_class_btn) :
+                getString(R.string.update_class_btn);
         builder.setPositiveButton(createClass, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
+            @Override // to be override again
+            public void onClick(DialogInterface dialog, int which) {}
         });
         final AlertDialog d = builder.create();
-        className.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    d.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                    className.setSelection(className.getText().length());
-                    className.setOnFocusChangeListener(null);
-                }
-            }
-        });
-        unitCount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    d.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                    unitCount.setSelection(unitCount.getText().length());
-                }
-            }
-        });
-        setCreateClassListener(d, className, unitCount, adapter, allCategories, action);
+        setCreateClassListener(d, (EditText) layout.getTag(R.string.class_name),
+                (EditText) layout.getTag(R.string.unit_count),
+                (CreateCategoryAdapter) layout.getTag(R.string.adapter),
+                (ListView) layout.getTag(R.string.all_categories), action);
         d.show();
         Util.changeDialogColor(d, getActivity());
+    }
+
+    private View setupClassDialogLayout(Action action, AlertDialog.Builder builder) {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View v = inflater.inflate(R.layout.create_class, null, false);
+        final EditText className = (EditText) v.findViewById(R.id.class_title_edit);
+        final EditText unitCount = (EditText) v.findViewById(R.id.unit_count_edit);
+        final ListView allCategories = (ListView) v.findViewById(R.id.all_categories);
+        List<Category> copyCategories = getSelectedClass().getAllCategories();
+        List<Category> listOfCategories = new ArrayList<Category>(copyCategories.size());
+        for (Category c : copyCategories) {
+            listOfCategories.add(c);
+        }
+        final CreateCategoryAdapter adapter = new CreateCategoryAdapter(getActivity(),
+                listOfCategories);
+        String title = (action == Action.ADD) ? getString(R.string.create_class_header) :
+                getString(R.string.edit_class_title);
+        builder.setTitle(title);
+        if (action == Action.EDIT) { // user wants to edit, populate the fields
+            Class selectedClass = getSelectedClass();
+            className.setText(selectedClass.getClassName());
+            unitCount.setText(selectedClass.getUnitCount() + "");
+        }
+        setCategoryButtonListeners(v, adapter, allCategories);
+        allCategories.setAdapter(adapter);
+        setTagsForViews(className, unitCount, allCategories, adapter, v);
+        return v;
+    }
+
+    /**
+     * Sets tags for views so they can be later retrieved for
+     */
+    private void setTagsForViews(EditText className, EditText unitCount, ListView allCategories,
+                                CreateCategoryAdapter adapter, View v) {
+        v.setTag(R.string.class_name, className);
+        v.setTag(R.string.unit_count, unitCount);
+        v.setTag(R.string.all_categories, allCategories);
+        v.setTag(R.string.adapter, adapter);
     }
 
     private void setCreateClassListener(final AlertDialog d, final EditText className,
@@ -248,61 +239,93 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
                         String newClassName = className.getText().toString().trim();
                         String newUnitCount = unitCount.getText().toString();
                         List<Category> updatedCategories = updatedCategoriesInQuestion(allCategories, adapter);
-                        if (newClassName.isEmpty()) { // user did not specify a class name
-                            Util.createErrorDialog(getString(R.string.empty_field_title),
-                                    getString(R.string.no_class_name), getActivity());
-                        } else if (newUnitCount.isEmpty()) { // user did not specify a new unit count
-                            Util.createErrorDialog(getString(R.string.empty_field_title),
-                                    getString(R.string.no_unit_count), getActivity());
-                        } else if (!checkFieldsCompleted(updatedCategories)) { // cat fields inc
-                            Util.createErrorDialog(getString(R.string.empty_field_title),
-                                    getString(R.string.no_category_field),
-                                    getActivity());
-                        } else if (!checkWeights(updatedCategories)) { // weights don't equal to 100
-                            Util.createErrorDialog(getString(R.string.no_total_one_hundred_title),
-                                    getString(R.string.no_total_one_hundred),
-                                    getActivity());
-                        } else if (checkDupCategories(updatedCategories)) { // duplicate categories exist
-                            Util.createErrorDialog(getString(R.string.duplicate_class_title),
-                                    getString(R.string.duplicate_category_msg),
-                                    getActivity());
-                        } else if (checkDupClasses(newClassName, action)) {
-                            // duplicate classes exist
-                            Util.createErrorDialog(getString(R.string.duplicate_class_title),
-                                    getString(R.string.duplicate_class_msg), getActivity());
-                        } else if (newClassName.length() > 10) { // class title name is too long
-                            Util.createErrorDialog(getString(R.string.class_title_too_long_title),
-                                    getString(R.string.class_title_too_long_msg), getActivity());
-                        } else {
-                            updateCategories(allCategories, adapter);
-                            if (action == Action.ADD) {
-                                Class newClass = new Class(newClassName,
-                                        Integer.parseInt(newUnitCount),
-                                        Util.createRandomColor(getActivity()), adapter.getCategoryList());
-                                mCurrentTerm.addClass(newClass);
-                                updateNewClassView(action);
-                                String msg = getString(R.string.class_created_msg_1) + " \"" + newClassName +
-                                        "\" " + getString(R.string.class_created_msg_2);
-                                newClass.setAllCategories(adapter.getCategoryList());
-                                Util.makeToast(getActivity(), msg);
-                            } else if (action == Action.EDIT) {
-                                Util.makeToast(getActivity(), getString(R.string.class_success_updated));
-                                ClassCard selectedCard = findSelectedClassCard();
-                                selectedCard.getCardHeader().setTitle(newClassName);
-                                Class cur = selectedCard.getCorrespondingClass();
-                                cur.setClassName(newClassName);
-                                cur.setUnitCount(Integer.parseInt(newUnitCount));
-                                cur.setAllCategories(adapter.getCategoryList());
-                                CardArrayAdapter c = (CardArrayAdapter) mAllClasses.getAdapter();
-                                cur.setAllCategories(adapter.getCategoryList());
-                                c.notifyDataSetChanged();
-                            }
+                        if (validateFields(newClassName, newUnitCount, updatedCategories, action)) {
+                            // if the validation is successful...
+                            addOrEditClass(allCategories, adapter, action, newClassName, newUnitCount);
                             d.dismiss();
                         }
                     }
                 });
             }
         });
+    }
+
+    /**
+     * Validates the fields and ensures that fields that the user has entered are acceptable
+     * parameters to input. If the inputted fields pass all of the tests,
+     * the new class the user has specified will be added or the existing class will be edited.
+     */
+    private boolean validateFields(String newClassName, String newUnitCount,
+                                List<Category> updatedCategories, Action action) {
+        if (newClassName.isEmpty()) { // user did not specify a class name
+            Util.createErrorDialog(getString(R.string.empty_field_title),
+                    getString(R.string.no_class_name), getActivity());
+        } else if (newUnitCount.isEmpty()) { // user did not specify a new unit count
+            Util.createErrorDialog(getString(R.string.empty_field_title),
+                    getString(R.string.no_unit_count), getActivity());
+        } else if (!checkFieldsCompleted(updatedCategories)) { // cat fields inc
+            Util.createErrorDialog(getString(R.string.empty_field_title),
+                    getString(R.string.no_category_field),
+                    getActivity());
+        } else if (!checkWeights(updatedCategories)) { // weights don't equal to 100
+            Util.createErrorDialog(getString(R.string.no_total_one_hundred_title),
+                    getString(R.string.no_total_one_hundred),
+                    getActivity());
+        } else if (checkDupCategories(updatedCategories)) { // duplicate categories exist
+            Util.createErrorDialog(getString(R.string.duplicate_class_title),
+                    getString(R.string.duplicate_category_msg),
+                    getActivity());
+        } else if (checkDupClasses(newClassName, action)) {  // duplicate classes exist
+            Util.createErrorDialog(getString(R.string.duplicate_class_title),
+                    getString(R.string.duplicate_class_msg), getActivity());
+        } else if (newClassName.length() > 10) { // class title name is too long
+            Util.createErrorDialog(getString(R.string.class_title_too_long_title),
+                    getString(R.string.class_title_too_long_msg), getActivity());
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Called only if all the fields are properly validated.
+     */
+    private void addOrEditClass(ListView allCategories, CreateCategoryAdapter adapter,
+                                Action action, String newClassName, String newUnitCount) {
+        updateCategories(allCategories, adapter);
+        if (action == Action.ADD) {
+            Class newClass = new Class(newClassName,
+                    Integer.parseInt(newUnitCount),
+                    Util.createRandomColor(getActivity()), adapter.getCategoryList());
+            createNewClass(newClass, action, newClassName, adapter);
+        } else if (action == Action.EDIT) {
+            editExistingClass(newClassName, newUnitCount, adapter);
+        }
+    }
+
+
+    private void createNewClass(Class newClass, Action action, String newClassName,
+                                CreateCategoryAdapter adapter) {
+        mCurrentTerm.addClass(newClass);
+        updateNewClassView(action);
+        String msg = getString(R.string.class_created_msg_1) + " \"" + newClassName +
+                "\" " + getString(R.string.class_created_msg_2);
+        newClass.setAllCategories(adapter.getCategoryList());
+        Util.makeToast(getActivity(), msg);
+    }
+
+    private void editExistingClass(String newClassName, String newUnitCount,
+                                   CreateCategoryAdapter adapter) {
+        Util.makeToast(getActivity(), getString(R.string.class_success_updated));
+        ClassCard selectedCard = findSelectedClassCard();
+        selectedCard.getCardHeader().setTitle(newClassName);
+        Class cur = selectedCard.getCorrespondingClass();
+        cur.setClassName(newClassName);
+        cur.setUnitCount(Integer.parseInt(newUnitCount));
+        cur.setAllCategories(adapter.getCategoryList());
+        CardArrayAdapter c = (CardArrayAdapter) mAllClasses.getAdapter();
+        cur.setAllCategories(adapter.getCategoryList());
+        c.notifyDataSetChanged();
     }
 
     private void setCardOnClickListeners(Card classView) {
@@ -328,30 +351,38 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
         addCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateCategories(allCategories, adapter);
-                Category newCategory = new Category(getActivity());
-                List<Category> categoryList = adapter.getCategoryList();
-                categoryList.add(newCategory);
-                adapter.notifyDataSetChanged();
-                allCategories.smoothScrollToPosition(categoryList.size() - 1);
+                addNewCategory(allCategories, adapter);
             }
         });
         removeCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Category> categories = adapter.getCategoryList();
-                if (categories.size() > 1) {
-                    categories.remove(categories.size() - 1);
-                    adapter.notifyDataSetChanged();
-                    adapter.notifyDataSetInvalidated();
-                    updateCategories(allCategories, adapter);
-                    allCategories.smoothScrollToPosition(categories.size() - 1);
-                } else if (categories.size() == 1) {
-                    Toast.makeText(getActivity(), getString(R.string.category_error),
-                            Toast.LENGTH_SHORT).show();
-                }
+                removeCategory(allCategories, adapter);
             }
         });
+    }
+
+    private void addNewCategory(ListView allCategories, CreateCategoryAdapter adapter) {
+        updateCategories(allCategories, adapter);
+        Category newCategory = new Category(getActivity());
+        List<Category> categoryList = adapter.getCategoryList();
+        categoryList.add(newCategory);
+        adapter.notifyDataSetChanged();
+        allCategories.smoothScrollToPosition(categoryList.size() - 1);
+    }
+
+    private void removeCategory(ListView allCategories, CreateCategoryAdapter adapter) {
+        List<Category> categories = adapter.getCategoryList();
+        if (categories.size() > 1) {
+            categories.remove(categories.size() - 1);
+            adapter.notifyDataSetChanged();
+            adapter.notifyDataSetInvalidated();
+            updateCategories(allCategories, adapter);
+            allCategories.smoothScrollToPosition(categories.size() - 1);
+        } else if (categories.size() == 1) {
+            Toast.makeText(getActivity(), getString(R.string.category_error),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void updateCategories(ListView allCategories, CreateCategoryAdapter adapter) {
@@ -391,11 +422,6 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
         return true;
     }
 
-    /**
-     * Checks if the weights all add up to 100.
-     *
-     * @return A boolean stating whether the weights equal 100 or not.
-     */
     private boolean checkWeights(List<Category> allCategories) {
         double total = 0;
         for (Category c : allCategories) {
@@ -448,19 +474,17 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
         }
     }
 
-
     private ClassCard findSelectedClassCard() {
         List<Class> allClasses = mCurrentTerm.getAllClasses();
         for (int i = 0; i < allClasses.size(); i++) {
             CardHeader h = mAllCards.get(i).getCardHeader();
-            GradenatorCardHeader custom = (GradenatorCardHeader) h;
+            GradeClassHeader custom = (GradeClassHeader) h;
             if (custom.getTitle().equals(mSelectedClass)) {
                 return (ClassCard) mAllCards.get(i);
             }
         }
         return null;
     }
-
 
     private Class getSelectedClass() {
         List<Class> allClasses = mCurrentTerm.getAllClasses();
@@ -471,10 +495,4 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
         }
         return null;
     }
-
-    @Override
-    public void onClick(View v) {
-        createClassDialog(Action.ADD);
-    }
-
 }
