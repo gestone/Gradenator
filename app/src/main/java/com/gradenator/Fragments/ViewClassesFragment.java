@@ -194,21 +194,21 @@ public class ViewClassesFragment extends Fragment implements View.OnClickListene
         final EditText className = (EditText) v.findViewById(R.id.class_title_edit);
         final EditText unitCount = (EditText) v.findViewById(R.id.unit_count_edit);
         final ListView allCategories = (ListView) v.findViewById(R.id.all_categories);
-        List<Category> copyCategories = getSelectedClass().getAllCategories();
-        List<Category> listOfCategories = new ArrayList<Category>(copyCategories.size());
-        for (Category c : copyCategories) {
-            listOfCategories.add(c);
+        List<Category> listOfCategories = new ArrayList<Category>();
+        if (action == Action.EDIT) { // user wants to edit, populate the fields
+            Class selectedClass = getSelectedClass();
+            className.setText(selectedClass.getClassName());
+            unitCount.setText(selectedClass.getUnitCount() + "");
+            List<Category> copyCategories = getSelectedClass().getAllCategories();
+            for (Category c : copyCategories) {
+                listOfCategories.add(c);
+            }
         }
         final CreateCategoryAdapter adapter = new CreateCategoryAdapter(getActivity(),
                 listOfCategories);
         String title = (action == Action.ADD) ? getString(R.string.create_class_header) :
                 getString(R.string.edit_class_title);
         builder.setTitle(title);
-        if (action == Action.EDIT) { // user wants to edit, populate the fields
-            Class selectedClass = getSelectedClass();
-            className.setText(selectedClass.getClassName());
-            unitCount.setText(selectedClass.getUnitCount() + "");
-        }
         setCategoryButtonListeners(v, adapter, allCategories);
         allCategories.setAdapter(adapter);
         setTagsForViews(className, unitCount, allCategories, adapter, v);

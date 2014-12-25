@@ -10,8 +10,8 @@ public class DataPoint {
     private long timeRecorded;
     private double percentage;
 
-    public DataPoint(double percentage, long timeTaken) {
-        this.timeRecorded = timeTaken;
+    public DataPoint(double percentage, long timeRecorded) {
+        this.timeRecorded = timeRecorded;
         this.percentage = percentage;
     }
 

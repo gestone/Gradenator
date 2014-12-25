@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gradenator.Internal.Class;
+import com.gradenator.Internal.Constant;
 import com.gradenator.Internal.DataPoint;
 import com.gradenator.Internal.Session;
 import com.gradenator.R;
@@ -19,6 +20,7 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.LineGraphView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -89,4 +91,16 @@ public class ViewGraphFragment extends Fragment {
         return percentageData;
     }
 
+    // used for demo purposes
+    private List<DataPoint> fakeDataPoints() {
+        List<DataPoint> fakedDataPoints = new ArrayList<DataPoint>();
+        long curTime = System.currentTimeMillis();
+        fakedDataPoints.add(new DataPoint(82, curTime - 6 * Constant.ONE_WEEK));
+        fakedDataPoints.add(new DataPoint(84.2, curTime - 5 * Constant.ONE_WEEK));
+        fakedDataPoints.add(new DataPoint(87.3, curTime - 4 * Constant.ONE_WEEK));
+        fakedDataPoints.add(new DataPoint(90.2, curTime - 3 * Constant.ONE_WEEK));
+        fakedDataPoints.add(new DataPoint(85.8, curTime - 2 * Constant.ONE_WEEK));
+        fakedDataPoints.add(new DataPoint(94.2, curTime - 1 * Constant.ONE_WEEK));
+        return fakedDataPoints;
+    }
 }
