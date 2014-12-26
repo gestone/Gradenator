@@ -5,7 +5,7 @@ Gradenator is a free Android application with the ability to input, manage, and 
 
 ## Features
 * Easily input and organize assignments for each of your classes
-* Records your grades each week and graphs your percentage over time for each class
+* Records your grades each week for the most recent term and graphs your percentage over time for each class
 * Simple to use grade calculator to calculate the minimum grade required to maintain a certain percentage in the class
 
 ## Screenshots
