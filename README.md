@@ -9,8 +9,8 @@ Gradenator is an Android application with the ability to input, manage, and moni
 * Simple to use grade calculator to calculate the minimum grade required to maintain a certain percentage in the class
 
 ## Screenshots
-<img src="https://raw.githubusercontent.com/gestone/Gradenator/master/app/src/main/res/screenshots/viewterms.png" height="630" width="400"/>  | <img src="https://github.com/gestone/Gradenator/blob/master/app/src/main/res/screenshots/viewallclass.png" height="630" width="400" />
+<img src="https://raw.githubusercontent.com/gestone/Gradenator/master/app/src/main/res/screenshots/viewterms.png" height="472.5" width="300"/>  | <img src="https://github.com/gestone/Gradenator/blob/master/app/src/main/res/screenshots/viewallclass.png" height="472.5" width="300" />
 ------------- | -------------
-<img src="https://github.com/gestone/Gradenator/blob/master/app/src/main/res/screenshots/editclass.png" height="630" width="400" />  | <img src="https://github.com/gestone/Gradenator/blob/master/app/src/main/res/screenshots/classoverview.png" height="630" width="400" />
-<img src="https://github.com/gestone/Gradenator/blob/master/app/src/main/res/screenshots/assignments.png" height="630" width="400"/>  | <img src="https://github.com/gestone/Gradenator/blob/master/app/src/main/res/screenshots/graph.png" height="630" width="400"/>
-<img src="https://github.com/gestone/Gradenator/blob/master/app/src/main/res/screenshots/gradecalculator.png" height="630" width="400"/>
+<img src="https://github.com/gestone/Gradenator/blob/master/app/src/main/res/screenshots/editclass.png" height="472.5" width="300" />  | <img src="https://github.com/gestone/Gradenator/blob/master/app/src/main/res/screenshots/classoverview.png" height="472.5" width="300" />
+<img src="https://github.com/gestone/Gradenator/blob/master/app/src/main/res/screenshots/assignments.png" height="472.5" width="300"/>  | <img src="https://github.com/gestone/Gradenator/blob/master/app/src/main/res/screenshots/graph.png" height="472.5" width="300"/>
+<img src="https://github.com/gestone/Gradenator/blob/master/app/src/main/res/screenshots/gradecalculator.png" height="472.5" width="300"/>
