@@ -18,4 +18,4 @@ Gradenator is a free Android application with the ability to input, manage, and 
 ## Demo
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=AcwjC4R_HQM
 " target="_blank"><img src="http://img.youtube.com/vi/AcwjC4R_HQM/0.jpg" 
-alt="Gradenator Demo" width="240" height="180" border="10" /></a>
+alt="Gradenator Demo" width="533.3333" height="400" border="10" /></a>
