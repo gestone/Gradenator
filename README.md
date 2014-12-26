@@ -16,6 +16,6 @@ Gradenator is a free Android application with the ability to input, manage, and 
 <img src="https://github.com/gestone/Gradenator/blob/master/app/src/main/res/screenshots/gradecalculator.png" height="472.5" width="300"/>
 
 ## Demo
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=AcwjC4R_HQM
-" target="_blank"><img src="http://img.youtube.com/vi/AcwjC4R_HQM/0.jpg" 
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=2wdoWdckM_c
+" target="_blank"><img src="http://img.youtube.com/vi/2wdoWdckM_c/0.jpg" 
 alt="Gradenator Demo" width="533.3333" height="400" border="10" /></a>
