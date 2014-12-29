@@ -3,6 +3,8 @@ Overview
 
 Gradenator is a free Android application with the ability to input, manage, and monitor grades. Combined with a simplistic and clean design, Gradenator is an excellent choice to use to easily keep track of assignments and progress throughout the term.
 
+Available now on the [play store](https://play.google.com/store/apps/details?id=com.gradenator)!
+
 ## Features
 * Easily input and organize assignments for each of your classes
 * Records your grades each week for the most recent term and graphs your percentage over time for each class
